@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="RPG narrativo inspirado em GURPS, ambientado na Escócia de 1296 a 1314, com folclore escocês, ilustrações pintadas e trilha sonora medieval."
+    />
+    <meta name="theme-color" content="#111719" />
+    <title>Sangue e Névoa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&family=Alegreya+Sans+SC:wght@500;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="bar">
+      <div class="wrap">
+        <div class="brand">Sangue e Névoa<small id="barSub">Escócia · 1296</small></div>
+        <button class="btn sheet-toggle" id="btnSheet" hidden>Ficha</button>
+        <button class="btn" id="btnEvolve" hidden>Personagem<span class="badge" id="ppBadge">0</span></button>
+        <button class="btn icon" id="btnSound" aria-label="Ligar ou desligar a música">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 18V5l12-2v13" />
+            <circle cx="6" cy="18" r="3" />
+            <circle cx="18" cy="16" r="3" /></svg
+          ><span id="soundLbl">Música</span>
+        </button>
+        <button class="btn" id="btnMenu">Menu</button>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div id="app"></div>
+    </div>
+    <div id="overlay" class="overlay" hidden></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- A ordem importa: dados → mecânica → história → interface → inicialização -->
+    <script src="js/art/scenes.js"></script>
+    <script src="js/audio/soundtrack.js"></script>
+    <script src="js/data/rules.js"></script>
+    <script src="js/data/equipment.js"></script>
+    <script src="js/data/origins.js"></script>
+    <script src="js/data/foes.js"></script>
+    <script src="js/data/titles.js"></script>
+    <script src="js/core/mechanics.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/story/helpers.js"></script>
+    <script src="js/story/chapter1.js"></script>
+    <script src="js/story/chapter2.js"></script>
+    <script src="js/story/chapter3.js"></script>
+    <script src="js/story/chapter4.js"></script>
+    <script src="js/story/chapter5.js"></script>
+    <script src="js/story/chapter6.js"></script>
+    <script src="js/story/scene-meta.js"></script>
+    <script src="js/core/combat.js"></script>
+    <script src="js/core/flow.js"></script>
+    <script src="js/ui/wind.js"></script>
+    <script src="js/ui/render.js"></script>
+    <script src="js/ui/title.js"></script>
+    <script src="js/ui/evolve.js"></script>
+    <script src="js/art/figure.js"></script>
+    <script src="js/ui/character-screen.js"></script>
+    <script src="js/ui/menu.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "sangue-e-nevoa",
+  "version": "1.0.0",
+  "description": "RPG narrativo inspirado em GURPS, ambientado na Escócia de 1296 a 1314, com folclore escocês.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npx --yes http-server -c-1 -o",
+    "test": "node tests/playthrough.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0",
+    "prettier": "^3.3.3"
+  },
+  "license": "MIT"
+}
