@@ -4,16 +4,16 @@
 "use strict";
 
 function go(id, keepBanner) {
-  if (!keepBanner) S.banner = null;
-  S.scene = id;
+  if (!keepBanner) state.banner = null;
+  state.scene = id;
   const sc = SC[id];
   AUD.mood(meta(id)[1]);
-  if (sc.enter && !S.visited[id]) {
-    S.visited[id] = 1;
+  if (sc.enter && !state.visited[id]) {
+    state.visited[id] = 1;
     sc.enter();
   }
-  S.visited[id] = 1;
-  CHECK = JSON.stringify({ ...S, banner: null });
+  state.visited[id] = 1;
+  CHECK = JSON.stringify({ ...state, banner: null });
   save();
   render();
   scrollTo({ top: 0, behavior: "smooth" });
@@ -27,16 +27,16 @@ function runOutcome(o) {
   scrollTo({ top: 0, behavior: "smooth" });
 }
 function choose(i) {
-  const sc = SC[S.scene];
+  const sc = SC[state.scene];
   const ch = visibleChoices(sc)[i];
   if (!ch) return;
-  S.banner = null;
+  state.banner = null;
   if (ch.act === "evolve") return openEvolve();
   if (ch.act === "newgame") return showTitle(true);
   if (ch.fx) ch.fx();
   if (ch.test) {
     const opts = typeof ch.test.o === "function" ? ch.test.o() : ch.test.o;
-    const b = bestOf(S, opts);
+    const b = bestOf(state, opts);
     const r = test(b.v);
     AUD.sting("dado");
     setTimeout(() => AUD.sting(r.ok ? "sucesso" : "infortunio"), 220);
@@ -66,6 +66,6 @@ function visibleChoices(sc) {
 function testHint(ch) {
   if (!ch.test) return ch.fight ? "Combate" : "";
   const opts = typeof ch.test.o === "function" ? ch.test.o() : ch.test.o;
-  const b = bestOf(S, opts);
+  const b = bestOf(state, opts);
   return `${b.n} ${b.v < 0 ? "—" : b.v}`;
 }

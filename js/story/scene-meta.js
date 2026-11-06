@@ -227,9 +227,9 @@ const META = {
   c6_epilogo: ["epilogo", "tema"],
 };
 const meta = (id) => {
-  if (id === "c3_cabeca" && typeof S !== "undefined" && S) {
-    if (S.flags.pacto_cailleach) return ["gelo", "suspense"];
-    if (S.flags.kelpie_batalha) return ["kelpies", "mistico"];
+  if (id === "c3_cabeca" && typeof state !== "undefined" && state) {
+    if (state.flags.pacto_cailleach) return ["gelo", "suspense"];
+    if (state.flags.kelpie_batalha) return ["kelpies", "mistico"];
   }
   return META[id] || ["titulo", "tema"];
 };

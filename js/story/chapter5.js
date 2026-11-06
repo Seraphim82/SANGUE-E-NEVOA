@@ -8,9 +8,9 @@ Object.assign(SC, {
     eyebrow: "Capítulo V · A Traição",
     title: "Sete anos",
     enter() {
-      S.hp = maxHP(S);
-      S.fp = maxFP(S);
-      S.flags.cap5 = 1;
+      state.hp = maxHP(state);
+      state.fp = maxFP(state);
+      state.flags.cap5 = 1;
       gain(10, "Sete anos de guerra");
     },
     text: () => `Inverno de 1305. Sete anos se passaram desde Falkirk.
@@ -19,7 +19,7 @@ Wallace foi à França e a Roma pedir ajuda. Voltou de mãos vazias. Enquanto is
 
 Só Wallace não jurou. Agora ele é o homem mais caçado da Escócia, e o rei ofereceu terras e ouro a quem o entregar.
 
-Você ainda está com ele. ${F("callum_ferido") ? "Callum, com vinte anos e a perna que manca desde Falkirk, também." : "Callum, com vinte anos e a mira mais certeira do bando, também."} ${F("tam_morto") ? "Tam está enterrado em Falkirk." : "Tam, com a barba ficando grisalha, também."} ${F("ailsa") ? (F("ailsa_morta") ? "Ailsa está enterrada em Falkirk." : "Ailsa também, mais calada do que nunca.") : ""}
+Você ainda está com ele. ${hasFlag("callum_ferido") ? "Callum, com vinte anos e a perna que manca desde Falkirk, também." : "Callum, com vinte anos e a mira mais certeira do bando, também."} ${hasFlag("tam_morto") ? "Tam está enterrado em Falkirk." : "Tam, com a barba ficando grisalha, também."} ${hasFlag("ailsa") ? (hasFlag("ailsa_morta") ? "Ailsa está enterrada em Falkirk." : "Ailsa também, mais calada do que nunca.") : ""}
 
 São só vinte homens agora, escondidos nas florestas. Sete anos de guerra deixaram você mais forte e mais cansado.`,
     choices: [{ t: "Ir até a fogueira de Wallace", go: "c5_floresta" }],
@@ -30,7 +30,7 @@ São só vinte homens agora, escondidos nas florestas. Sete anos de guerra deixa
 
 “Sir John Menteith mandou recado. É o xerife de Dumbarton. Diz que tem uma casa segura em Robroyston, perto de Glasgow, onde podemos passar o inverno.” Ele dobra o pergaminho. “Menteith é escocês. Lutou do nosso lado, uma vez.”
 
-Mas Menteith também jurou lealdade ao rei Eduardo, como todos os outros. ${F("viu_rei") ? "Você se lembra da carta dos condes antes de Falkirk. Os escoceses que mudam de lado são os mais perigosos." : ""}`,
+Mas Menteith também jurou lealdade ao rei Eduardo, como todos os outros. ${hasFlag("viu_rei") ? "Você se lembra da carta dos condes antes de Falkirk. Os escoceses que mudam de lado são os mais perigosos." : ""}`,
     choices: [
       { t: "Pedir tempo para investigar Menteith antes", go: "c5_glasgow" },
       { t: "Confiar e ir na frente preparar a casa", go: "c5_robroyston_cedo" },
@@ -65,7 +65,7 @@ Dizem que Menteith tem um criado que vive bêbado nas tavernas perto do rio. E q
   c5_criado: {
     title: "O pão virado",
     enter() {
-      S.flags.sabe_traicao = 1;
+      state.flags.sabe_traicao = 1;
       gain(3, "A traição descoberta");
     },
     text: () => `O criado se chama Jack, e depois da quarta caneca ele chora no seu ombro.
@@ -101,7 +101,7 @@ O dia marcado é **3 de agosto**. Faltam dois dias.`,
       },
       {
         t: "Entrar disfarçado de soldado inglês",
-        if: () => S.armor === "malha",
+        if: () => state.armor === "malha",
         test: {
           o: [
             ["diplomacia", 3],
@@ -116,7 +116,7 @@ O dia marcado é **3 de agosto**. Faltam dois dias.`,
   c5_carta: {
     title: "O selo do rei",
     enter() {
-      S.flags.sabe_traicao = 1;
+      state.flags.sabe_traicao = 1;
       gain(4, "A prova da traição");
     },
     text: () => `No quarto de Menteith, enquanto ele ronca, você encontra a carta na mesa. Tem o selo de cera vermelha com os três leões do rei Eduardo.
@@ -129,19 +129,19 @@ Embaixo, na letra de Menteith: *Robroyston, na noite de 3 de agosto*. Faltam doi
   c5_preso: {
     title: "A cela sobre o Clyde",
     enter() {
-      S.hp = Math.max(S.hp, 3);
+      state.hp = Math.max(state.hp, 3);
     },
     text: () => `Você acorda numa cela sobre o Clyde. Pela janela gradeada, vê o rio correr lá embaixo.
 
-${F("kelpie_divida") && !F("kelpie_usado") ? "O rio Clyde. O rio do kelpie. Você sussurra o nome da água negra, *Abhainn Dubh*, e as grades da janela se enchem de algas e ferrugem até quebrarem. Lá embaixo, uma cabeça negra de cavalo espera na água. “Agora estamos quites”, diz o kelpie, quando você cai no rio." : F("callum_junto") || F("callum_arqueiro") || F("callum_mensageiro") ? "Na segunda noite, uma pedra de funda acerta o guarda na nuca. Callum abre a porta com a chave do homem desmaiado. “Achou que eu ia deixar você aqui?”" : "Na segunda noite, uma névoa branca entra pela grade e abre a fechadura. A Dama não esqueceu de você."}
+${hasFlag("kelpie_divida") && !hasFlag("kelpie_usado") ? "O rio Clyde. O rio do kelpie. Você sussurra o nome da água negra, *Abhainn Dubh*, e as grades da janela se enchem de algas e ferrugem até quebrarem. Lá embaixo, uma cabeça negra de cavalo espera na água. “Agora estamos quites”, diz o kelpie, quando você cai no rio." : hasFlag("callum_junto") || hasFlag("callum_arqueiro") || hasFlag("callum_mensageiro") ? "Na segunda noite, uma pedra de funda acerta o guarda na nuca. Callum abre a porta com a chave do homem desmaiado. “Achou que eu ia deixar você aqui?”" : "Na segunda noite, uma névoa branca entra pela grade e abre a fechadura. A Dama não esqueceu de você."}
 
 No caminho de fuga, você ouve dois soldados rindo: “Robroyston. Daqui a dois dias. O homem mais procurado da Escócia, e vai ser pego dormindo.”`,
     choices: [
       {
         t: "Correr para avisar Wallace",
         fx() {
-          S.flags.sabe_traicao = 1;
-          if (F("kelpie_divida") && !F("kelpie_usado")) S.flags.kelpie_usado = 1;
+          state.flags.sabe_traicao = 1;
+          if (hasFlag("kelpie_divida") && !hasFlag("kelpie_usado")) state.flags.kelpie_usado = 1;
         },
         go: "c5_corrida",
       },
@@ -150,7 +150,7 @@ No caminho de fuga, você ouve dois soldados rindo: “Robroyston. Daqui a dois 
   c5_corrida: {
     eyebrow: "3 de agosto de 1305",
     title: "Corrida na noite",
-    text: () => `Você corre a noite inteira. ${F("callum_ferido") ? "Callum tenta acompanhar, mancando, até você mandá-lo buscar ajuda no acampamento." : "Callum corre ao seu lado."}
+    text: () => `Você corre a noite inteira. ${hasFlag("callum_ferido") ? "Callum tenta acompanhar, mancando, até você mandá-lo buscar ajuda no acampamento." : "Callum corre ao seu lado."}
 
 Quando a casa de Robroyston aparece no escuro, já é tarde. Há tochas em volta dela. Muitas tochas. Os homens de Menteith cercam a casa em silêncio.`,
     choices: [
@@ -210,7 +210,7 @@ Pouco depois, você ouve passos lá fora. Muitos passos. A porta explode.`,
 
 Lá fora, são sessenta homens. Vocês são três. Ele olha pela janela, depois para você.
 
-“Sabia que um dia ia ser assim. Se eu fugir agora, eles me caçam até o fim do ano, e queimam cada aldeia no caminho.” Ele tira do dedo um anel de ferro simples e põe na sua mão. “Leva isto a Robert Bruce, conde de Carrick. Diz a ele: *agora é contigo*. E vive, ${N()}. Isso é uma ordem.”
+“Sabia que um dia ia ser assim. Se eu fugir agora, eles me caçam até o fim do ano, e queimam cada aldeia no caminho.” Ele tira do dedo um anel de ferro simples e põe na sua mão. “Leva isto a Robert Bruce, conde de Carrick. Diz a ele: *agora é contigo*. E vive, ${heroName()}. Isso é uma ordem.”
 
 Ele abre a porta da frente e sai, sozinho, de espada na mão, para o meio das tochas.`,
     choices: [{ t: "Obedecer e fugir pela janela", go: "c5_estrada" }],
@@ -218,7 +218,7 @@ Ele abre a porta da frente e sai, sozinho, de espada na mão, para o meio das to
   c5_janela_ferido: {
     title: "Vai!",
     enter() {
-      S.hp = Math.max(S.hp, 3);
+      state.hp = Math.max(state.hp, 3);
     },
     text: () => `Você cai, cercado. Então a porta da casa se abre e Wallace sai, de espada na mão, sozinho. Todos os homens de Menteith se viram para ele.
 
@@ -249,7 +249,7 @@ Você segue o comboio de longe por dois dias. Na estrada, no meio das colinas, o
   c5_recusa: {
     title: "A última ordem",
     enter() {
-      S.flags.tentou_resgate = 1;
+      state.flags.tentou_resgate = 1;
       gain(4, "A tentativa de resgate");
     },
     text: () => `Você derruba o cavaleiro da escolta e chega até a carroça. Quebra a corrente com o machado, com a espada, com as mãos.
@@ -264,7 +264,7 @@ Ele empurra você para longe. “Vai antes que voltem. Leva o anel a Bruce.”`,
   c5_resgate_mal: {
     title: "Na lama da estrada",
     enter() {
-      S.hp = Math.max(S.hp, 3);
+      state.hp = Math.max(state.hp, 3);
     },
     text: () =>
       `Os guardas derrubam você na lama, e o comboio segue. Da carroça, Wallace olha para trás e balança a cabeça, quase sorrindo, como quem diz: *eu mandei você viver*.`,
@@ -286,10 +286,10 @@ A Cailleach está de pé sobre a água congelada.
   c5_pacto_wallace: {
     title: "O que o inverno pode fazer",
     enter() {
-      S.flags.pacto_wallace = 1;
-      S.flags.pacto_cailleach = 1;
-      S.sinais = Math.max(S.sinais || 0, 3);
-      S.flags.cailleach = 1;
+      state.flags.pacto_wallace = 1;
+      state.flags.pacto_cailleach = 1;
+      state.sinais = Math.max(state.sinais || 0, 3);
+      state.flags.cailleach = 1;
       gain(1, "Pacto");
     },
     text: () => `Você aceita. A Velha segura sua mão, e o frio sobe até o coração.
@@ -304,7 +304,7 @@ Mas antes do amanhecer ela volta, e pela primeira vez parece cansada. “Não co
   c5_recusa_velha: {
     title: "Ele não ia querer",
     enter() {
-      S.flags.recusou_londres = 1;
+      state.flags.recusou_londres = 1;
       gain(3, "Fidelidade a Wallace");
     },
     text: () => `“Ele não ia querer. Ele já escolheu.”
@@ -329,13 +329,13 @@ O salão fica em silêncio. A sentença é dada ali mesmo, e cumprida na mesma t
   c5_smithfield: {
     title: "Smithfield",
     enter() {
-      S.flags.wallace_morto = 1;
+      state.flags.wallace_morto = 1;
     },
     text: () => `Você não vai contar o que viu em Smithfield. Ninguém que estava lá conta.
 
 Só isto: no meio da multidão que gritava, havia uma pessoa de capuz que não gritava. E por um instante, antes do fim, Wallace olhou para a multidão, e você tem certeza de que ele viu você.
 
-${F("pacto_wallace") ? "Uma névoa fria desceu sobre o lugar, só por um instante, e o rosto dele ficou calmo. A Velha cumpriu a parte dela." : "Uma névoa branca subiu do chão, só por um instante, e você sentiu a mão da Dama no seu ombro. *Ele não está sozinho*, disse a névoa."}
+${hasFlag("pacto_wallace") ? "Uma névoa fria desceu sobre o lugar, só por um instante, e o rosto dele ficou calmo. A Velha cumpriu a parte dela." : "Uma névoa branca subiu do chão, só por um instante, e você sentiu a mão da Dama no seu ombro. *Ele não está sozinho*, disse a névoa."}
 
 William Wallace morreu em 23 de agosto de 1305. Tinha uns trinta e cinco anos.`,
     choices: [{ t: "Voltar para a Escócia", go: "c5_bruce" }],
@@ -356,21 +356,22 @@ Bruce olha para o anel por muito tempo. Ele jurou lealdade ao rei Eduardo, como 
     eyebrow: "Fim do Capítulo V",
     title: "O anel de ferro",
     enter() {
-      S.flags.cap5_fim = 1;
-      S.hp = maxHP(S);
-      S.fp = maxFP(S);
+      state.flags.cap5_fim = 1;
+      state.hp = maxHP(state);
+      state.fp = maxFP(state);
       gain(6, "Fim do Capítulo V");
     },
     text: () => {
       const l = [];
-      if (F("sabe_traicao")) l.push("Você descobriu a traição de Menteith, mas Wallace escolheu não fugir.");
-      if (F("tentou_resgate"))
+      if (hasFlag("sabe_traicao"))
+        l.push("Você descobriu a traição de Menteith, mas Wallace escolheu não fugir.");
+      if (hasFlag("tentou_resgate"))
         l.push("Você chegou até a carroça de Wallace na estrada, e ele recusou a fuga.");
-      if (F("pacto_wallace"))
+      if (hasFlag("pacto_wallace"))
         l.push(
           "Você ofereceu a Pedra à Cailleach pela vida de Wallace. Ela tirou a dor dele, e o trato continua.",
         );
-      if (F("recusou_londres")) l.push("Você recusou a oferta da Cailleach em Londres.");
+      if (hasFlag("recusou_londres")) l.push("Você recusou a oferta da Cailleach em Londres.");
       l.push("Robert Bruce recebeu o anel de Wallace.");
       return `Em fevereiro de 1306, numa igreja de Dumfries, Robert Bruce e John Comyn discutem diante do altar. Bruce puxa o punhal. Comyn morre ali mesmo, nos degraus da igreja.
 
@@ -378,7 +379,7 @@ Não há mais volta. Bruce vai ser rei, ou vai morrer.
 
 <ul class="end-list">${l.map((x) => `<li>${x}</li>`).join("")}</ul>
 
-Seu título agora é **${title(S)}**, com ${S.earned} pontos de experiência acumulados.`;
+Seu título agora é **${title(state)}**, com ${state.earned} pontos de experiência acumulados.`;
     },
     choices: [
       { t: "Começar o Capítulo VI, o capítulo final", go: "c6_inicio" },

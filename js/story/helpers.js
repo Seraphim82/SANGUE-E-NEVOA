@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const P = (s) =>
+const toParagraphs = (s) =>
   s
     .trim()
     .split(/\n\s*\n/)
@@ -15,4 +15,4 @@ const P = (s) =>
           : `<p>${p.trim()}</p>`,
     )
     .join("");
-const N = () => esc(S.name);
+const heroName = () => esc(state.name);

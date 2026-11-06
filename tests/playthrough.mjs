@@ -9,18 +9,15 @@
  * Uso: npm test            (30 partidas)
  *      npm test -- 100     (100 partidas)
  */
-import { chromium } from "playwright";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import path from "node:path";
+import { abrirNavegador, URL_JOGO } from "./lib/harness.mjs";
 
-const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const partidas = Number(process.argv[2] || 30);
 
-const browser = await chromium.launch();
+const browser = await abrirNavegador();
 const page = await browser.newPage();
 const erros = [];
 page.on("pageerror", (e) => erros.push(e.message));
-await page.goto(pathToFileURL(path.join(raiz, "index.html")).href);
+await page.goto(URL_JOGO);
 
 const resultado = await page.evaluate((partidas) => {
   const problemas = [];
@@ -55,13 +52,13 @@ const resultado = await page.evaluate((partidas) => {
     },
   ];
   for (const flags of cenarios) {
-    S = newChar("Teste", "ferreiro");
-    S.mode = "playing";
-    migrate(S);
-    S.flags = flags;
-    S.coins = 99;
-    S.weapons.push("espada", "arco");
-    S.armor = "malha";
+    state = newChar("Teste", "ferreiro");
+    state.mode = "playing";
+    migrate(state);
+    state.flags = flags;
+    state.coins = 99;
+    state.weapons.push("espada", "arco");
+    state.armor = "malha";
     for (const id in SC) {
       const e = (arestas[id] = arestas[id] || new Set());
       for (const ch of SC[id].choices) {
@@ -86,66 +83,70 @@ const resultado = await page.evaluate((partidas) => {
   for (const id in SC) if (!vistas.has(id)) problemas.push(`${id}: inalcançável`);
 
   const gastar = () => {
-    const sk = WEAPONS[S.weapon].sk;
-    for (let i = 0; i < 50 && S.unspent > 0; i++) {
-      const p = S.skills[sk] || 0;
+    const sk = WEAPONS[state.weapon].sk;
+    for (let i = 0; i < 50 && state.unspent > 0; i++) {
+      const p = state.skills[sk] || 0;
       const custo = nextPts(p) - p;
-      if (Math.random() < 0.5 && custo <= S.unspent) (S.unspent -= custo), (S.skills[sk] = nextPts(p));
-      else if (S.unspent >= 10 && S.attrs.HT < 16) (S.unspent -= 10), S.attrs.HT++, S.hp++;
-      else if (S.unspent >= 10 && S.attrs.ST < 16) (S.unspent -= 10), S.attrs.ST++, S.hp++;
+      if (Math.random() < 0.5 && custo <= state.unspent)
+        (state.unspent -= custo), (state.skills[sk] = nextPts(p));
+      else if (state.unspent >= 10 && state.attrs.HT < 16)
+        (state.unspent -= 10), state.attrs.HT++, state.hp++;
+      else if (state.unspent >= 10 && state.attrs.ST < 16)
+        (state.unspent -= 10), state.attrs.ST++, state.hp++;
       else break;
     }
   };
   const forjar = () => {
     for (const [slot, k] of [
-      ["arma", S.weapon],
-      ["roupa", S.armor],
+      ["arma", state.weapon],
+      ["roupa", state.armor],
     ])
       while (canUpgrade(slot, k)) {
         const L = upLevel(slot, k);
         const [pc, q] = UPCOST[L];
-        S.coins -= pc;
-        S.mat[matFor(slot, k)] -= q;
-        S.up[upKey(slot, k)] = L + 1;
+        state.coins -= pc;
+        state.mat[matFor(slot, k)] -= q;
+        state.up[upKey(slot, k)] = L + 1;
       }
   };
   const r = { completas: 0, mortes: 0, travadas: 0, finais: {} };
   for (let run = 0; run < partidas; run++) {
-    S = newChar("Teste", ["ferreiro", "pastor", "curandeira"][run % 3]);
-    S.mode = "playing";
-    migrate(S);
-    S.unspent = 0;
+    state = newChar("Teste", ["ferreiro", "pastor", "curandeira"][run % 3]);
+    state.mode = "playing";
+    migrate(state);
+    state.unspent = 0;
     go("c1_inicio");
     let cap = "";
     let passos = 0;
     for (; passos < 3000; passos++) {
-      if (S.scene.slice(0, 3) !== cap) {
-        cap = S.scene.slice(0, 3);
+      if (state.scene.slice(0, 3) !== cap) {
+        cap = state.scene.slice(0, 3);
         gastar();
         const melhor = ["gibao_stirling", "malha", "peles", "couro", "tartan", "gibao", "la"].find((k) =>
-          S.outfits.includes(k),
+          state.outfits.includes(k),
         );
-        if (melhor) S.armor = melhor;
+        if (melhor) state.armor = melhor;
         forjar();
       }
-      if (S.dead) {
+      if (state.dead) {
         r.mortes++;
         break;
       }
-      if (S.scene === "c6_epilogo") {
+      if (state.scene === "c6_epilogo") {
         r.completas++;
-        r.finais[S.flags.final] = (r.finais[S.flags.final] || 0) + 1;
+        r.finais[state.flags.final] = (r.finais[state.flags.final] || 0) + 1;
         break;
       }
-      if (S.combat) {
-        const C = S.combat;
-        if (S.techs.includes("folego") && !C.used.folego && S.hp < maxHP(S) / 2) playerTech("folego");
-        else if (S.hp < maxHP(S) / 3 && S.inv.ervas > 0) playerHerbs();
-        else if (S.amulet && !C.used.amu) playerAmulet();
+      if (state.combat) {
+        const C = state.combat;
+        if (state.techs.includes("folego") && !C.used.folego && state.hp < maxHP(state) / 2)
+          playerTech("folego");
+        else if (state.hp < maxHP(state) / 3 && state.inv.ervas > 0) playerHerbs();
+        else if (state.amulet && !C.used.amu) playerAmulet();
         else playerAttack("normal");
         continue;
       }
-      const opcoes = visibleChoices(SC[S.scene]);
+      const opcoes = visibleChoices(SC[state.scene]);
       const reais = opcoes.filter((c) => c.act !== "evolve" && c.act !== "newgame");
       if (!reais.length) break;
       choose(opcoes.indexOf(reais[Math.floor(Math.random() * reais.length)]));

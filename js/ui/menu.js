@@ -10,7 +10,7 @@ function openMenu() {
    <h2>Menu</h2>
    <p class="note">O jogo salva sozinho a cada cena, neste navegador.</p>
    <div class="choices">
-     ${S && S.mode === "playing" ? `<button class="choice" id="mRestart"><span>Reiniciar a cena atual</span><span class="arrow">→</span></button>` : ""}
+     ${state && state.mode === "playing" ? `<button class="choice" id="mRestart"><span>Reiniciar a cena atual</span><span class="arrow">→</span></button>` : ""}
      <button class="choice" id="mTitle"><span>Tela inicial</span><span class="arrow">→</span></button>
      <button class="choice" id="mRules"><span>Resumo das regras</span><span class="arrow">→</span></button>
      <div class="toggle-row"><span>Música</span><button class="mini ${AUD.pref.music ? "on" : ""}" id="tMusic">${AUD.pref.music ? "Ligada" : "Desligada"}</button></div>
@@ -48,7 +48,7 @@ function openMenu() {
   if (rs)
     rs.onclick = () => {
       if (CHECK) {
-        S = JSON.parse(CHECK);
+        state = migrate(JSON.parse(CHECK));
         save();
       }
       closeEvolve();

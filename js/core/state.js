@@ -3,28 +3,26 @@
  */
 "use strict";
 
-let S = null; // jogo atual
+let state = null; // jogo atual
 let CHECK = null; // ponto de retorno da cena (texto JSON)
 let selTarget = 0;
 let sheetOpen = false;
 const SAVE_KEY = "sangue-e-nevoa-v1";
 function save() {
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(S));
-  } catch (e) {}
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+  } catch {
+    // Armazenamento indisponível (modo privado ou cota cheia): o jogo segue sem salvar.
+  }
 }
 function loadSave() {
   try {
     const t = localStorage.getItem(SAVE_KEY);
-    return t ? JSON.parse(t) : null;
-  } catch (e) {
+    return t ? sanitizeSave(JSON.parse(t)) : null;
+  } catch {
+    // Save ausente, corrompido ou armazenamento bloqueado: começa sem save.
     return null;
   }
-}
-function clearSave() {
-  try {
-    localStorage.removeItem(SAVE_KEY);
-  } catch (e) {}
 }
 
 function newChar(name, ok) {
@@ -71,12 +69,12 @@ function toast(msg) {
   toast._t = setTimeout(() => t.classList.remove("show"), 2600);
 }
 function banner() {
-  if (!S.banner) S.banner = { roll: null, lines: [] };
-  return S.banner;
+  if (!state.banner) state.banner = { roll: null, lines: [] };
+  return state.banner;
 }
 function gain(n, why) {
-  S.unspent += n;
-  S.earned += n;
+  state.unspent += n;
+  state.earned += n;
   banner().lines.push({ t: `+${n} PP · ${why}`, cls: "" });
   toast(`+${n} pontos de personagem`);
   setTimeout(() => AUD.sting("moeda"), 900);
@@ -86,20 +84,20 @@ function note(t, cls) {
 }
 function hurt(dmgStr, why) {
   const d = rollDmg(parseDmg(dmgStr));
-  const before = S.hp;
-  S.hp = Math.max(1, S.hp - d.total);
-  note(`−${before - S.hp} PV · ${why}`, "hurt");
+  const before = state.hp;
+  state.hp = Math.max(1, state.hp - d.total);
+  note(`−${before - state.hp} PV · ${why}`, "hurt");
 }
 function giveWeapon(k) {
-  if (!S.weapons.includes(k)) {
-    S.weapons.push(k);
+  if (!state.weapons.includes(k)) {
+    state.weapons.push(k);
     note(`Nova arma: ${WEAPONS[k].n}`);
   }
 }
 function giveItem(k, n) {
-  S.inv[k] = (S.inv[k] || 0) + (n || 1);
+  state.inv[k] = (state.inv[k] || 0) + (n || 1);
   note(`Item: ${ITEMS[k].n}`);
-  if (AMULETS[k] && !S.amulet) S.amulet = k;
+  if (AMULETS[k] && !state.amulet) state.amulet = k;
 }
-const hasIron = () => S.weapons.some((w) => WEAPONS[w].iron);
-const F = (k) => !!S.flags[k];
+const hasIron = () => state.weapons.some((w) => WEAPONS[w].iron);
+const hasFlag = (k) => !!state.flags[k];

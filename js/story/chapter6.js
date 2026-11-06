@@ -3,22 +3,22 @@
  */
 "use strict";
 
-const tamVivo = () => !F("tam_morto") || F("tam_salvo") || F("tam_ferido");
-const ailsaViva = () => F("ailsa") && !F("ailsa_morta");
+const tamVivo = () => !hasFlag("tam_morto") || hasFlag("tam_salvo") || hasFlag("tam_ferido");
+const ailsaViva = () => hasFlag("ailsa") && !hasFlag("ailsa_morta");
 const aliadosFinais = () => [
   ALLY.callum,
   ...(tamVivo() ? [ALLY.tam] : []),
   ...(ailsaViva() ? [ALLY.ailsa] : []),
-  ...(!F("aodh_morto") ? [ALLY.aodh] : []),
+  ...(!hasFlag("aodh_morto") ? [ALLY.aodh] : []),
 ];
 Object.assign(SC, {
   c6_inicio: {
     eyebrow: "Capítulo VI · Bannockburn e a Pedra",
     title: "Uma coroa sem pedra",
     enter() {
-      S.hp = maxHP(S);
-      S.fp = maxFP(S);
-      S.flags.cap6 = 1;
+      state.hp = maxHP(state);
+      state.fp = maxFP(state);
+      state.flags.cap6 = 1;
     },
     text: () => `25 de março de 1306. Na abadia de Scone, Robert Bruce é coroado **rei dos escoceses**.
 
@@ -31,14 +31,14 @@ Depois da cerimônia, Bruce chama você num canto. “Wallace me disse uma vez q
       {
         t: "Contar a Bruce onde está a verdadeira Pedra",
         fx() {
-          S.flags.bruce_sabe = 1;
+          state.flags.bruce_sabe = 1;
         },
         go: "c6_segredo",
       },
       {
         t: "Guardar o segredo",
         fx() {
-          S.flags.segredo = 1;
+          state.flags.segredo = 1;
         },
         go: "c6_segredo",
       },
@@ -50,7 +50,7 @@ Depois da cerimônia, Bruce chama você num canto. “Wallace me disse uma vez q
       gain(2, "A coroação de Scone");
     },
     text: () =>
-      F("bruce_sabe")
+      hasFlag("bruce_sabe")
         ? `Você conta tudo: Dunsinane, o monge Aodh, a tampa da fossa, a Velha do Inverno.
 
 Bruce ri da tampa da fossa até lacrimejar. Depois fica sério. “Deixa a Pedra dormir. Um rei que precisa de uma pedra para ser rei não é rei. Primeiro eu ganho o reino. Depois a Pedra decide se me quer.”`
@@ -134,10 +134,10 @@ Antes da batalha, há tempo para uma última coisa.`,
   c6_dunsinane: {
     title: "A colina de novo",
     enter() {
-      S.flags.visitou_pedra = 1;
+      state.flags.visitou_pedra = 1;
       gain(3, "Dunsinane");
     },
-    text: () => `${F("aodh_morto") ? "Na boca da caverna, a estátua de gelo do irmão Aodh continua de braços abertos, há dezesseis anos sem derreter. Um jovem monge cuida da Pedra agora, e diz que reza para a estátua todas as manhãs." : "O irmão Aodh está muito velho e quase cego, mas reconhece sua voz na porta da cabana e chora."}
+    text: () => `${hasFlag("aodh_morto") ? "Na boca da caverna, a estátua de gelo do irmão Aodh continua de braços abertos, há dezesseis anos sem derreter. Um jovem monge cuida da Pedra agora, e diz que reza para a estátua todas as manhãs." : "O irmão Aodh está muito velho e quase cego, mas reconhece sua voz na porta da cabana e chora."}
 
 Na câmara, a Pedra brilha mais do que nunca. A geada nas paredes já não recua.
 
@@ -146,7 +146,7 @@ Na câmara, a Pedra brilha mais do que nunca. A geada nas paredes já não recua
       {
         t: "Partir para Stirling com a Pedra numa carroça",
         fx() {
-          S.flags.pedra_levada = 1;
+          state.flags.pedra_levada = 1;
         },
         go: "c6_dama4",
       },
@@ -155,21 +155,21 @@ Na câmara, a Pedra brilha mais do que nunca. A geada nas paredes já não recua
   c6_dama4: {
     title: "Filho da Névoa",
     enter() {
-      S.sangue = 4;
+      state.sangue = 4;
       gain(4, "O Sangue Antigo completo");
     },
     text: () => `Na estrada para Stirling, a névoa sobe numa manhã de verão, e a Dama Branca caminha ao seu lado. Ela parece cansada, mais transparente do que antes.
 
 “Faz dezoito anos desde Kilbride”, diz ela. “Tu cresceste, e o teu sangue também.” Ela toca sua testa, como na primeira noite. “Agora és o que os antigos chamavam de **Filho da Névoa**. O último degrau. Vais precisar dele.”
 
-${F("pacto_cailleach") && !F("quebrou_pacto") ? "Ela olha para o seu pulso, onde as marcas da Velha ainda estão. “E vais ter de escolher entre a tua palavra e a tua terra.”" : "“A Velha vem buscar a Pedra. Quando vier, estarás entre as duas.”"}
+${hasFlag("pacto_cailleach") && !hasFlag("quebrou_pacto") ? "Ela olha para o seu pulso, onde as marcas da Velha ainda estão. “E vais ter de escolher entre a tua palavra e a tua terra.”" : "“A Velha vem buscar a Pedra. Quando vier, estarás entre as duas.”"}
 
 **O Sangue Antigo chegou ao nível 4.** Você aprendeu a **Canção das Estações**.`,
     choices: [
       {
         t: "Chegar a Bannockburn",
         fx() {
-          if (!S.skills.sp_estacoes) S.skills.sp_estacoes = 2;
+          if (!state.skills.sp_estacoes) state.skills.sp_estacoes = 2;
         },
         go: "c6_bannock",
       },
@@ -195,11 +195,11 @@ O exército escocês ruge.`,
     title: "Neve no solstício",
     text: () => `Na noite mais curta do ano, começa a nevar.
 
-Os soldados olham para o céu sem entender. A neve cai sobre os dois exércitos, sobre o riacho, sobre a carroça ${F("pedra_levada") ? "onde a Pedra dorme coberta de palha" : "do abade de Inchaffray, que, você descobre agora, trouxe a Pedra escondida de Dunsinane"}.
+Os soldados olham para o céu sem entender. A neve cai sobre os dois exércitos, sobre o riacho, sobre a carroça ${hasFlag("pedra_levada") ? "onde a Pedra dorme coberta de palha" : "do abade de Inchaffray, que, você descobre agora, trouxe a Pedra escondida de Dunsinane"}.
 
 A Cailleach sai da neve. Está maior do que nunca, alta como um carvalho.
 
-${F("pacto_cailleach") && !F("quebrou_pacto") ? "“A guerra acaba amanhã, criança. Cumpre a tua palavra. Amanhã, quando o sangue correr, tu quebras a Pedra.”" : F("quebrou_pacto") ? "“Rompeste a tua palavra, e eu cacei-te por dezesseis anos. Amanhã, quando o sangue correr, eu mesma quebro a Pedra.”" : F("cailleach_verdade") ? "“Nós já conversamos uma vez, criança. Amanhã, quando o sangue correr, eu venho buscar a minha liberdade. Pensa no que vais dizer.”" : "“Amanhã, quando o sangue correr, eu quebro a Pedra. E a Escócia vai dormir debaixo da neve para sempre.”"}
+${hasFlag("pacto_cailleach") && !hasFlag("quebrou_pacto") ? "“A guerra acaba amanhã, criança. Cumpre a tua palavra. Amanhã, quando o sangue correr, tu quebras a Pedra.”" : hasFlag("quebrou_pacto") ? "“Rompeste a tua palavra, e eu cacei-te por dezesseis anos. Amanhã, quando o sangue correr, eu mesma quebro a Pedra.”" : hasFlag("cailleach_verdade") ? "“Nós já conversamos uma vez, criança. Amanhã, quando o sangue correr, eu venho buscar a minha liberdade. Pensa no que vais dizer.”" : "“Amanhã, quando o sangue correr, eu quebro a Pedra. E a Escócia vai dormir debaixo da neve para sempre.”"}
 
 Ela some. A neve continua caindo até o amanhecer.`,
     choices: [{ t: "Esperar o amanhecer", go: "c6_manha" }],
@@ -271,7 +271,7 @@ Lá embaixo, o exército inglês treme, mas ainda não cedeu.`,
   c6_gillies_ok: {
     title: "Lençóis como bandeiras",
     enter() {
-      S.flags.gillies = 1;
+      state.flags.gillies = 1;
       gain(5, "A gente miúda");
     },
     text: () => `“Peguem tudo o que tiverem! Lençóis, varas, panelas!” Você amarra a primeira bandeira com as próprias mãos.
@@ -295,7 +295,7 @@ E é nesse momento que a neve volta a cair, só sobre a carroça da Pedra.`,
 
 Sobre a carroça, alta como uma torre de gelo, está a **Cailleach**. O olho único brilha como a estrela da manhã. Atrás de você, a batalha continua, e os gritos parecem muito longe.
 
-${F("pacto_cailleach") && !F("quebrou_pacto") ? "“Chegou a hora, criança. A tua palavra.”" : "“Sai da frente, criança. Ou fica, e congela com a tua terra.”"}
+${hasFlag("pacto_cailleach") && !hasFlag("quebrou_pacto") ? "“Chegou a hora, criança. A tua palavra.”" : "“Sai da frente, criança. Ou fica, e congela com a tua terra.”"}
 
 ${
   aliadosFinais().length
@@ -307,10 +307,10 @@ ${
     choices: [
       {
         t: "Propor um acordo: “O inverno também é da Escócia. Mas só no seu tempo.”",
-        if: () => F("cailleach_verdade") && !F("quebrou_pacto"),
+        if: () => hasFlag("cailleach_verdade") && !hasFlag("quebrou_pacto"),
         test: {
           o: () => [
-            ["Vontade", F("recusou_pacto") || F("recusou_londres") ? 2 : 0],
+            ["Vontade", hasFlag("recusou_pacto") || hasFlag("recusou_londres") ? 2 : 0],
             ["saber", 0],
           ],
           ok: "c6_fim_primavera",
@@ -319,7 +319,7 @@ ${
       },
       {
         t: "Cumprir a palavra e quebrar a Pedra",
-        if: () => F("pacto_cailleach") && !F("quebrou_pacto"),
+        if: () => hasFlag("pacto_cailleach") && !hasFlag("quebrou_pacto"),
         go: "c6_fim_inverno",
       },
       { t: "Despertar a Pedra e prender a Velha de novo", go: "c6_luta_final" },
@@ -347,7 +347,7 @@ Ela desce da carroça, e com ela vem o **Lobo-Rei do Inverno**, renascido da nev
     eyebrow: "Final",
     title: "O acordo das estações",
     enter() {
-      S.flags.final = "primavera";
+      state.flags.final = "primavera";
       gain(10, "O acordo das estações");
     },
     text: () => `Você tira as mãos da Pedra.
@@ -367,7 +367,7 @@ A geada recua da Pedra. A neve vira chuva, a chuva vira sol. Em volta da carroç
     eyebrow: "Final",
     title: "O selo",
     enter() {
-      S.flags.final = "selo";
+      state.flags.final = "selo";
       gain(10, "A Velha selada");
     },
     text: () => `A Velha cai de joelhos diante da Pedra, e o Lobo-Rei vira neve fina. Você põe as duas mãos na Pedra e canta, sem saber como, a Canção das Estações.
@@ -385,7 +385,7 @@ A Pedra, agora pesada como nunca, só aceita voltar para debaixo da colina de Du
     eyebrow: "Final",
     title: "O sacrifício da Dama",
     enter() {
-      S.flags.final = "dama";
+      state.flags.final = "dama";
       gain(8, "O sacrifício da Dama");
     },
     text: () => `Você cai na neve, e a Velha ergue o cajado sobre a Pedra.
@@ -403,7 +403,7 @@ A batalha está ganha. A Escócia é livre. E você nunca mais vai ver a Dama.`,
     eyebrow: "Final",
     title: "O inverno eterno",
     enter() {
-      S.flags.final = "inverno";
+      state.flags.final = "inverno";
       gain(5, "A palavra cumprida");
     },
     text: () => `Você deu a sua palavra. Ergue o machado, a espada, a pedra mais pesada que encontra, e desce sobre a Pedra do Destino.
@@ -421,21 +421,21 @@ Bruce ganhou a batalha de Bannockburn. Mas não houve primavera em 1315, nem em 
     eyebrow: "Epílogo",
     title: "Sangue e Névoa",
     enter() {
-      S.flags.fim_jogo = 1;
+      state.flags.fim_jogo = 1;
     },
     text: () => {
-      const f = S.flags.final;
+      const f = state.flags.final;
       const l = [];
       l.push(
-        F("callum_ferido")
+        hasFlag("callum_ferido")
           ? "Callum mancou a vida inteira e se tornou o melhor arqueiro do exército de Bruce. Teve quatro filhos, e o mais velho se chama " +
-              esc(S.name) +
+              esc(state.name) +
               "."
           : "Callum se tornou capitão dos arqueiros do rei Robert. Teve quatro filhos, e o mais velho se chama " +
-              esc(S.name) +
+              esc(state.name) +
               ".",
       );
-      if (F("mairi_viva"))
+      if (hasFlag("mairi_viva"))
         l.push(
           "Mairi viveu até os noventa anos e morreu dormindo, numa noite de Samhain, com um galho de sorveira na mão.",
         );
@@ -444,22 +444,22 @@ Bruce ganhou a batalha de Bannockburn. Mas não houve primavera em 1315, nem em 
           ? "Tam voltou para Cartland, ficou grisalho e contava a história da ponte de Stirling para qualquer um que pagasse uma cerveja."
           : "Tam está enterrado em Falkirk, e todo ano alguém deixa um bordão de freixo no túmulo dele.",
       );
-      if (F("ailsa"))
+      if (hasFlag("ailsa"))
         l.push(
           ailsaViva()
             ? "Ailsa nunca se casou. Ensinou meninas a atirar com arco até o fim da vida."
             : "Ailsa está enterrada em Falkirk, entre os arqueiros de Selkirk.",
         );
-      if (F("bw_salvo"))
+      if (hasFlag("bw_salvo"))
         l.push(
           "Roger Blackwood criou ovelhas em Yorkshire até morrer de velho. Nunca mais vestiu uma cota de malha.",
         );
-      if (F("aodh_morto"))
+      if (hasFlag("aodh_morto"))
         l.push("A estátua de gelo do irmão Aodh ainda está na colina de Dunsinane. Não derrete.");
       else l.push("O irmão Aodh morreu em paz em Dunsinane, ao lado da Pedra.");
-      if (F("kelpie_divida") && !F("kelpie_usado"))
+      if (hasFlag("kelpie_divida") && !hasFlag("kelpie_usado"))
         l.push("O kelpie do Clyde ainda lhe deve um favor. Ele espera.");
-      if (F("ghillie")) l.push("O Ghillie Dhu das bétulas deixou flores na sua porta todo ano.");
+      if (hasFlag("ghillie")) l.push("O Ghillie Dhu das bétulas deixou flores na sua porta todo ano.");
       const fim =
         {
           primavera:
@@ -477,7 +477,7 @@ Muitos anos depois, você ouve lerem essa carta numa praça, já com cabelos bra
 
 <ul class="end-list">${l.map((x) => `<li>${x}</li>`).join("")}</ul>
 
-Seu título final é **${title(S)}**, com ${S.earned} pontos de experiência.
+Seu título final é **${title(state)}**, com ${state.earned} pontos de experiência.
 
 **Fim de Sangue e Névoa.** Obrigado por jogar.`;
     },

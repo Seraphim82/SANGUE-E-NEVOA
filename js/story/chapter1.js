@@ -13,7 +13,7 @@ O sol se põe vermelho atrás das colinas e a aldeia se prepara para a noite mai
 
 Faz seis meses que os ingleses venceram em Dunbar. O rei John Balliol teve as insígnias arrancadas do manto e foi mandado para Londres. Dizem que o rei Eduardo levou também a Pedra do Destino, de Scone. Por aqui, a guerra ainda parece distante.
 
-Ainda há tempo para uma coisa, ${N()}, antes de acenderem a fogueira.`,
+Ainda há tempo para uma coisa, ${heroName()}, antes de acenderem a fogueira.`,
     choices: [
       {
         t: "Ajudar a velha Mairi a preparar o rito da fogueira",
@@ -53,7 +53,7 @@ Ainda há tempo para uma coisa, ${N()}, antes de acenderem a fogueira.`,
   c1_mairi_ok: {
     title: "Sorveira e linha vermelha",
     enter() {
-      S.flags.mairi_amiga = 1;
+      state.flags.mairi_amiga = 1;
       giveItem("sorveira");
       giveMat({ tecido: 1 });
       gain(2, "Saber dos antigos");
@@ -68,7 +68,7 @@ Ela segura seu queixo e olha nos seus olhos por tempo demais. “Tens os olhos d
   c1_mairi_fail: {
     title: "Sal fora de ordem",
     enter() {
-      S.flags.mairi_amiga = 1;
+      state.flags.mairi_amiga = 1;
     },
     text: () =>
       `Você derruba o sal antes da hora e Mairi solta uma gargalhada rouca. “Assim os mortos vão entrar rindo, criança.” Ela refaz tudo sozinha, mas aperta seu ombro com carinho quando você vai embora.`,
@@ -77,7 +77,7 @@ Ela segura seu queixo e olha nos seus olhos por tempo demais. “Tens os olhos d
   c1_taverna_ok: {
     title: "Notícias de Lanark",
     enter() {
-      S.flags.rumores = 1;
+      state.flags.rumores = 1;
       givePennies(3);
       gain(1, "Ouvidos atentos");
     },
@@ -163,7 +163,7 @@ Pela fumaça você vê duas coisas ao mesmo tempo: um recruta inglês arrastando
   c1_callum_salvo: {
     title: "Entre as chamas",
     enter() {
-      S.flags.mairi_morta = 1;
+      state.flags.mairi_morta = 1;
     },
     text: () => `O recruta cai, e Callum se agarra à sua cintura, tremendo. Vocês correm por trás das casas enquanto as vigas estalam.
 
@@ -173,7 +173,7 @@ Você olha para trás uma vez e vê o telhado da cabana de Mairi desabar numa ch
   c1_callum_furtivo: {
     title: "Como sombra",
     enter() {
-      S.flags.mairi_morta = 1;
+      state.flags.mairi_morta = 1;
       gain(2, "Resgate silencioso");
     },
     text: () => `Você conhece cada cerca e cada chiqueiro de Kilbride. Passa pela fumaça como um gato, e quando o recruta se vira para gritar ordens, Callum já não está na mão dele.
@@ -184,8 +184,8 @@ Na fuga, você olha para trás uma vez e vê o telhado da cabana de Mairi desaba
   c1_desmaio: {
     title: "Cinzas",
     enter() {
-      S.flags.callum_levado = 1;
-      S.flags.mairi_morta = 1;
+      state.flags.callum_levado = 1;
+      state.flags.mairi_morta = 1;
     },
     text: () => `O mundo fica preto.
 
@@ -195,8 +195,8 @@ Quando você abre os olhos, o rosto está na lama e a aldeia é só brasa e fuma
   c1_mairi_salva: {
     title: "A curandeira",
     enter() {
-      S.flags.mairi_viva = 1;
-      S.flags.callum_levado = 1;
+      state.flags.mairi_viva = 1;
+      state.flags.callum_levado = 1;
       gain(2, "Coragem no fogo");
     },
     text: () => `Você chuta a porta em brasa e arrasta Mairi para fora pelos braços. Ela tosse, viva.
@@ -207,8 +207,8 @@ Mas quando você se vira, os cavalos já estão saindo da aldeia. Na garupa de u
   c1_mairi_salva_ferido: {
     title: "A curandeira",
     enter() {
-      S.flags.mairi_viva = 1;
-      S.flags.callum_levado = 1;
+      state.flags.mairi_viva = 1;
+      state.flags.callum_levado = 1;
       hurt("1d", "Queimaduras");
       gain(1, "Coragem no fogo");
     },
@@ -221,7 +221,7 @@ Quando você se vira, os cavalos já estão saindo da aldeia. Na garupa de um de
     eyebrow: "Samhain",
     title: "A Dama Branca",
     enter() {
-      S.visao = true;
+      state.visao = true;
       gain(3, "Encontro com a Dama Branca");
     },
     text: () => `O som some. As faíscas ficam paradas no ar, como estrelas presas. A fumaça para de subir.
@@ -232,7 +232,7 @@ No meio da rua, onde ninguém estava, há uma mulher alta. O cabelo é branco co
 
 Ela toca sua testa com um dedo frio. Algo se abre atrás dos seus olhos, como uma janela que estava pregada há séculos.
 
-${F("callum_levado") ? "Ela olha para a estrada por onde levaram Callum, e depois some." : "Ela olha para Callum, adormecido de cansaço nos seus braços, e depois some."}
+${hasFlag("callum_levado") ? "Ela olha para a estrada por onde levaram Callum, e depois some." : "Ela olha para Callum, adormecido de cansaço nos seus braços, e depois some."}
 
 O som volta. As faíscas caem.`,
     choices: [
@@ -247,7 +247,7 @@ O som volta. As faíscas caem.`,
     title: "Os cães de Blackwood",
     text: () => `Atrás de vocês, latidos. Blackwood soltou os cães para caçar quem sobrou.
 
-${F("mairi_viva") ? "Mairi se apoia no seu ombro, mancando, mas aponta para o norte com firmeza. “Os Rochedos de Cartland. Do outro lado do rio. Lá os fora-da-lei se escondem, e lá os ingleses não entram.”" : "Você sabe para onde ir. Todo mundo em Kilbride sabe: os Rochedos de Cartland, do outro lado do rio, onde os fora-da-lei se escondem."}
+${hasFlag("mairi_viva") ? "Mairi se apoia no seu ombro, mancando, mas aponta para o norte com firmeza. “Os Rochedos de Cartland. Do outro lado do rio. Lá os fora-da-lei se escondem, e lá os ingleses não entram.”" : "Você sabe para onde ir. Todo mundo em Kilbride sabe: os Rochedos de Cartland, do outro lado do rio, onde os fora-da-lei se escondem."}
 
 Os latidos estão cada vez mais perto.`,
     choices: [
@@ -285,7 +285,7 @@ Quando você sai da água, sua mão encontra na lama uma pedra lisa com um furo 
   c1_desmaio_caes: {
     title: "Um uivo que não é de cão",
     enter() {
-      S.hp = Math.max(S.hp, Math.ceil(maxHP(S) / 3));
+      state.hp = Math.max(state.hp, Math.ceil(maxHP(state) / 3));
     },
     text: () => `Os dentes estão no seu braço quando um uivo atravessa a noite. Não é de lobo e não é de cão. É algo mais velho.
 
@@ -298,9 +298,9 @@ Os mastins soltam você e fogem ganindo, com o rabo entre as pernas. Na beira da
 
 É o animal mais bonito que você já viu. Negro como breu, sem sela nem rédea, a crina molhada caindo até os joelhos. Ele se ajoelha devagar, oferecendo as costas.
 
-${S.visao ? "Mas desde a noite do fogo seus olhos veem outra coisa. Por baixo da pele lustrosa a carne é verde, de afogado. A crina é feita de algas. Na boca brilham dentes de peixe. É um **kelpie**, o cavalo-d'água que leva os viajantes para o fundo do rio." : ""}
+${state.visao ? "Mas desde a noite do fogo seus olhos veem outra coisa. Por baixo da pele lustrosa a carne é verde, de afogado. A crina é feita de algas. Na boca brilham dentes de peixe. É um **kelpie**, o cavalo-d'água que leva os viajantes para o fundo do rio." : ""}
 
-${F("mairi_viva") ? "“Não toques nele”, sussurra Mairi. “Não é cavalo.”" : ""}`,
+${hasFlag("mairi_viva") ? "“Não toques nele”, sussurra Mairi. “Não é cavalo.”" : ""}`,
     choices: [
       { t: "Montar no cavalo", go: "c1_kelpie_montar" },
       {
@@ -382,13 +382,13 @@ A água gelada sobe até a cintura, até o peito, até o queixo…`,
   c1_kelpie_domado: {
     title: "Abhainn Dubh",
     enter() {
-      S.flags.kelpie_divida = 1;
+      state.flags.kelpie_divida = 1;
       giveItem("crina");
       gain(4, "Dominou um kelpie");
     },
     text: () => `O kelpie solta um grito agudo e fica imóvel, tremendo, preso pela sua mão e pela sua vontade. Agora é ele quem obedece.
 
-Ele carrega ${F("mairi_viva") ? "você e Mairi" : F("callum_levado") ? "você" : "você e Callum"} até a outra margem sem molhar um fio de cabelo. Quando você o solta, ele vira o pescoço e fala com voz de homem afogado:
+Ele carrega ${hasFlag("mairi_viva") ? "você e Mairi" : hasFlag("callum_levado") ? "você" : "você e Callum"} até a outra margem sem molhar um fio de cabelo. Quando você o solta, ele vira o pescoço e fala com voz de homem afogado:
 
 “Um favor, filho dos homens. Chama o nome da água negra, *Abhainn Dubh*, quando precisares, e eu virei. Uma vez só.”
 
@@ -408,7 +408,7 @@ Com a criatura morta, o vau fica calmo, e vocês atravessam com água pela cintu
   c1_afogado: {
     title: "Margem do outro lado",
     enter() {
-      S.hp = Math.max(S.hp, 2);
+      state.hp = Math.max(state.hp, 2);
     },
     text: () => `Água. Escuridão. Frio.
 
@@ -442,14 +442,14 @@ Você acorda tossindo na margem norte do rio, sem saber como chegou ali. Na lama
 
 “Sou Tam. Os ingleses usam gente da terra como guia agora. Então me diz: quem és tu, e quem te mandou?”`,
     choices: [
-      { t: "Deixar Mairi falar", if: () => F("mairi_viva"), go: "c1_aceito_mairi" },
+      { t: "Deixar Mairi falar", if: () => hasFlag("mairi_viva"), go: "c1_aceito_mairi" },
       {
         t: "Contar o que aconteceu em Kilbride",
-        tag: () => (F("rumores") ? "+2 rumores" : ""),
+        tag: () => (hasFlag("rumores") ? "+2 rumores" : ""),
         test: {
           o: () => [
-            ["diplomacia", F("rumores") ? 2 : 0],
-            ["IQ", F("rumores") ? 1 : -1],
+            ["diplomacia", hasFlag("rumores") ? 2 : 0],
+            ["IQ", hasFlag("rumores") ? 1 : -1],
           ],
           ok: "c1_aceito",
           fail: "c1_amarrado",
@@ -482,7 +482,7 @@ Você acorda tossindo na margem norte do rio, sem saber como chegou ali. Na lama
     enter() {
       gain(2, "Palavras certas");
     },
-    text: () => `Você conta tudo: a fogueira, Duncan na lama, o fogo${F("rumores") ? ", o nome de Blackwood e o de Iain, filho do ferreiro" : ""}. Quando você termina, Tam está pálido.
+    text: () => `Você conta tudo: a fogueira, Duncan na lama, o fogo${hasFlag("rumores") ? ", o nome de Blackwood e o de Iain, filho do ferreiro" : ""}. Quando você termina, Tam está pálido.
 
 “Iain está aqui, conosco. Ele vai querer ouvir isso de ti.” Ele faz sinal para Ailsa baixar o arco.`,
     choices: [{ t: "Entrar no acampamento", go: "c1_acampamento" }],
@@ -514,13 +514,13 @@ De madrugada, Ailsa corta as cordas. “Um batedor voltou de Kilbride. Está tud
     eyebrow: "Descanso",
     title: "O acampamento rebelde",
     enter() {
-      if (F("cailleach")) {
-        S.hp = Math.min(maxHP(S), S.hp + Math.ceil(maxHP(S) / 2));
-        S.fp = Math.min(maxFP(S), S.fp + Math.ceil(maxFP(S) / 2));
+      if (hasFlag("cailleach")) {
+        state.hp = Math.min(maxHP(state), state.hp + Math.ceil(maxHP(state) / 2));
+        state.fp = Math.min(maxFP(state), state.fp + Math.ceil(maxFP(state) / 2));
         note("A Cailleach ronda seus sonhos: descanso pela metade", "hurt");
       } else {
-        S.hp = maxHP(S);
-        S.fp = maxFP(S);
+        state.hp = maxHP(state);
+        state.fp = maxFP(state);
         note("Descanso completo: PV e PF restaurados");
       }
       giveOutfit("tartan");
@@ -528,7 +528,7 @@ De madrugada, Ailsa corta as cordas. “Um batedor voltou de Kilbride. Está tud
     },
     text: () => `Numa caverna escondida pela cachoeira, trinta homens e mulheres comem papa de aveia em volta de uma fogueira sem fumaça. Gente de Lanark, de Carluke, de aldeias que já não existem.
 
-Tam se agacha ao seu lado. “Blackwood se abrigou na torre velha sobre a cachoeira de Corra Linn, com os prisioneiros. ${F("callum_levado") ? "Entre eles há um menino ruivo que não para de morder os guardas.” Ele sorri. “Teu irmão, imagino.”" : "Vai levá-los para o xerife Heselrig, em Lanark, ao amanhecer. Para a forca.”"}
+Tam se agacha ao seu lado. “Blackwood se abrigou na torre velha sobre a cachoeira de Corra Linn, com os prisioneiros. ${hasFlag("callum_levado") ? "Entre eles há um menino ruivo que não para de morder os guardas.” Ele sorri. “Teu irmão, imagino.”" : "Vai levá-los para o xerife Heselrig, em Lanark, ao amanhecer. Para a forca.”"}
 
 Ailsa cospe no fogo. “Ninguém dorme naquela torre há cem anos. Dizem que é amaldiçoada.”
 
@@ -595,7 +595,7 @@ Antes de você dormir, Tam joga sobre seus ombros um manto de tartan verde e azu
   c1_portao_mal: {
     title: "Uma flecha no escuro",
     enter() {
-      S.hp = Math.max(S.hp, 3);
+      state.hp = Math.max(state.hp, 3);
     },
     text: () =>
       `O sentinela ergue a espada para o golpe final, e uma flecha de Ailsa atravessa a garganta dele. Ele cai em cima de você. Lá do escuro vem a voz dela: “Levanta! Não tenho flechas para desperdiçar contigo.”`,
@@ -608,7 +608,7 @@ Antes de você dormir, Tam joga sobre seus ombros um manto de tartan verde e azu
 
 Na escada, de costas para você, há um velho atarracado de botas de ferro, segurando um pique enferrujado. Ele mergulha o gorro na poça de sangue de um soldado e o põe de volta na cabeça, pingando. Quando se vira, os dentes são de lobo.
 
-Encurralado contra a parede, ferido e com a espada tremendo na mão, está o **sargento Blackwood**. Num canto, acorrentados, os prisioneiros${F("callum_levado") ? ", e entre eles Callum," : ""} olham para você.
+Encurralado contra a parede, ferido e com a espada tremendo na mão, está o **sargento Blackwood**. Num canto, acorrentados, os prisioneiros${hasFlag("callum_levado") ? ", e entre eles Callum," : ""} olham para você.
 
 Você reconhece a criatura das histórias que Mairi contava junto ao fogo: um **Barrete Vermelho**, que tinge o gorro com o sangue dos viajantes e morre de medo de palavras sagradas.
 
@@ -647,7 +647,7 @@ Blackwood vê você. “Escocês… me ajuda, ou essa coisa mata todos nós. Os 
   c1_espera: {
     title: "O preço de esperar",
     enter() {
-      S.flags.bw_morto = 1;
+      state.flags.bw_morto = 1;
     },
     text: () => `Você fica parado nas sombras. O pique do Barrete Vermelho sobe e desce. Blackwood não grita.
 
@@ -668,7 +668,7 @@ O Barrete Vermelho solta um uivo, cobre as orelhas e se joga pela janela, direto
   c1_redcap_bw: {
     title: "O gorro no chão",
     enter() {
-      S.flags.ajudou_bw = 1;
+      state.flags.ajudou_bw = 1;
     },
     text: () =>
       `A criatura cai, e o gorro vermelho rola pelo chão. O sangue nele escurece e vira pó. Blackwood escorrega pela parede até sentar, com a mão no flanco ferido.`,
@@ -708,7 +708,7 @@ Na mão fria de Blackwood ainda está a espada larga dele, de bom aço. Ele não
   c1_poupar: {
     title: "Misericórdia",
     enter() {
-      S.flags.bw_divida = 1;
+      state.flags.bw_divida = 1;
       givePennies(15);
       gain(2, "Misericórdia");
     },
@@ -724,7 +724,7 @@ Ele manca até a porta e some na noite.`,
   c1_bw_vencido: {
     title: "Aço inglês",
     enter() {
-      S.flags.sangue_frio = 1;
+      state.flags.sangue_frio = 1;
       giveWeapon("espada");
       giveOutfit("malha");
     },
@@ -738,23 +738,23 @@ A espada larga e a cota de malha dele são de bom aço. Agora são suas.`,
   c1_derrota_final: {
     title: "Mãos amigas",
     enter() {
-      S.hp = Math.max(S.hp, 2);
+      state.hp = Math.max(state.hp, 2);
     },
     text: () => `Você cai. O último som que ouve é o pique raspando na pedra…
 
-…e depois gritos escoceses, o zunido das flechas de Ailsa e o rugido de Tam. Quando você acorda, ${S.lastFoe === "blackwood" ? "o sargento fugiu, mancando, e deixou um rastro de sangue na escada" : "a criatura está morta e o sargento sumiu"}. Tam sorri, com sangue na barba. “Quase, ${N()}. Quase.”`,
+…e depois gritos escoceses, o zunido das flechas de Ailsa e o rugido de Tam. Quando você acorda, ${state.lastFoe === "blackwood" ? "o sargento fugiu, mancando, e deixou um rastro de sangue na escada" : "a criatura está morta e o sargento sumiu"}. Tam sorri, com sangue na barba. “Quase, ${heroName()}. Quase.”`,
     choices: [{ t: "Libertar os prisioneiros", go: "c1_libertacao" }],
   },
   c1_libertacao: {
     eyebrow: "Corra Linn · Alvorada",
     title: "A névoa da cachoeira",
     enter() {
-      S.sangue = 1;
+      state.sangue = 1;
       giveOutfit("nevoa");
       giveMat({ prata: 2 });
       gain(5, "Fim do Capítulo I");
     },
-    text: () => `As correntes caem. ${F("callum_levado") ? "Callum se joga no seu pescoço e não solta mais." : "Os prisioneiros choram e abraçam você, um por um."}
+    text: () => `As correntes caem. ${hasFlag("callum_levado") ? "Callum se joga no seu pescoço e não solta mais." : "Os prisioneiros choram e abraçam você, um por um."}
 
 Você sai para a beira da cachoeira. A névoa de Corra Linn sobe em colunas brancas e, dentro dela, toma forma a mulher de cabelos de neve.
 
@@ -766,7 +766,7 @@ Ela tira dos ombros um manto feito da própria névoa e o põe nos seus. Depois 
         t: "Luz Feérica",
         sub: "Clarão que cega o inimigo · 1 PF",
         fx() {
-          S.skills.sp_luz = 2;
+          state.skills.sp_luz = 2;
         },
         go: "c1_fim",
       },
@@ -774,7 +774,7 @@ Ela tira dos ombros um manto feito da própria névoa e o põe nos seus. Depois 
         t: "Curar Ferimentos",
         sub: "Fecha feridas · 2 PF",
         fx() {
-          S.skills.sp_cura = 2;
+          state.skills.sp_cura = 2;
         },
         go: "c1_fim",
       },
@@ -782,7 +782,7 @@ Ela tira dos ombros um manto feito da própria névoa e o põe nos seus. Depois 
         t: "Manto de Névoa",
         sub: "Esconde você dos inimigos · 3 PF",
         fx() {
-          S.skills.sp_nevoa = 2;
+          state.skills.sp_nevoa = 2;
         },
         go: "c1_fim",
       },
@@ -792,26 +792,28 @@ Ela tira dos ombros um manto feito da própria névoa e o põe nos seus. Depois 
     eyebrow: "Fim do Capítulo I",
     title: "O Martelo e a Pedra",
     enter() {
-      S.flags.cap1 = 1;
+      state.flags.cap1 = 1;
     },
     text: () => {
       const l = [];
       l.push(
-        F("mairi_viva") ? "Mairi está viva e caminha com os rebeldes." : "Mairi morreu no fogo de Kilbride.",
+        hasFlag("mairi_viva")
+          ? "Mairi está viva e caminha com os rebeldes."
+          : "Mairi morreu no fogo de Kilbride.",
       );
       l.push(
-        F("callum_levado")
+        hasFlag("callum_levado")
           ? "Callum foi resgatado da torre de Corra Linn."
           : "Callum nunca saiu do seu lado.",
       );
-      if (F("kelpie_divida")) l.push("Um kelpie deve um favor a você: Abhainn Dubh.");
-      if (F("bw_divida"))
+      if (hasFlag("kelpie_divida")) l.push("Um kelpie deve um favor a você: Abhainn Dubh.");
+      if (hasFlag("bw_divida"))
         l.push("O sargento Blackwood deve a vida a você e contou o segredo dos monges de Scone.");
-      if (S.weapons.includes("espada")) l.push("Você carrega a espada larga de Blackwood.");
-      if (S.weapons.includes("pique")) l.push("Você carrega o pique do Barrete Vermelho.");
-      if (F("sangue_frio"))
+      if (state.weapons.includes("espada")) l.push("Você carrega a espada larga de Blackwood.");
+      if (state.weapons.includes("pique")) l.push("Você carrega o pique do Barrete Vermelho.");
+      if (hasFlag("sangue_frio"))
         l.push("Os rebeldes viram você matar um homem ferido e desarmado. Tam não esqueceu.");
-      return `Seu título agora é **${title(S)}**, com ${S.earned} pontos de experiência acumulados.
+      return `Seu título agora é **${title(state)}**, com ${state.earned} pontos de experiência acumulados.
 
 <ul class="end-list">${l.map((x) => `<li>${x}</li>`).join("")}</ul>
 

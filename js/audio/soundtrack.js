@@ -18,12 +18,21 @@ const AUD = (() => {
   const pref = { music: true, sfx: true };
   try {
     const p = JSON.parse(localStorage.getItem("sen-audio") || "null");
-    if (p) Object.assign(pref, p);
-  } catch (e) {}
+    // Copia só os campos conhecidos: Object.assign com dados do armazenamento
+    // permitiria trocar o protótipo de `pref` com uma chave "__proto__".
+    if (p && typeof p === "object") {
+      if (typeof p.music === "boolean") pref.music = p.music;
+      if (typeof p.sfx === "boolean") pref.sfx = p.sfx;
+    }
+  } catch {
+    // Preferência ausente ou ilegível: mantém os padrões.
+  }
   const savePref = () => {
     try {
       localStorage.setItem("sen-audio", JSON.stringify(pref));
-    } catch (e) {}
+    } catch {
+      // Armazenamento indisponível: a preferência vale só nesta sessão.
+    }
   };
   const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
   const pick = (a) => a[Math.floor(Math.random() * a.length)];
@@ -471,7 +480,9 @@ const AUD = (() => {
       while (st.next < ctx.currentTime + 0.4) {
         try {
           L.bar(st.bar, st.next, b, g);
-        } catch (e) {}
+        } catch {
+          // Um compasso com erro não deve parar a música inteira.
+        }
         st.next += L.bpb * b;
         st.bar++;
       }
@@ -491,11 +502,15 @@ const AUD = (() => {
       st.dr.forEach((o) => {
         try {
           o.stop();
-        } catch (e) {}
+        } catch {
+          // O oscilador já pode ter parado sozinho.
+        }
       });
       try {
         st.g.disconnect();
-      } catch (e) {}
+      } catch {
+        // O nó já pode estar desconectado.
+      }
     }, 2200);
   }
   const live = () => ctx && ctx.state === "running";

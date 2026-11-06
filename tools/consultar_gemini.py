@@ -7,6 +7,7 @@ Uso:
 A resposta é salva em docs/analise-gemini.md.
 """
 import json
+import re
 import os
 import sys
 import urllib.error
@@ -15,7 +16,11 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 MODELO = sys.argv[1] if len(sys.argv) > 1 else "gemini-3.1-pro-preview"
+if not re.fullmatch(r"[\w.-]+", MODELO):
+    sys.exit(f"Nome de modelo inválido: {MODELO!r}")
 URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODELO}:streamGenerateContent?alt=sse"
+if not URL.startswith("https://generativelanguage.googleapis.com/"):
+    sys.exit("URL da API inesperada.")
 
 livro = (RAIZ / "docs" / "livro-do-jogador.md").read_text(encoding="utf-8")
 
@@ -64,7 +69,7 @@ cab = {"Content-Type": "application/json",
 req = urllib.request.Request(URL, data=json.dumps(corpo).encode(), headers=cab, method="POST")
 partes = []
 try:
-    with urllib.request.urlopen(req, timeout=600) as r:
+    with urllib.request.urlopen(req, timeout=600) as r:  # nosec B310: URL fixa em https, validada acima
         for linha in r:
             linha = linha.decode("utf-8").strip()
             if not linha.startswith("data:"):

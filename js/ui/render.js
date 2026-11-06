@@ -6,20 +6,22 @@
 const app = document.getElementById("app");
 const md = (s) => s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>");
 function render() {
-  const playing = S && S.mode === "playing";
+  const playing = state && state.mode === "playing";
   document.getElementById("btnEvolve").hidden = !playing;
   document.getElementById("btnSheet").hidden = !playing;
-  document.getElementById("barSub").textContent = playing ? `${title(S)} · ${S.earned} PP` : "Escócia · 1296";
+  document.getElementById("barSub").textContent = playing
+    ? `${title(state)} · ${state.earned} PP`
+    : "Escócia · 1296";
   if (playing) {
-    document.getElementById("ppBadge").textContent = S.unspent;
-    document.getElementById("btnEvolve").disabled = !!S.combat;
+    document.getElementById("ppBadge").textContent = state.unspent;
+    document.getElementById("btnEvolve").disabled = !!state.combat;
   }
-  if (!S) return;
-  if (S.mode === "creating") return renderCreate();
-  if (S.dead) return renderDeath();
+  if (!state) return;
+  if (state.mode === "creating") return renderCreate();
+  if (state.dead) return renderDeath();
   app.innerHTML = `<div class="main"><section class="story" id="story"></section><aside class="sheet" id="sheet" data-open="${sheetOpen}"></aside></div>`;
   renderSheet();
-  if (S.combat) renderCombat();
+  if (state.combat) renderCombat();
   else renderScene();
 }
 function rollHTML(b) {
@@ -30,9 +32,9 @@ function rollHTML(b) {
   <div class="meta">Rolou ${r.sum} contra ${r.target}${r.ok ? `, margem de ${r.margin}` : `, faltaram ${-r.margin}`}</div></div></div>`;
 }
 function renderScene() {
-  const sc = SC[S.scene];
+  const sc = SC[state.scene];
   const el = document.getElementById("story");
-  const b = S.banner;
+  const b = state.banner;
   const lines =
     b && b.lines.length
       ? `<div class="rewards">${b.lines.map((l) => `<div class="reward ${l.cls}">${esc(l.t)}</div>`).join("")}</div>`
@@ -41,7 +43,7 @@ function renderScene() {
   el.innerHTML = `${artBox}${rollHTML(b)}${lines}
    ${sc.eyebrow ? `<div class="eyebrow">${sc.eyebrow}</div>` : ""}
    <h1 class="scene-title">${sc.title}</h1>
-   <div class="prose">${md(P(sc.text()))}</div>
+   <div class="prose">${md(toParagraphs(sc.text()))}</div>
    <div class="wind-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/></svg><span class="mouse">O vento das Terras Altas mostra o caminho: passe o cursor sobre uma escolha</span><span class="touch">O vento mostra o caminho: toque uma vez para ver, duas para seguir</span></div>
    <div class="choices" id="choices">${ch
      .map((c, i) => {
@@ -53,20 +55,20 @@ function renderScene() {
      })
      .join("")}</div>`;
   bindChoices(el);
-  ART.show(meta(S.scene)[0], { visao: S.visao, flags: S.flags });
+  ART.show(meta(state.scene)[0], { visao: state.visao, flags: state.flags });
 }
 function renderCombat() {
-  const C = S.combat;
+  const C = state.combat;
   C.used = C.used || {};
   const el = document.getElementById("story");
   if (C.foes[selTarget].hp <= 0) {
     const i = C.foes.findIndex((f) => f.hp > 0);
     if (i >= 0) selTarget = i;
   }
-  const w = curWeapon(S);
-  const [dn, dv] = bestDefense(S);
-  const spells = Object.keys(SK).filter((k) => SK[k].spell && S.skills[k]);
-  el.innerHTML = `${artBox}${rollHTML(S.banner)}<div class="eyebrow">Combate · Rodada ${C.round}</div>
+  const w = curWeapon(state);
+  const [dn, dv] = bestDefense(state);
+  const spells = Object.keys(SK).filter((k) => SK[k].spell && state.skills[k]);
+  el.innerHTML = `${artBox}${rollHTML(state.banner)}<div class="eyebrow">Combate · Rodada ${C.round}</div>
    <h1 class="scene-title">${C.foes
      .map((f) => f.n)
      .filter((v, i, a) => a.indexOf(v) === i)
@@ -77,25 +79,28 @@ function renderCombat() {
          f,
          i,
        ) => `<button class="foe ${i === selTarget && f.hp > 0 ? "sel" : ""} ${f.hp <= 0 ? "dead" : ""}" data-i="${i}" ${f.hp <= 0 ? "disabled" : ""}>
-     <div class="foe-top"><img class="foe-pic" src="img/portraits/${f.pic || f.k}.jpg" alt="" onerror="this.remove()"><div><div class="nm">${f.n}</div><div class="st">${f.desc}</div></div></div>
+     <div class="foe-top"><img class="foe-pic" src="img/portraits/${f.pic || f.k}.jpg" alt=""><div><div class="nm">${f.n}</div><div class="st">${f.desc}</div></div></div>
      <div class="meter"><div class="lbl"><span>PV</span><span>${Math.max(f.hp, 0)} / ${f.max}</span></div><div class="track"><div class="fill hp" style="width:${(Math.max(0, f.hp) / f.max) * 100}%"></div></div></div>
      <div class="chips"><span class="chip">Ataque ${f.atk}</span><span class="chip">Defesa ${f.def}</span><span class="chip">RD ${f.rd}</span>${f.fey ? '<span class="chip warn">Feérico</span>' : ""}${f.blind > 0 ? '<span class="chip good">Cego</span>' : ""}${f.hp <= 0 ? '<span class="chip">Caído</span>' : ""}</div>
    </button>`,
      )
      .join("")}</div>
-   <div class="substatus"><span>PV <b>${S.hp}/${maxHP(S)}</b></span><span>PF <b>${S.fp}/${maxFP(S)}</b></span><span>${w.n}: <b>${weaponSkill(S)}</b></span>${(C.spec.allies || []).length ? `<span>Aliados: <b>${C.spec.allies.map((a) => a.n).join(", ")}</b></span>` : ""}<span>Melhor defesa: <b>${dn} ${dv}</b></span>${C.shock ? `<span style="color:var(--ember)">Choque −${C.shock}</span>` : ""}${C.pen ? `<span style="color:var(--ember)">Surpresa ${C.pen}</span>` : ""}${C.mist ? `<span style="color:var(--moss)">Névoa ${C.mist}</span>` : ""}</div>
+   <div class="substatus"><span>PV <b>${state.hp}/${maxHP(state)}</b></span><span>PF <b>${state.fp}/${maxFP(state)}</b></span><span>${w.n}: <b>${weaponSkill(state)}</b></span>${(C.spec.allies || []).length ? `<span>Aliados: <b>${C.spec.allies.map((a) => a.n).join(", ")}</b></span>` : ""}<span>Melhor defesa: <b>${dn} ${dv}</b></span>${C.shock ? `<span style="color:var(--ember)">Choque −${C.shock}</span>` : ""}${C.pen ? `<span style="color:var(--ember)">Surpresa ${C.pen}</span>` : ""}${C.mist ? `<span style="color:var(--moss)">Névoa ${C.mist}</span>` : ""}</div>
    <div class="actions">
-     <button class="btn primary" id="aAtk">Atacar<small>${w.n} · ${weaponSkill(S) + C.pen - C.shock} para acertar · ${fmtDmg(weaponDmg(S))} ${DTYPE[w.type].n}</small></button>
+     <button class="btn primary" id="aAtk">Atacar<small>${w.n} · ${weaponSkill(state) + C.pen - C.shock} para acertar · ${fmtDmg(weaponDmg(state))} ${DTYPE[w.type].n}</small></button>
      <button class="btn" id="aAll">Ataque Total<small>+4 para acertar, sem defesa</small></button>
      <button class="btn" id="aDef">Defesa Total<small>+2 nas defesas</small></button>
-     ${spells.map((k) => `<button class="btn" data-sp="${k}" ${S.fp < SK[k].spell.fp ? "disabled" : ""}>${SK[k].n}<small>${SK[k].spell.desc} · ${SK[k].spell.fp} PF · NH ${skillLevel(S, k)}</small></button>`).join("")}
-     ${(S.techs || []).map((k) => `<button class="btn" data-tech="${k}" ${k === "folego" && C.used.folego ? "disabled" : ""}>${TECHS[k].n}<small>${TECHS[k].desc}</small></button>`).join("")}
-     ${S.amulet && AMU_ACT[S.amulet] ? `<button class="btn" id="aAmu" ${C.used.amu ? "disabled" : ""}>${AMU_ACT[S.amulet].n}<small>${AMU_ACT[S.amulet].desc} · ação livre, 1 vez por combate</small></button>` : ""}
-     <button class="btn" id="aHerb" ${S.inv.ervas > 0 ? "" : "disabled"}>Usar ervas<small>${S.inv.ervas || 0} restantes</small></button>
+     ${spells.map((k) => `<button class="btn" data-sp="${k}" ${state.fp < SK[k].spell.fp ? "disabled" : ""}>${SK[k].n}<small>${SK[k].spell.desc} · ${SK[k].spell.fp} PF · NH ${skillLevel(state, k)}</small></button>`).join("")}
+     ${(state.techs || []).map((k) => `<button class="btn" data-tech="${k}" ${k === "folego" && C.used.folego ? "disabled" : ""}>${TECHS[k].n}<small>${TECHS[k].desc}</small></button>`).join("")}
+     ${state.amulet && AMU_ACT[state.amulet] ? `<button class="btn" id="aAmu" ${C.used.amu ? "disabled" : ""}>${AMU_ACT[state.amulet].n}<small>${AMU_ACT[state.amulet].desc} · ação livre, 1 vez por combate</small></button>` : ""}
+     <button class="btn" id="aHerb" ${state.inv.ervas > 0 ? "" : "disabled"}>Usar ervas<small>${state.inv.ervas || 0} restantes</small></button>
      ${C.mist ? `<button class="btn" id="aFlee">Sumir na névoa<small>Fuga automática</small></button>` : ""}
    </div>
    ${C.last ? `<div class="dice" style="margin-bottom:10px">${C.last.dice.map((d) => `<div class="die roll-anim">${d}</div>`).join("")}</div>` : ""}
    <div class="log" id="log">${C.log.slice().reverse().join("")}</div>`;
+  el.querySelectorAll(".foe-pic").forEach((img) =>
+    img.addEventListener("error", () => img.remove(), { once: true }),
+  );
   el.querySelectorAll(".foe").forEach(
     (b) =>
       (b.onclick = () => {
@@ -113,8 +118,8 @@ function renderCombat() {
   const fl = el.querySelector("#aFlee");
   if (fl) fl.onclick = playerFlee;
   el.querySelectorAll("[data-sp]").forEach((b) => (b.onclick = () => playerCast(b.dataset.sp)));
-  ART.showCombat(C.art || meta(S.scene)[0], () =>
-    S && S.combat ? { foes: S.combat.foes, sel: selTarget } : null,
+  ART.showCombat(C.art || meta(state.scene)[0], () =>
+    state && state.combat ? { foes: state.combat.foes, sel: selTarget } : null,
   );
   if (performance.now() - ART.FX.hurt < 120) {
     el.classList.remove("shake");
@@ -126,9 +131,7 @@ function renderCombat() {
 function renderSheet() {
   const el = document.getElementById("sheet");
   if (!el) return;
-  const c = S;
-  const w = curWeapon(c);
-  const [dn, dv] = bestDefense(c);
+  const c = state;
   const skills = Object.keys(c.skills)
     .filter((k) => c.skills[k] > 0)
     .sort((a, b) => SK[a].g.localeCompare(SK[b].g));
@@ -145,7 +148,7 @@ function renderSheet() {
       <dt>Vontade / Percepção</dt><dd>${c.attrs.IQ} / ${c.attrs.IQ}</dd>
       <dt>Esquiva</dt><dd>${dodge(c)}</dd>
       <dt>Aparar</dt><dd>${parry(c)}</dd>
-      ${block(c) != null ? `<dt>Bloqueio</dt><dd>${block(c)}</dd>` : ""}
+      ${block(c) !== null ? `<dt>Bloqueio</dt><dd>${block(c)}</dd>` : ""}
       <dt>Dano GdP / GeB</dt><dd>${(() => {
         const st = Math.max(6, Math.min(20, c.attrs.ST));
         return (
@@ -186,7 +189,7 @@ function renderSheet() {
   el.querySelectorAll("[data-w]").forEach(
     (b) =>
       (b.onclick = () => {
-        S.weapon = b.dataset.w;
+        state.weapon = b.dataset.w;
         save();
         render();
       }),
@@ -194,22 +197,22 @@ function renderSheet() {
   const hb = el.querySelector("[data-herb]");
   if (hb)
     hb.onclick = () => {
-      S.inv.ervas--;
+      state.inv.ervas--;
       const t = healHerbs();
-      S.banner = { roll: null, lines: [{ t: t.replace(/<[^>]+>/g, ""), cls: "gain" }] };
+      state.banner = { roll: null, lines: [{ t: t.replace(/<[^>]+>/g, ""), cls: "gain" }] };
       save();
       render();
     };
 }
 function renderDeath() {
   app.innerHTML = `<section class="hero">${artBox}<div class="tag">Fim da linha</div><h1>A névoa te levou</h1>
-  <p class="lede">${esc(S.name)} caiu e não se levantou mais. Na Escócia de 1296, a morte vem rápido.</p>
+  <p class="lede">${esc(state.name)} caiu e não se levantou mais. Na Escócia de 1296, a morte vem rápido.</p>
   <div class="cta"><button class="btn primary" id="retry">Voltar ao início da cena</button><button class="btn" id="ng">Nova jornada</button></div></section>`;
   ART.show("morte");
   AUD.mood("lamento");
   document.getElementById("retry").onclick = () => {
     if (CHECK) {
-      S = migrate(JSON.parse(CHECK));
+      state = migrate(JSON.parse(CHECK));
       save();
       render();
     }

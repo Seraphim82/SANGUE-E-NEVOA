@@ -8,6 +8,16 @@
       content="RPG narrativo inspirado em GURPS, ambientado na Escócia de 1296 a 1314, com folclore escocês, ilustrações pintadas e trilha sonora medieval."
     />
     <meta name="theme-color" content="#111719" />
+    <!--
+      Política de segurança: scripts só do próprio site, nenhuma conexão de rede além das
+      fontes do Google, nenhum plugin nem formulário. 'unsafe-inline' em style-src cobre
+      apenas atributos style (barras de vida); não há scripts inline.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
     <title>Sangue e Névoa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -57,6 +67,7 @@
     <script src="js/data/titles.js"></script>
     <script src="js/core/mechanics.js"></script>
     <script src="js/core/state.js"></script>
+    <script src="js/core/save-validation.js"></script>
     <script src="js/story/helpers.js"></script>
     <script src="js/story/chapter1.js"></script>
     <script src="js/story/chapter2.js"></script>

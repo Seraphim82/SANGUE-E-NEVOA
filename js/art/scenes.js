@@ -119,7 +119,7 @@ const ART = (() => {
     c.fill();
   }
   function flames(c, x, y, s, t, seed = 1, spread, cold) {
-    spread = spread == null ? s * 0.3 : spread;
+    spread = spread ?? s * 0.3;
     const R = rng(seed);
     glow(c, x, y - s * 0.3, s * 1.5, cold ? [150, 190, 230] : [255, 120, 40], cold ? 0.25 : 0.42);
     const cols = cold ? ["#30465f", "#5f80a3", "#c6dbee"] : ["#8a240c", "#e0601a", "#ffd27a"];

@@ -3,6 +3,9 @@
  */
 "use strict";
 
+/** Limite de partículas na tela ao mesmo tempo. */
+const MAX_PARTICLES = 75;
+
 const WIND = (() => {
   const cv = document.createElement("canvas");
   cv.id = "windfx";
@@ -47,7 +50,10 @@ const WIND = (() => {
       H = innerHeight;
     ctx.clearRect(0, 0, W, H);
     amt += ((target ? 1 : 0) - amt) * 0.06;
-    if (target && ps.length < 75) for (let k = 0; k < (burst > 0.3 ? 6 : 3); k++) ps.push(spawn());
+    if (target) {
+      const novas = Math.min(burst > 0.3 ? 6 : 3, MAX_PARTICLES - ps.length);
+      for (let k = 0; k < novas; k++) ps.push(spawn());
+    }
     let tx = 0,
       ty = 0;
     if (target) {
@@ -120,7 +126,7 @@ const WIND = (() => {
   function gust() {
     burst = 1;
   }
-  return { point, release, gust };
+  return { point, release, gust, particleCount: () => ps.length };
 })();
 let committing = false;
 function focusChoice(btn) {

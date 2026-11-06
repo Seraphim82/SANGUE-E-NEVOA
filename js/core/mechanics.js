@@ -63,19 +63,19 @@ function armorRD(c) {
   const L = upA(c);
   return ARMOR[c.armor].rd + (L >= 1 ? 1 : 0) + (L >= 3 ? 1 : 0);
 }
-function valueOf(c, key) {
+function statValue(c, key) {
   if (key in ATTR_COST || key === "Vontade" || key === "Per")
     return {
       n: key,
       v: attrVal(c, key) + (key === "Vontade" && (c.amulet === "pedra" || c.amulet === "fragmento") ? 1 : 0),
     };
   const lv = skillLevel(c, key);
-  return { n: SK[key].n, v: lv == null ? -99 : lv };
+  return { n: SK[key].n, v: lv === null ? -99 : lv };
 }
 function bestOf(c, opts) {
   let best = null;
   for (const [k, mod] of opts) {
-    const o = valueOf(c, k);
+    const o = statValue(c, k);
     const v = o.v + (mod || 0);
     if (!best || v > best.v) best = { n: o.n + (mod ? (mod > 0 ? " +" + mod : " " + mod) : ""), v, k };
   }
@@ -98,7 +98,7 @@ function dodge(c) {
 function weaponSkill(c) {
   const w = curWeapon(c);
   const lv = skillLevel(c, w.sk);
-  return lv == null ? -99 : lv;
+  return lv === null ? -99 : lv;
 }
 function parry(c) {
   const w = curWeapon(c);
@@ -119,7 +119,7 @@ function bestDefense(c) {
     ["Aparar", parry(c)],
   ];
   const b = block(c);
-  if (b != null) opts.push(["Bloqueio", b]);
+  if (b !== null) opts.push(["Bloqueio", b]);
   return opts.reduce((a, o) => (o[1] > a[1] ? o : a));
 }
 function weaponDmg(c, wkey) {
@@ -133,11 +133,4 @@ function title(c) {
   let t = TITLES[0][1];
   for (const [x, n] of TITLES) if (c.earned >= x) t = n;
   return t;
-}
-function spentPoints(c) {
-  let p = 0;
-  for (const a in c.attrs) p += (c.attrs[a] - 10) * ATTR_COST[a];
-  for (const k in c.skills) p += c.skills[k];
-  for (const a of c.adv) p += a.p;
-  return p;
 }

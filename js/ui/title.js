@@ -6,7 +6,7 @@
 let draftOrigin = "pastor";
 function showTitle(fresh) {
   const saved = loadSave();
-  S = null;
+  state = null;
   document.getElementById("btnEvolve").hidden = true;
   document.getElementById("btnSheet").hidden = true;
   document.getElementById("barSub").textContent = "Escócia · 1296";
@@ -24,8 +24,8 @@ function showTitle(fresh) {
   const bc = document.getElementById("bCont");
   if (bc)
     bc.onclick = () => {
-      S = migrate(saved);
-      CHECK = JSON.stringify({ ...S, banner: null });
+      state = migrate(saved);
+      CHECK = JSON.stringify({ ...state, banner: null });
       render();
     };
 }
@@ -62,7 +62,7 @@ function renderOriginPick() {
   document.getElementById("bBack").onclick = () => showTitle();
   document.getElementById("bNext").onclick = () => {
     const nm = (document.getElementById("inName").value || "").trim() || "Rowan";
-    S = newChar(nm, draftOrigin);
+    state = newChar(nm, draftOrigin);
     openEvolve();
   };
 }

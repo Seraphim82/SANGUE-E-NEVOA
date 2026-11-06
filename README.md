@@ -39,8 +39,8 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 ├── css/style.css           Estilos
 ├── js/
 │   ├── data/               Regras, equipamento, origens, bestiário e títulos
-│   ├── core/               Mecânica, estado, combate e fluxo entre cenas
-│   ├── story/              Capítulos I a VI e a tabela de imagem/música de cada cena
+│   ├── core/               Mecânica, estado, validação de save, combate e fluxo entre cenas
+│   ├── story/              Capítulos I a VI e a tabela de imagem e música de cada cena
 │   ├── ui/                 Telas: cena, ficha, criação, evolução, personagem, menu, vento
 │   ├── art/                Ilustração das cenas e retrato animado do herói
 │   ├── audio/              Trilha sonora e efeitos
@@ -48,30 +48,39 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 ├── img/scenes/             Pinturas das cenas (21:9)
 ├── img/portraits/          Retratos dos inimigos (3:4)
 ├── docs/
-│   ├── livro-do-jogador.md Regras completas, capítulos e bestiário
-│   ├── ARQUITETURA.md      Como o código funciona e como acrescentar conteúdo
-│   └── analise-gemini.md   Revisão de game design feita com o Gemini
-├── tools/                  Scripts em Python para gerar imagens e consultar o Gemini
-└── tests/playthrough.mjs   Validação da história e partidas automáticas
+│   ├── livro-do-jogador.md     Regras completas, capítulos e bestiário
+│   ├── ARQUITETURA.md          Como o código funciona e como acrescentar conteúdo
+│   ├── RELATORIO-DE-QUALIDADE.md  Revisão de código e testes de sabotagem, stress e segurança
+│   └── analise-gemini.md       Revisão de game design feita com o Gemini
+├── tests/                  História, sabotagem, stress e segurança (Playwright)
+├── tools/                  Geração de imagens e consulta ao Gemini (Python); globais do ESLint
+└── .github/workflows/      Integração contínua
 ```
 
 Os scripts são arquivos JavaScript comuns, carregados em ordem pelo `index.html`, e não módulos ES. É uma escolha deliberada: módulos ES não funcionam quando a página é aberta direto do disco (`file://`), e o jogo deve abrir com dois cliques. Detalhes em [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
 
 ## Desenvolvimento
 
+Requer Node.js 20 ou mais novo.
+
 ```bash
 npm install
 ```
 
 ```bash
-npm test
+npx playwright install chromium
 ```
 
-```bash
-npm run format
-```
+| Comando | O que faz |
+|---|---|
+| `npm test` | Lint e os testes de história, sabotagem e segurança |
+| `npm run test:stress` | Stress: 200 partidas completas, sessão longa, desempenho, 3.000 combates (cerca de 4 minutos) |
+| `npm run lint` | ESLint em todo o projeto |
+| `npm run format` | Formata o código com Prettier |
 
-`npm test` valida o grafo da história (toda escolha leva a uma cena que existe, toda cena é alcançável e tem imagem e música) e joga 30 partidas completas do começo ao fim com escolhas aleatórias. Para mais partidas: `npm test -- 100`.
+O teste de história valida o grafo (toda escolha leva a uma cena que existe, toda cena é alcançável e tem imagem e música) e joga partidas completas do começo ao fim. Os de sabotagem quebram o ambiente de propósito (saves corrompidos, armazenamento bloqueado, imagens fora do ar, cliques em rajada), e os de segurança tentam injeção de HTML, poluição de protótipo e acessos de rede indevidos. Resultados e detalhes: [docs/RELATORIO-DE-QUALIDADE.md](docs/RELATORIO-DE-QUALIDADE.md).
+
+Para contribuir, veja [CONTRIBUTING.md](CONTRIBUTING.md). Para relatar uma falha de segurança, veja [SECURITY.md](SECURITY.md).
 
 ### Gerar imagens
 
@@ -94,6 +103,13 @@ Os prompts ficam em `tools/prompts.py`. Sem argumentos, o script gera só as ima
 ## História e lenda
 
 O jogo segue os fatos das guerras de independência da Escócia: Stirling (1297), Falkirk (1298), a captura de William Wallace (1305), a coroação de Robert Bruce (1306) e Bannockburn (1314). Alguns episódios são lendas registradas séculos depois, como a ponte serrada, o pão virado e a aranha da caverna; o jogo e o [Livro do Jogador](docs/livro-do-jogador.md) avisam quando é o caso. O herói, sua família e a camada sobrenatural são ficção.
+
+## Qualidade e segurança
+
+- **Sem servidor e sem dados pessoais:** nada sai do navegador de quem joga.
+- **Política de Segurança de Conteúdo**, escape de todo texto exibido e validação completa dos saves.
+- **Testado sob sabotagem e stress:** 18 cenários de falha, 500 partidas completas, 3.000 combates, sessões longas sem vazamento de memória e animação a 60 quadros por segundo.
+- **Integração contínua** com lint, testes e auditoria de dependências a cada envio.
 
 ## Créditos e licença
 

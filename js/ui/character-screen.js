@@ -73,11 +73,11 @@ function migrate(c) {
   return c;
 }
 const upKey = (slot, k) => (slot === "arma" ? "w_" : "a_") + k;
-const upLevel = (slot, k) => (S.up || {})[upKey(slot, k)] || 0;
+const upLevel = (slot, k) => (state.up || {})[upKey(slot, k)] || 0;
 const owned = (slot, k) =>
-  slot === "roupa" ? S.outfits.includes(k) : slot === "arma" ? S.weapons.includes(k) : !!S.inv[k];
+  slot === "roupa" ? state.outfits.includes(k) : slot === "arma" ? state.weapons.includes(k) : !!state.inv[k];
 const equipped = (slot, k) =>
-  slot === "roupa" ? S.armor === k : slot === "arma" ? S.weapon === k : S.amulet === k;
+  slot === "roupa" ? state.armor === k : slot === "arma" ? state.weapon === k : state.amulet === k;
 const catalog = (slot) =>
   slot === "roupa" ? Object.keys(ARMOR) : slot === "arma" ? Object.keys(WEAPONS) : Object.keys(AMULETS);
 const matFor = (slot, k) => (slot === "roupa" ? ARMOR[k].mat : slot === "arma" ? WMAT[k] : null);
@@ -116,15 +116,15 @@ function canUpgrade(slot, k) {
   const L = upLevel(slot, k);
   if (L >= 3) return false;
   const [p, q] = UPCOST[L];
-  return S.coins >= p && (S.mat[m] || 0) >= q;
+  return state.coins >= p && (state.mat[m] || 0) >= q;
 }
 function doUpgrade(slot, k) {
   if (!canUpgrade(slot, k)) return;
   const L = upLevel(slot, k),
     [p, q] = UPCOST[L];
-  S.coins -= p;
-  S.mat[matFor(slot, k)] -= q;
-  S.up[upKey(slot, k)] = L + 1;
+  state.coins -= p;
+  state.mat[matFor(slot, k)] -= q;
+  state.up[upKey(slot, k)] = L + 1;
   AUD.sting("golpe");
   setTimeout(() => AUD.sting("sucesso"), 260);
   toast(`${itemName(slot, k)}: ${LV[L + 1]}`);
@@ -133,47 +133,47 @@ function doUpgrade(slot, k) {
 }
 function equipItem(slot, k) {
   if (!owned(slot, k)) return;
-  if (slot === "roupa") S.armor = k;
-  else if (slot === "arma") S.weapon = k;
-  else S.amulet = k;
+  if (slot === "roupa") state.armor = k;
+  else if (slot === "arma") state.weapon = k;
+  else state.amulet = k;
   AUD.sting("moeda");
   save();
   renderDash();
   render();
 }
 function giveOutfit(k) {
-  if (!S.outfits.includes(k)) {
-    S.outfits.push(k);
+  if (!state.outfits.includes(k)) {
+    state.outfits.push(k);
     note(`Nova vestimenta: ${ARMOR[k].n} (vista em Personagem)`);
   }
 }
 function giveMat(o) {
   for (const k in o) {
-    S.mat[k] = (S.mat[k] || 0) + o[k];
+    state.mat[k] = (state.mat[k] || 0) + o[k];
     note(`+${o[k]} ${MATS[k]}`);
   }
 }
 function givePennies(n) {
-  S.coins += n;
+  state.coins += n;
   note(`+${n} pennies de prata`);
 }
 function figState() {
   const slot = DASH.tab,
     sel = DASH.sel[slot];
   const st = {
-    look: ARMOR[S.armor].look,
-    weapon: S.weapon,
-    wl: upLevel("arma", S.weapon),
-    amulet: S.amulet,
-    shield: canShield(S),
-    woad: S.sangue >= 1,
+    look: ARMOR[state.armor].look,
+    weapon: state.weapon,
+    wl: upLevel("arma", state.weapon),
+    amulet: state.amulet,
+    shield: canShield(state),
+    woad: state.sangue >= 1,
   };
   if (sel && owned(slot, sel)) {
     if (slot === "roupa") st.look = ARMOR[sel].look;
     if (slot === "arma") {
       st.weapon = sel;
       st.wl = upLevel("arma", sel);
-      st.shield = S.shield && WEAPONS[sel].hands === 1;
+      st.shield = state.shield && WEAPONS[sel].hands === 1;
     }
     if (slot === "amuleto") st.amulet = sel;
   }
@@ -201,8 +201,8 @@ function startFig() {
   DASH.raf = requestAnimationFrame(step);
 }
 function openChar(tab) {
-  if (!S || S.combat || S.mode !== "playing") return;
-  migrate(S);
+  if (!state || state.combat || state.mode !== "playing") return;
+  migrate(state);
   if (tab) DASH.tab = tab;
   if (DASH.tab === "evolucao") {
     openEvolve("roupa");
@@ -219,15 +219,15 @@ function statsHTML(slot, k) {
   if (slot === "roupa") {
     const a = ARMOR[k],
       L = upLevel(slot, k),
-      cur = armorRD(S);
+      cur = armorRD(state);
     const rd = a.rd + L;
     const bon = Object.entries(a.bonus || {}).map(([s, v]) => `${v > 0 ? "+" : ""}${v} ${SK[s].n}`);
-    return `<dl class="kv"><dt>Proteção (RD)</dt><dd>${rd}${S.armor !== k ? ` <span class="${rd > cur ? "up" : rd < cur ? "down" : "same"}">(atual ${cur})</span>` : ""}</dd>${bon.length ? `<dt>Bônus</dt><dd>${bon.join(", ")}</dd>` : ""}${a.perk ? `<dt>Especial</dt><dd>${a.perk}</dd>` : ""}<dt>Material de melhoria</dt><dd>${MATS[a.mat]}</dd></dl>`;
+    return `<dl class="kv"><dt>Proteção (RD)</dt><dd>${rd}${state.armor !== k ? ` <span class="${rd > cur ? "up" : rd < cur ? "down" : "same"}">(atual ${cur})</span>` : ""}</dd>${bon.length ? `<dt>Bônus</dt><dd>${bon.join(", ")}</dd>` : ""}${a.perk ? `<dt>Especial</dt><dd>${a.perk}</dd>` : ""}<dt>Material de melhoria</dt><dd>${MATS[a.mat]}</dd></dl>`;
   }
   if (slot === "arma") {
     const w = WEAPONS[k],
-      lv = skillLevel(S, w.sk);
-    return `<dl class="kv"><dt>Perícia</dt><dd>${SK[w.sk].n} ${lv == null ? "—" : lv}</dd><dt>Dano</dt><dd>${fmtDmg(weaponDmg(S, k))} ${DTYPE[w.type].n}</dd><dt>Aparar</dt><dd>${w.parry === null ? "não apara" : (w.parry >= 0 ? "+" : "") + w.parry}</dd><dt>Mãos</dt><dd>${w.hands}</dd>${w.iron ? "<dt>Ferro</dt><dd>+2 de dano em feéricos</dd>" : ""}${WMAT[k] ? `<dt>Material de melhoria</dt><dd>${MATS[WMAT[k]]}</dd>` : ""}</dl>`;
+      lv = skillLevel(state, w.sk);
+    return `<dl class="kv"><dt>Perícia</dt><dd>${SK[w.sk].n} ${lv === null ? "—" : lv}</dd><dt>Dano</dt><dd>${fmtDmg(weaponDmg(state, k))} ${DTYPE[w.type].n}</dd><dt>Aparar</dt><dd>${w.parry === null ? "não apara" : (w.parry >= 0 ? "+" : "") + w.parry}</dd><dt>Mãos</dt><dd>${w.hands}</dd>${w.iron ? "<dt>Ferro</dt><dd>+2 de dano em feéricos</dd>" : ""}${WMAT[k] ? `<dt>Material de melhoria</dt><dd>${MATS[WMAT[k]]}</dd>` : ""}</dl>`;
   }
   return `<dl class="kv"><dt>Passivo</dt><dd>${AMULETS[k].perk}</dd><dt>Ativo em combate</dt><dd>${AMU_ACT[k].n}: ${AMU_ACT[k].desc}</dd></dl>`;
 }
@@ -260,26 +260,26 @@ function renderDash() {
       const [p, q] = UPCOST[L];
       const ok = canUpgrade(slot, sel);
       up = `<div class="up-box"><div class="lvl">Próximo nível: ${LV[L + 1]}</div><p>${UPFX[slot][L]}${L === 2 && LEGEND[sel] ? ` · o item se torna <b>${LEGEND[sel]}</b>` : ""}</p>
-   <div class="cost-line"><span class="${S.coins >= p ? "" : "short"}">${p} pennies</span><span class="${(S.mat[m] || 0) >= q ? "" : "short"}">${q} ${MATS[m]}</span></div>
+   <div class="cost-line"><span class="${state.coins >= p ? "" : "short"}">${p} pennies</span><span class="${(state.mat[m] || 0) >= q ? "" : "short"}">${q} ${MATS[m]}</span></div>
    <button class="btn primary" id="dUp" ${ok ? "" : "disabled"}>Melhorar na forja</button></div>`;
     }
   }
-  const ev = S.unspent;
+  const ev = state.unspent;
   ov.innerHTML = `<div class="dash" role="dialog" aria-label="Personagem">
-  <header class="dash-head"><div class="dh-id"><div class="eyebrow">Personagem</div><h2>${esc(S.name)}</h2><div class="sub">${ORIGINS[S.origin].n} · ${title(S)} · ${S.earned} PP acumulados</div></div>
-   <div class="purse"><span class="mchip"><i style="background:var(--gold)"></i>${S.coins} pennies</span>${Object.keys(
+  <header class="dash-head"><div class="dh-id"><div class="eyebrow">Personagem</div><h2>${esc(state.name)}</h2><div class="sub">${ORIGINS[state.origin].n} · ${title(state)} · ${state.earned} PP acumulados</div></div>
+   <div class="purse"><span class="mchip"><i style="background:var(--gold)"></i>${state.coins} pennies</span>${Object.keys(
      MATS,
    )
      .map(
        (k) =>
-         `<span class="mchip"><i style="background:${MAT_COL[k]}"></i>${S.mat[k] || 0} ${MATS[k]}</span>`,
+         `<span class="mchip"><i style="background:${MAT_COL[k]}"></i>${state.mat[k] || 0} ${MATS[k]}</span>`,
      )
      .join("")}</div>
    <button class="btn" id="dClose">Voltar ao jogo</button></header>
   <nav class="dash-tabs" aria-label="Seções">${SLOTS.map(([k, n]) => `<button class="dash-tab ${k === slot ? "on" : ""}" data-t="${k}">${n}${k === "evolucao" && ev ? `<span class="badge">${ev}</span>` : ""}</button>`).join("")}</nav>
   <div class="dash-body">
    <div class="figure"><canvas id="figcv" aria-label="Retrato do personagem"></canvas>
-    <div class="fig-stats"><span>PV <b>${S.hp}/${maxHP(S)}</b></span><span>RD <b>${armorRD(S)}</b></span><span>Esquiva <b>${dodge(S)}</b></span><span>Aparar <b>${parry(S)}</b></span><span>Dano <b>${fmtDmg(weaponDmg(S))}</b></span></div></div>
+    <div class="fig-stats"><span>PV <b>${state.hp}/${maxHP(state)}</b></span><span>RD <b>${armorRD(state)}</b></span><span>Esquiva <b>${dodge(state)}</b></span><span>Aparar <b>${parry(state)}</b></span><span>Dano <b>${fmtDmg(weaponDmg(state))}</b></span></div></div>
    <div class="dash-panel"><div class="tiles">${tiles}</div>
     <div class="detail">${
       own
@@ -309,6 +309,6 @@ function renderDash() {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     const ov = document.getElementById("overlay");
-    if (!ov.hidden && S && S.mode === "playing") closeEvolve();
+    if (!ov.hidden && state && state.mode === "playing") closeEvolve();
   }
 });

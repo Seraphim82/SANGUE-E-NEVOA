@@ -10,7 +10,7 @@ function startCombat(spec) {
     log: [],
     foes: spec.e.map((k, i) => {
       const f = FOES[k];
-      const hp = spec.hp && spec.hp[i] != null ? spec.hp[i] : f.hp;
+      const hp = spec.hp?.[i] ?? f.hp;
       return { k, ...f, max: f.hp, hp, blind: 0 };
     }),
     mist: 0,
@@ -19,7 +19,7 @@ function startCombat(spec) {
     allout: false,
     totaldef: false,
     last: null,
-    art: meta(S.scene)[0],
+    art: meta(state.scene)[0],
     used: {},
     rowan: 0,
     seer: false,
@@ -39,31 +39,31 @@ function startCombat(spec) {
     }
   });
   if (spec.blindAll) C.foes.forEach((f) => (f.blind = Math.max(f.blind, 1)));
-  S.combat = C;
+  state.combat = C;
   selTarget = 0;
   if (spec.intro) clog(`<i>${spec.intro}</i>`);
   if (spec.pre) {
     const d = rollDmg(parseDmg(spec.pre));
-    S.hp -= d.total;
+    state.hp -= d.total;
     clog(`<span class="bad">Você sofre ${d.total} de dano antes de reagir.</span>`);
   }
   if (spec.pen) clog(`<span class="r">Surpresa: −${-spec.pen} no seu primeiro ataque.</span>`);
   clog(`<div class="round">RODADA 1</div>`);
 }
 function clog(h) {
-  S.combat.log.push(h);
+  state.combat.log.push(h);
 }
 const rtxt = (r) => `<span class="r">[3d6: ${r.dice.join("+")} = ${r.sum} contra ${r.target}]</span>`;
 function aliveFoes() {
-  return S.combat.foes.filter((f) => f.hp > 0);
+  return state.combat.foes.filter((f) => f.hp > 0);
 }
 function playerAttack(mode) {
-  const C = S.combat;
+  const C = state.combat;
   const f = C.foes[selTarget];
   if (!f || f.hp <= 0) return;
-  const w = curWeapon(S);
+  const w = curWeapon(state);
   let tgt =
-    weaponSkill(S) +
+    weaponSkill(state) +
     C.pen -
     C.shock +
     (mode === "allout" ? 4 : 0) +
@@ -97,10 +97,10 @@ function playerAttack(mode) {
       return enemyPhase();
     }
   }
-  const dm = weaponDmg(S);
+  const dm = weaponDmg(state);
   const roll = rollDmg(dm);
   let raw = roll.total + (f.fey && w.iron ? 2 : 0) + (mode === "feroz" ? 2 : 0);
-  const effRD = Math.max(0, f.rd - (upW(S) >= 3 ? 2 : 0));
+  const effRD = Math.max(0, f.rd - (upW(state) >= 3 ? 2 : 0));
   let pen = Math.max(0, raw - effRD);
   let inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[w.type].m)) : 0;
   f.hp -= inj;
@@ -144,13 +144,13 @@ const AMU_ACT = {
   },
 };
 function playerTech(k) {
-  const C = S.combat;
+  const C = state.combat;
   const f = C.foes[selTarget];
   if (k === "feroz" || k === "atordoar") return playerAttack(k);
   C.allout = false;
   C.totaldef = false;
   if (k === "finta") {
-    const r = test(weaponSkill(S) - C.shock);
+    const r = test(weaponSkill(state) - C.shock);
     C.last = r;
     AUD.sting("dado");
     if (r.ok) {
@@ -168,33 +168,33 @@ function playerTech(k) {
     if (C.used.folego) return;
     C.used.folego = 1;
     const d = rollDmg({ n: 1, mod: 1 });
-    const b = S.hp;
-    S.hp = Math.min(maxHP(S), S.hp + d.total);
-    S.fp = Math.min(maxFP(S), S.fp + 2);
+    const b = state.hp;
+    state.hp = Math.min(maxHP(state), state.hp + d.total);
+    state.fp = Math.min(maxFP(state), state.fp + 2);
     AUD.sting("sucesso");
-    clog(`<span class="ok">Você puxa o ar frio das Highlands: +${S.hp - b} PV e +2 PF.</span>`);
+    clog(`<span class="ok">Você puxa o ar frio das Highlands: +${state.hp - b} PV e +2 PF.</span>`);
     return enemyPhase();
   }
 }
 function playerAmulet() {
-  const C = S.combat;
-  if (C.used.amu || !S.amulet) return;
+  const C = state.combat;
+  if (C.used.amu || !state.amulet) return;
   C.used.amu = 1;
   AUD.sting("magia");
-  if (S.amulet === "sorveira") {
+  if (state.amulet === "sorveira") {
     C.rowan = 3;
     clog(
       '<span class="ok">A sorveira queima com chama vermelha. As criaturas feéricas recuam (−3 por 3 turnos).</span>',
     );
-  } else if (S.amulet === "crina") {
-    S.fp = maxFP(S);
+  } else if (state.amulet === "crina") {
+    state.fp = maxFP(state);
     clog('<span class="ok">A trança de crina pinga água do rio, e o cansaço some. PF restaurados.</span>');
-  } else if (S.amulet === "fragmento") {
+  } else if (state.amulet === "fragmento") {
     C.stone = 3;
     clog(
       '<span class="ok">O fragmento arde azul na sua mão, e o chão inteiro parece pesar sobre os inimigos (−2 por 3 turnos).</span>',
     );
-  } else if (S.amulet === "pedra") {
+  } else if (state.amulet === "pedra") {
     C.seer = true;
     clog(
       '<span class="ok">Pelo furo da pedra você vê a abertura na guarda do inimigo. Próximo ataque: +3 e sem defesa.</span>',
@@ -204,32 +204,32 @@ function playerAmulet() {
   render();
 }
 function addSinal() {
-  S.sinais = (S.sinais || 0) + 1;
-  clog(`<span class="bad">Falha crítica na magia! Um Sinal feérico marca você (${S.sinais}/3).</span>`);
-  if (S.sinais >= 3 && !S.flags.cailleach) {
-    S.flags.cailleach = 1;
+  state.sinais = (state.sinais || 0) + 1;
+  clog(`<span class="bad">Falha crítica na magia! Um Sinal feérico marca você (${state.sinais}/3).</span>`);
+  if (state.sinais >= 3 && !state.flags.cailleach) {
+    state.flags.cailleach = 1;
     clog(
       '<span class="bad">A Velha do Inverno sentiu seu sangue. Seus descansos agora curam só a metade.</span>',
     );
   }
 }
 function playerTotalDef() {
-  const C = S.combat;
+  const C = state.combat;
   C.totaldef = true;
   C.allout = false;
   clog("Você assume uma <b>defesa total</b> (+2 nas defesas).");
   enemyPhase();
 }
 function playerCast(k) {
-  const C = S.combat;
+  const C = state.combat;
   const s = SK[k].spell;
-  const lv = skillLevel(S, k);
-  const cost = Math.max(0, s.fp - (lv >= 15 ? 1 : 0) - (k === "sp_nevoa" && S.armor === "nevoa" ? 1 : 0));
-  if (S.fp < cost) {
+  const lv = skillLevel(state, k);
+  const cost = Math.max(0, s.fp - (lv >= 15 ? 1 : 0) - (k === "sp_nevoa" && state.armor === "nevoa" ? 1 : 0));
+  if (state.fp < cost) {
     toast("Fadiga insuficiente");
     return;
   }
-  S.fp -= cost;
+  state.fp -= cost;
   C.allout = false;
   C.totaldef = false;
   const r = test(lv - C.shock);
@@ -249,9 +249,9 @@ function playerCast(k) {
     );
   } else if (k === "sp_cura") {
     const d = rollDmg({ n: 1, mod: 1 });
-    const b = S.hp;
-    S.hp = Math.min(maxHP(S), S.hp + d.total);
-    clog(`<span class="ok">Suas feridas se fecham: +${S.hp - b} PV.</span> ${rtxt(r)}`);
+    const b = state.hp;
+    state.hp = Math.min(maxHP(state), state.hp + d.total);
+    clog(`<span class="ok">Suas feridas se fecham: +${state.hp - b} PV.</span> ${rtxt(r)}`);
   } else if (k === "sp_nevoa") {
     C.mist = 3;
     clog(`<span class="ok">Uma névoa espessa sobe do chão. Os inimigos mal enxergam você.</span> ${rtxt(r)}`);
@@ -279,25 +279,25 @@ function playerCast(k) {
     );
   } else if (k === "sp_estacoes") {
     const d = rollDmg({ n: 2, mod: 0 });
-    const b = S.hp;
-    S.hp = Math.min(maxHP(S), S.hp + d.total);
+    const b = state.hp;
+    state.hp = Math.min(maxHP(state), state.hp + d.total);
     aliveFoes().forEach((g) => (g.blind = 2));
     clog(
-      `<span class="ok">Você canta, e por um instante as quatro estações passam pelo campo. +${S.hp - b} PV; os inimigos ficam ofuscados.</span> ${rtxt(r)}`,
+      `<span class="ok">Você canta, e por um instante as quatro estações passam pelo campo. +${state.hp - b} PV; os inimigos ficam ofuscados.</span> ${rtxt(r)}`,
     );
   } else if (k === "sp_bride") {
     const d = rollDmg({ n: 2, mod: 2 });
-    const b = S.hp;
-    S.hp = Math.min(maxHP(S), S.hp + d.total);
-    clog(`<span class="ok">Uma luz de primavera fecha suas feridas: +${S.hp - b} PV.</span> ${rtxt(r)}`);
+    const b = state.hp;
+    state.hp = Math.min(maxHP(state), state.hp + d.total);
+    clog(`<span class="ok">Uma luz de primavera fecha suas feridas: +${state.hp - b} PV.</span> ${rtxt(r)}`);
   }
   if (f.hp <= 0 && k !== "sp_tempestade" && k !== "sp_estacoes") clog(`<span class="ok">${f.n} cai.</span>`);
   enemyPhase();
 }
 function playerHerbs() {
-  const C = S.combat;
-  if (!(S.inv.ervas > 0)) return;
-  S.inv.ervas--;
+  const C = state.combat;
+  if (!(state.inv.ervas > 0)) return;
+  state.inv.ervas--;
   C.allout = false;
   C.totaldef = false;
   const r = healHerbs();
@@ -305,20 +305,20 @@ function playerHerbs() {
   enemyPhase();
 }
 function healHerbs() {
-  const b = bestOf(S, [
+  const b = bestOf(state, [
     ["primeiros", 0],
     ["herbalismo", 0],
   ]);
   const r = test(b.v);
-  const before = S.hp;
+  const before = state.hp;
   if (r.ok) {
     const d = rollDmg({ n: 1, mod: 2 });
-    S.hp = Math.min(maxHP(S), S.hp + d.total);
-  } else S.hp = Math.min(maxHP(S), S.hp + 1);
-  return `${r.ok ? '<span class="ok">' : ""}Você aplica as ervas (${b.n}): +${S.hp - before} PV.${r.ok ? "</span>" : ""} ${rtxt(r)}`;
+    state.hp = Math.min(maxHP(state), state.hp + d.total);
+  } else state.hp = Math.min(maxHP(state), state.hp + 1);
+  return `${r.ok ? '<span class="ok">' : ""}Você aplica as ervas (${b.n}): +${state.hp - before} PV.${r.ok ? "</span>" : ""} ${rtxt(r)}`;
 }
 function playerFlee() {
-  const C = S.combat;
+  const C = state.combat;
   if (!C.spec.flee && !C.mist) {
     toast("Não há para onde fugir aqui");
     return;
@@ -327,7 +327,7 @@ function playerFlee() {
     clog("Você some na névoa.");
     return endCombat("flee");
   }
-  const r = test(S.attrs.DX);
+  const r = test(state.attrs.DX);
   if (r.ok) {
     clog(`Você foge! ${rtxt(r)}`);
     return endCombat("flee");
@@ -336,7 +336,7 @@ function playerFlee() {
   enemyPhase();
 }
 function enemyPhase() {
-  const C = S.combat;
+  const C = state.combat;
   if (!aliveFoes().length) return endCombat("win");
   for (const a of C.spec.allies || []) {
     const fs = aliveFoes();
@@ -362,7 +362,7 @@ function enemyPhase() {
   C.shock = 0;
   let took = 0;
   for (const f of aliveFoes()) {
-    if (S.hp <= 0) break;
+    if (state.hp <= 0) break;
     if (f.stun) {
       f.stun = 0;
       clog(`${f.n} ainda está atordoado e não ataca.`);
@@ -380,8 +380,9 @@ function enemyPhase() {
       continue;
     }
     if (!r.critOk && !C.allout) {
-      const [dn, dv0] = bestDefense(S);
-      let dv = dv0 + (C.totaldef ? 2 : 0) + (f.fey && S.amulet === "sorveira" ? 2 : 0) - (C.feroz ? 2 : 0);
+      const [dn, dv0] = bestDefense(state);
+      let dv =
+        dv0 + (C.totaldef ? 2 : 0) + (f.fey && state.amulet === "sorveira" ? 2 : 0) - (C.feroz ? 2 : 0);
       const d = test(dv);
       if (d.ok) {
         clog(
@@ -391,10 +392,10 @@ function enemyPhase() {
       }
     }
     const roll = rollDmg(parseDmg(f.dmg));
-    const rd = f.ignoreRD ? 0 : armorRD(S);
+    const rd = f.ignoreRD ? 0 : armorRD(state);
     const pen = Math.max(0, roll.total - rd);
     const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[f.type].m)) : 0;
-    S.hp -= inj;
+    state.hp -= inj;
     took += inj;
     if (inj > 0) {
       ART.FX.hurt = performance.now();
@@ -403,12 +404,12 @@ function enemyPhase() {
     clog(
       `<span class="bad">${r.critOk ? "Crítico! " : ""}${f.n} acerta você: ${inj} de dano.</span> ${rtxt(r)}`,
     );
-    if (inj > 0 && f.chill && S.armor !== "peles") {
-      S.fp = Math.max(0, S.fp - f.chill);
+    if (inj > 0 && f.chill && state.armor !== "peles") {
+      state.fp = Math.max(0, state.fp - f.chill);
       clog(`<span class="bad">O frio da mordida congela seu fôlego: −${f.chill} PF.</span>`);
     }
     if (inj > 0 && f.drain) {
-      S.fp = Math.max(0, S.fp - f.drain);
+      state.fp = Math.max(0, state.fp - f.drain);
       clog(`<span class="bad">${f.n} bebe seu fôlego: −${f.drain} PF.</span>`);
     }
   }
@@ -428,20 +429,20 @@ function enemyPhase() {
   if (C.mist > 0) C.mist--;
   C.allout = false;
   // início do turno do jogador: ferimentos graves
-  if (C.spec.nonlethal && S.hp <= 0) {
+  if (C.spec.nonlethal && state.hp <= 0) {
     clog('<span class="bad">Você vai ao chão.</span>');
     return endCombat("lose");
   }
-  if (S.hp <= -maxHP(S)) {
-    const r = test(S.attrs.HT + (S.adv.some((a) => a.n.startsWith("Duro")) ? 1 : 0));
+  if (state.hp <= -maxHP(state)) {
+    const r = test(state.attrs.HT + (state.adv.some((a) => a.n.startsWith("Duro")) ? 1 : 0));
     if (!r.ok) {
       clog(`<span class="bad">Teste de HT para sobreviver falhou.</span> ${rtxt(r)}`);
       return die();
     }
     clog(`<span class="r">Você se recusa a morrer.</span> ${rtxt(r)}`);
   }
-  if (S.hp <= 0) {
-    const r = test(S.attrs.HT);
+  if (state.hp <= 0) {
+    const r = test(state.attrs.HT);
     if (!r.ok) {
       clog(`<span class="bad">Você perde os sentidos.</span> ${rtxt(r)}`);
       return endCombat("lose");
@@ -457,10 +458,10 @@ function enemyPhase() {
   render();
 }
 function endCombat(res) {
-  const C = S.combat;
+  const C = state.combat;
   const spec = C.spec;
-  S.combat = null;
-  S.banner = null;
+  state.combat = null;
+  state.banner = null;
   if (res === "win") {
     AUD.sting("vitoria");
     const xp = C.foes.reduce((a, f) => a + f.xp, 0);
@@ -479,15 +480,15 @@ function endCombat(res) {
   } else if (res === "flee") go(spec.flee || spec.win, true);
   else {
     AUD.sting("derrota");
-    S.lastFoe = spec.e[0];
-    S.hp = Math.max(S.hp, 1);
+    state.lastFoe = spec.e[0];
+    state.hp = Math.max(state.hp, 1);
     go(spec.lose, true);
   }
 }
 function die() {
   AUD.sting("derrota");
-  S.dead = true;
-  S.combat = null;
+  state.dead = true;
+  state.combat = null;
   save();
   render();
 }

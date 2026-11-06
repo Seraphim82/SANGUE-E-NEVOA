@@ -8,41 +8,45 @@ const ALLY = {
   ailsa: { n: "Ailsa", skill: 14, dmg: "1d+1", type: "imp" },
   aodh: { n: "Irmão Aodh", skill: 12, dmg: "1d", type: "cr", fey: true },
 };
-const comAilsa = () => (F("ailsa") ? [ALLY.ailsa] : []);
+const comAilsa = () => (hasFlag("ailsa") ? [ALLY.ailsa] : []);
 Object.assign(SC, {
   c2_inicio: {
     eyebrow: "Capítulo II · O Martelo e a Pedra",
     title: "Inverno nos Rochedos",
     enter() {
-      S.hp = maxHP(S);
-      S.fp = maxFP(S);
-      S.flags.cap2 = 1;
-      S.flags.c2_act = 0;
-      if (!F("sangue_frio")) S.flags.ailsa = 1;
+      state.hp = maxHP(state);
+      state.fp = maxFP(state);
+      state.flags.cap2 = 1;
+      state.flags.c2_act = 0;
+      if (!hasFlag("sangue_frio")) state.flags.ailsa = 1;
       note("Descanso de inverno: PV e PF restaurados");
     },
     text: () =>
-      S.flags.c2_act
-        ? `A noite cai sobre o acampamento. A neve não para. ${S.flags.c2_act >= 2 ? "Você está cansado, mas ainda há tempo para mais uma coisa." : "O que mais você quer fazer antes de dormir?"}`
+      state.flags.c2_act
+        ? `A noite cai sobre o acampamento. A neve não para. ${state.flags.c2_act >= 2 ? "Você está cansado, mas ainda há tempo para mais uma coisa." : "O que mais você quer fazer antes de dormir?"}`
         : `Janeiro de 1297. A neve cobre os Rochedos de Cartland até os joelhos, e a cachoeira na frente da caverna virou uma cortina de gelo.
 
-Callum passou o inverno aprendendo a usar a funda com os rebeldes e já acerta um corvo a vinte passos. ${F("mairi_viva") ? "Mairi cuida dos doentes com ervas secas e reza baixinho para santos que a Igreja nunca conheceu." : "Às vezes, à noite, você ainda sente cheiro de fumaça e pensa em Mairi."}
+Callum passou o inverno aprendendo a usar a funda com os rebeldes e já acerta um corvo a vinte passos. ${hasFlag("mairi_viva") ? "Mairi cuida dos doentes com ervas secas e reza baixinho para santos que a Igreja nunca conheceu." : "Às vezes, à noite, você ainda sente cheiro de fumaça e pensa em Mairi."}
 
-${F("sangue_frio") ? "Tam mal fala com você desde a torre. Quando fala, é curto: “Tu vais sozinho para o norte. Não mando a Ailsa com quem mata homem ferido.”" : "Tam senta ao seu lado perto do fogo. “Ailsa vai contigo quando a neve derreter. Ela atira melhor que eu e reclama menos.”"}
+${hasFlag("sangue_frio") ? "Tam mal fala com você desde a torre. Quando fala, é curto: “Tu vais sozinho para o norte. Não mando a Ailsa com quem mata homem ferido.”" : "Tam senta ao seu lado perto do fogo. “Ailsa vai contigo quando a neve derreter. Ela atira melhor que eu e reclama menos.”"}
 
-Um pastor que desceu de Perth trouxe notícias: um velho monge de Scone vive escondido na **colina de Dunsinane**, além do rio Tay, e fala sozinho com as pedras. ${F("bw_divida") ? "Você se lembra das palavras de Blackwood: “Os monges riam.”" : "Você se lembra das palavras da Dama: “A Pedra que eles levaram não é a verdadeira.”"}
+Um pastor que desceu de Perth trouxe notícias: um velho monge de Scone vive escondido na **colina de Dunsinane**, além do rio Tay, e fala sozinho com as pedras. ${hasFlag("bw_divida") ? "Você se lembra das palavras de Blackwood: “Os monges riam.”" : "Você se lembra das palavras da Dama: “A Pedra que eles levaram não é a verdadeira.”"}
 
 Até o degelo, o acampamento é seu lar.`,
     choices: [
-      { t: "Treinar arco com Ailsa", if: () => F("ailsa") && !F("c2_arco"), go: "c2_treino_arco" },
+      {
+        t: "Treinar arco com Ailsa",
+        if: () => hasFlag("ailsa") && !hasFlag("c2_arco"),
+        go: "c2_treino_arco",
+      },
       {
         t: "Ouvir Mairi falar da Velha do Inverno",
-        if: () => F("mairi_viva") && !F("c2_mairi"),
+        if: () => hasFlag("mairi_viva") && !hasFlag("c2_mairi"),
         go: "c2_mairi_cailleach",
       },
       {
         t: "Ouvir os velhos falarem da Velha do Inverno",
-        if: () => !F("mairi_viva") && !F("c2_mairi"),
+        if: () => !hasFlag("mairi_viva") && !hasFlag("c2_mairi"),
         go: "c2_mairi_cailleach",
       },
       { t: "Negociar com Wat, o mascate que subiu de Lanark", go: "c2_mercador" },
@@ -52,10 +56,10 @@ Até o degelo, o acampamento é seu lar.`,
   c2_treino_arco: {
     title: "Teixo e corda de linho",
     enter() {
-      S.flags.c2_arco = 1;
-      S.flags.c2_act++;
+      state.flags.c2_arco = 1;
+      state.flags.c2_act++;
       giveWeapon("arco");
-      if ((S.skills.arco || 0) < 2) S.skills.arco = 2;
+      if ((state.skills.arco || 0) < 2) state.skills.arco = 2;
       note("Perícia Arco treinada");
       gain(1, "Treino com Ailsa");
     },
@@ -67,15 +71,15 @@ Depois de uma semana atirando em fardos de palha na neve, você acerta três em 
   c2_mairi_cailleach: {
     title: "A Velha do Inverno",
     enter() {
-      S.flags.c2_mairi = 1;
-      S.flags.c2_act++;
-      S.flags.cailleach_saber = 1;
-      S.inv.ervas = (S.inv.ervas || 0) + 2;
+      state.flags.c2_mairi = 1;
+      state.flags.c2_act++;
+      state.flags.cailleach_saber = 1;
+      state.inv.ervas = (state.inv.ervas || 0) + 2;
       note("+2 maços de ervas");
-      if (!S.inv.sorveira) giveItem("sorveira");
+      if (!state.inv.sorveira) giveItem("sorveira");
       gain(2, "Saber sobre a Cailleach");
     },
-    text: () => `${F("mairi_viva") ? "Mairi" : "A velha Morag, avó de um dos rebeldes,"} fala baixo, olhando para o gelo na entrada da caverna.
+    text: () => `${hasFlag("mairi_viva") ? "Mairi" : "A velha Morag, avó de um dos rebeldes,"} fala baixo, olhando para o gelo na entrada da caverna.
 
 “Ela tem muitos nomes. Cailleach. Beira. A Velha. Tem a pele azul de frio e um olho só, e onde bate o cajado de azevinho a terra congela. No Samhain ela acorda, e em Beltane volta a ser pedra.”
 
@@ -87,21 +91,21 @@ Ela não termina a frase. Põe ervas secas na sua mão. “Leva. E não confies 
   c2_mercador: {
     title: "Wat, o mascate",
     enter() {
-      S.flags.c2_act++;
+      state.flags.c2_act++;
     },
     text: () => `Wat é magro, desdentado e carrega nas costas uma loja inteira. Ele espalha a mercadoria numa manta perto do fogo.
 
 “Ervas, linho, ferro bom de Lanark. Pago nada, vendo caro, que a guerra é cara para todo mundo.”
 
-Você tem **${S.coins} pennies**.`,
+Você tem **${state.coins} pennies**.`,
     choices: [
       {
         t: "Comprar 2 maços de ervas",
         sub: "5 pennies",
-        if: () => S.coins >= 5,
+        if: () => state.coins >= 5,
         fx() {
-          S.coins -= 5;
-          S.inv.ervas = (S.inv.ervas || 0) + 2;
+          state.coins -= 5;
+          state.inv.ervas = (state.inv.ervas || 0) + 2;
           toast("+2 maços de ervas");
         },
         go: "c2_mercador",
@@ -109,10 +113,10 @@ Você tem **${S.coins} pennies**.`,
       {
         t: "Comprar 2 barras de ferro",
         sub: "6 pennies · material de forja",
-        if: () => S.coins >= 6,
+        if: () => state.coins >= 6,
         fx() {
-          S.coins -= 6;
-          S.mat.ferro = (S.mat.ferro || 0) + 2;
+          state.coins -= 6;
+          state.mat.ferro = (state.mat.ferro || 0) + 2;
           toast("+2 Ferro");
         },
         go: "c2_mercador",
@@ -120,10 +124,10 @@ Você tem **${S.coins} pennies**.`,
       {
         t: "Comprar 2 peças de couro",
         sub: "6 pennies · material de forja",
-        if: () => S.coins >= 6,
+        if: () => state.coins >= 6,
         fx() {
-          S.coins -= 6;
-          S.mat.couro = (S.mat.couro || 0) + 2;
+          state.coins -= 6;
+          state.mat.couro = (state.mat.couro || 0) + 2;
           toast("+2 Couro");
         },
         go: "c2_mercador",
@@ -131,10 +135,10 @@ Você tem **${S.coins} pennies**.`,
       {
         t: "Comprar 2 rolos de tecido",
         sub: "4 pennies · material de forja",
-        if: () => S.coins >= 4,
+        if: () => state.coins >= 4,
         fx() {
-          S.coins -= 4;
-          S.mat.tecido = (S.mat.tecido || 0) + 2;
+          state.coins -= 4;
+          state.mat.tecido = (state.mat.tecido || 0) + 2;
           toast("+2 Tecido");
         },
         go: "c2_mercador",
@@ -142,10 +146,10 @@ Você tem **${S.coins} pennies**.`,
       {
         t: "Comprar um escudo de madeira",
         sub: "8 pennies · Bloqueio e +1 nas defesas com arma de uma mão",
-        if: () => !S.shield && S.coins >= 8,
+        if: () => !state.shield && state.coins >= 8,
         fx() {
-          S.coins -= 8;
-          S.shield = true;
+          state.coins -= 8;
+          state.shield = true;
           toast("Escudo de madeira comprado");
         },
         go: "c2_mercador",
@@ -153,10 +157,10 @@ Você tem **${S.coins} pennies**.`,
       {
         t: "Comprar um arco curto",
         sub: "15 pennies",
-        if: () => !S.weapons.includes("arco") && S.coins >= 15,
+        if: () => !state.weapons.includes("arco") && state.coins >= 15,
         fx() {
-          S.coins -= 15;
-          S.weapons.push("arco");
+          state.coins -= 15;
+          state.weapons.push("arco");
           toast("Arco curto comprado");
         },
         go: "c2_mercador",
@@ -168,14 +172,14 @@ Você tem **${S.coins} pennies**.`,
     title: "Uivos na nevasca",
     text: () => `No meio da noite, o vento para de uma vez. O silêncio acorda você antes do uivo.
 
-Da nevasca saem ${F("cailleach") ? "três" : "dois"} lobos brancos do tamanho de bezerros, com olhos de gelo azul. Onde pisam, a neve não afunda. O fogo do acampamento encolhe como se tivesse medo.
+Da nevasca saem ${hasFlag("cailleach") ? "três" : "dois"} lobos brancos do tamanho de bezerros, com olhos de gelo azul. Onde pisam, a neve não afunda. O fogo do acampamento encolhe como se tivesse medo.
 
-“Lobos da Velha!”, grita Tam, já com o bordão na mão. “Ao fogo! Todos ao fogo!”${F("cailleach") ? "\n\nVocê sabe por que eles vieram. Os três Sinais na sua pele ardem de frio." : ""}`,
+“Lobos da Velha!”, grita Tam, já com o bordão na mão. “Ao fogo! Todos ao fogo!”${hasFlag("cailleach") ? "\n\nVocê sabe por que eles vieram. Os três Sinais na sua pele ardem de frio." : ""}`,
     choices: [
       {
         t: "Lutar ao lado de Tam",
         fight: () => ({
-          e: F("cailleach")
+          e: hasFlag("cailleach")
             ? ["lobo_inverno", "lobo_inverno", "lobo_inverno"]
             : ["lobo_inverno", "lobo_inverno"],
           allies: [ALLY.tam],
@@ -188,7 +192,7 @@ Da nevasca saem ${F("cailleach") ? "três" : "dois"} lobos brancos do tamanho de
         t: "Pegar um tição da fogueira antes de atacar",
         sub: "Os lobos temem o fogo: −2 no ataque deles na primeira rodada",
         fight: () => ({
-          e: F("cailleach")
+          e: hasFlag("cailleach")
             ? ["lobo_inverno", "lobo_inverno", "lobo_inverno"]
             : ["lobo_inverno", "lobo_inverno"],
           allies: [ALLY.tam],
@@ -208,13 +212,13 @@ Da nevasca saem ${F("cailleach") ? "três" : "dois"} lobos brancos do tamanho de
     },
     text: () => `O último lobo cai e se desfaz num monte de neve fina, como se nunca tivesse sido carne. Só ficam as peles, brancas e frias, que não derretem perto do fogo.
 
-Tam limpa o suor congelado da testa. “A Velha sabe de ti, ${N()}. Mandou os cães dela para ver do que és feito.” Ele joga uma das peles sobre você. “Agora usa isso contra ela.”`,
+Tam limpa o suor congelado da testa. “A Velha sabe de ti, ${heroName()}. Mandou os cães dela para ver do que és feito.” Ele joga uma das peles sobre você. “Agora usa isso contra ela.”`,
     choices: [{ t: "Esperar o degelo", go: "c2_partida" }],
   },
   c2_lobos_mal: {
     title: "O fogo de Tam",
     enter() {
-      S.hp = Math.max(S.hp, Math.ceil(maxHP(S) / 3));
+      state.hp = Math.max(state.hp, Math.ceil(maxHP(state) / 3));
     },
     text: () => `Os dentes de gelo fecham no seu ombro, e o frio entra até os ossos. Então Tam joga um balde de gordura na fogueira, e uma coluna de fogo sobe até o teto da caverna.
 
@@ -225,10 +229,10 @@ Os lobos ganem e somem na nevasca. Quando você acorda, alguém pôs pedras quen
     eyebrow: "Fevereiro de 1297",
     title: "Dois caminhos para o norte",
     enter() {
-      S.hp = maxHP(S);
-      S.fp = maxFP(S);
+      state.hp = maxHP(state);
+      state.fp = maxFP(state);
     },
-    text: () => `A neve vira lama, e é hora de partir. Callum fica com ${F("mairi_viva") ? "Mairi e " : ""}os rebeldes, e chora com raiva por não poder ir. ${F("ailsa") ? "Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”" : "Você parte sozinho, com o vento nas costas."}
+    text: () => `A neve vira lama, e é hora de partir. Callum fica com ${hasFlag("mairi_viva") ? "Mairi e " : ""}os rebeldes, e chora com raiva por não poder ir. ${hasFlag("ailsa") ? "Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”" : "Você parte sozinho, com o vento nas costas."}
 
 Entre Cartland e o rio Tay há dois caminhos:
 
@@ -244,16 +248,17 @@ Entre Cartland e o rio Tay há dois caminhos:
     title: "A ponte de Stirling",
     text: () => `O castelo de Stirling se ergue sobre a rocha como um punho fechado. Lá embaixo, a ponte de madeira sobre o Forth é estreita, e só passam dois cavalos por vez. Uma fila de camponeses espera, de cabeça baixa, enquanto soldados ingleses revistam carroças.
 
-${F("bw_divida") ? "Você reconhece a barba grisalha antes de ver o rosto. **Blackwood** comanda o posto. Ele ainda manca." : "No comando está um cavaleiro de escudo branco com três corvos negros, **Sir Osric Hale**, que olha cada rosto como quem procura um em especial."}`,
+${hasFlag("bw_divida") ? "Você reconhece a barba grisalha antes de ver o rosto. **Blackwood** comanda o posto. Ele ainda manca." : "No comando está um cavaleiro de escudo branco com três corvos negros, **Sir Osric Hale**, que olha cada rosto como quem procura um em especial."}`,
     choices: [
-      { t: "Ir direto até Blackwood", if: () => F("bw_divida"), go: "c2_ponte_bw" },
+      { t: "Ir direto até Blackwood", if: () => hasFlag("bw_divida"), go: "c2_ponte_bw" },
       {
         t: "Passar disfarçado entre os camponeses",
-        if: () => !F("bw_divida"),
-        tag: () => (S.armor === "malha" ? "+3 cota inglesa" : S.armor === "tartan" ? "−2 tartan" : ""),
+        if: () => !hasFlag("bw_divida"),
+        tag: () =>
+          state.armor === "malha" ? "+3 cota inglesa" : state.armor === "tartan" ? "−2 tartan" : "",
         test: {
           o: () => {
-            const m = S.armor === "malha" ? 3 : S.armor === "tartan" ? -2 : 0;
+            const m = state.armor === "malha" ? 3 : state.armor === "tartan" ? -2 : 0;
             return [
               ["diplomacia", m],
               ["IQ", m - 2],
@@ -272,9 +277,9 @@ ${F("bw_divida") ? "Você reconhece a barba grisalha antes de ver o rosto. **Bla
       {
         t: "Subornar o soldado da ponte",
         sub: "15 pennies",
-        if: () => !F("bw_divida") && S.coins >= 15,
+        if: () => !hasFlag("bw_divida") && state.coins >= 15,
         fx() {
-          S.coins -= 15;
+          state.coins -= 15;
         },
         go: "c2_ponte_ok",
       },
@@ -291,7 +296,7 @@ ${F("bw_divida") ? "Você reconhece a barba grisalha antes de ver o rosto. **Bla
       },
       {
         t: "Atacar Sir Osric Hale",
-        if: () => !F("bw_divida"),
+        if: () => !hasFlag("bw_divida"),
         tag: () => "Perigoso",
         fight: () => ({
           e: ["cavaleiro", "soldado"],
@@ -305,7 +310,7 @@ ${F("bw_divida") ? "Você reconhece a barba grisalha antes de ver o rosto. **Bla
   c2_ponte_bw: {
     title: "A dívida do sargento",
     enter() {
-      S.flags.aviso_hale = 1;
+      state.flags.aviso_hale = 1;
       gain(3, "A dívida paga");
     },
     text: () => `Blackwood vê você e fica parado por um longo momento. Depois grita para os soldados: “Este eu conheço. É pastor de Lanark. Deixem passar.”
@@ -316,7 +321,7 @@ Quando você passa por ele, Blackwood fala sem mexer a boca: “Agora estamos qu
   c2_ponte_ok: {
     title: "Do outro lado do Forth",
     enter() {
-      S.flags.aviso_hale = 1;
+      state.flags.aviso_hale = 1;
       gain(2, "Passagem discreta");
     },
     text: () => `Você passa com a cabeça baixa entre os carneiros de um velho pastor. Ninguém olha duas vezes.
@@ -327,10 +332,10 @@ Do outro lado, ouve dois soldados conversando: “Sir Osric parte amanhã para D
   c2_ponte_luta: {
     title: "Fuga pela ponte",
     enter() {
-      S.flags.aviso_hale = 1;
+      state.flags.aviso_hale = 1;
       gain(1, "Fuga");
     },
-    text: () => `Os soldados caem, e você corre pela ponte antes que os outros cheguem. ${F("ailsa") ? "As flechas de Ailsa seguram os ingleses do outro lado." : ""}
+    text: () => `Os soldados caem, e você corre pela ponte antes que os outros cheguem. ${hasFlag("ailsa") ? "As flechas de Ailsa seguram os ingleses do outro lado." : ""}
 
 Lá atrás, Sir Osric Hale não corre. Ele só olha para você, como quem guarda um rosto na memória.`,
     choices: [{ t: "Fugir para o norte", go: "c2_tay" }],
@@ -338,7 +343,7 @@ Lá atrás, Sir Osric Hale não corre. Ele só olha para você, como quem guarda
   c2_ponte_vitoria: {
     title: "Os três corvos caem",
     enter() {
-      S.flags.hale_morto = 1;
+      state.flags.hale_morto = 1;
       giveWeapon("machado");
       gain(3, "Sir Osric Hale vencido");
     },
@@ -350,12 +355,12 @@ Você pega o machado dinamarquês que estava preso à sela dele, uma arma de dua
   c2_ponte_preso: {
     title: "Uma cela em Stirling",
     enter() {
-      S.hp = Math.max(S.hp, 3);
-      S.flags.aviso_hale = 1;
+      state.hp = Math.max(state.hp, 3);
+      state.flags.aviso_hale = 1;
     },
     text: () => `Você acorda numa cela úmida sob o castelo, com o gosto de sangue na boca.
 
-${F("ailsa") ? "Na segunda noite, uma corda desce pela grade da janela. Lá em cima, Ailsa sussurra: “Rápido. Matei um guarda, e logo vão sentir falta dele.”" : "Na segunda noite, uma névoa branca entra pela grade e se enrola na fechadura. A porta range e se abre sozinha. Você não pergunta nada a ninguém."}
+${hasFlag("ailsa") ? "Na segunda noite, uma corda desce pela grade da janela. Lá em cima, Ailsa sussurra: “Rápido. Matei um guarda, e logo vão sentir falta dele.”" : "Na segunda noite, uma névoa branca entra pela grade e se enrola na fechadura. A porta range e se abre sozinha. Você não pergunta nada a ninguém."}
 
 No caminho de fuga, ouve um soldado: “Sir Osric já partiu para Dunsinane.”`,
     choices: [{ t: "Fugir para o norte", go: "c2_tay" }],
@@ -375,13 +380,13 @@ No caminho de fuga, ouve um soldado: “Sir Osric já partiu para Dunsinane.”`
 
 No segundo entardecer, você ouve música. Numa ilha de urze, três mulheres de vestido verde dançam em roda. São bonitas de doer, pálidas como a lua, e quando veem você sorriem todas ao mesmo tempo.
 
-“Viajante cansado”, diz a mais alta. “Dança conosco. Só uma dança, e esqueces o frio.”${F("cailleach_saber") ? "\n\nVocê se lembra do aviso: *não confies em nada que dança no pântano*." : ""}`,
+“Viajante cansado”, diz a mais alta. “Dança conosco. Só uma dança, e esqueces o frio.”${hasFlag("cailleach_saber") ? "\n\nVocê se lembra do aviso: *não confies em nada que dança no pântano*." : ""}`,
     choices: [
       {
         t: "Olhar com atenção para os pés delas antes de responder",
-        tag: () => (S.amulet === "pedra" ? "+2 pedra de víbora" : ""),
+        tag: () => (state.amulet === "pedra" ? "+2 pedra de víbora" : ""),
         test: {
-          o: () => [["Per", (S.amulet === "pedra" ? 2 : 0) + (F("cailleach_saber") ? 1 : 0)]],
+          o: () => [["Per", (state.amulet === "pedra" ? 2 : 0) + (hasFlag("cailleach_saber") ? 1 : 0)]],
           ok: "c2_baobhan_cascos",
           fail: "c2_baobhan_danca",
         },
@@ -458,12 +463,12 @@ São Baobhan Sìth, as que bebem o sangue de quem dança com elas até o amanhec
   c2_baobhan_danca: {
     title: "Só uma dança",
     enter() {
-      S.fp = 0;
+      state.fp = 0;
       hurt("1d", "Sangue bebido");
     },
     text: () => `Você dança. A música entra pela sua cabeça e expulsa o cansaço, o frio, o medo, o nome do seu irmão.
 
-Você só acorda quando dentes frios encostam no seu pescoço. ${F("ailsa") ? "Uma flecha de Ailsa passa a um dedo da sua orelha e acerta o ombro da criatura." : "A sorveira no seu pulso arde, e a criatura solta você com um grito."} Você está fraco, sem fôlego, e as três já mostram as presas.`,
+Você só acorda quando dentes frios encostam no seu pescoço. ${hasFlag("ailsa") ? "Uma flecha de Ailsa passa a um dedo da sua orelha e acerta o ombro da criatura." : "A sorveira no seu pulso arde, e a criatura solta você com um grito."} Você está fraco, sem fôlego, e as três já mostram as presas.`,
     choices: [
       {
         t: "Lutar",
@@ -490,7 +495,7 @@ As três param. A mais alta inclina a cabeça, curiosa. “Educado. Raro.” Ela
   c2_baobhan_mal: {
     title: "Madrugada no pântano",
     enter() {
-      S.hp = Math.max(S.hp, 3);
+      state.hp = Math.max(state.hp, 3);
     },
     text: () =>
       `Você acorda ao amanhecer, sozinho na urze, com duas marcas roxas no pescoço. As dançarinas sumiram com a luz. Você se levanta e segue, mais leve do que devia estar.`,
@@ -544,8 +549,8 @@ Quando levanta a cabeça, o céu está limpo e as primeiras estrelas aparecem. A
   c2_sluagh_mal: {
     title: "Frio por dentro",
     enter() {
-      S.hp = Math.max(S.hp, 3);
-      S.fp = Math.max(0, S.fp - 2);
+      state.hp = Math.max(state.hp, 3);
+      state.fp = Math.max(0, state.fp - 2);
     },
     text: () =>
       `Mãos de fumaça atravessam seu peito e levam um pouco de calor que nunca mais volta inteiro. Mas o sol nasce, e os mortos fogem com a noite. Você se arrasta até o rio Tay.`,
@@ -556,25 +561,25 @@ Quando levanta a cabeça, o céu está limpo e as primeiras estrelas aparecem. A
     title: "O rio Tay",
     text: () => `O Tay é o rio mais largo da Escócia, e agora, com o degelo, corre marrom e furioso. Do outro lado ficam Perth e, mais além, a colina de Dunsinane.
 
-Um barqueiro velho cochila ao lado de um bote. ${F("kelpie_divida") ? "\n\nE você sente na mão uma umidade que não vem do rio. A trança da crina do kelpie pinga, como se lembrasse de uma promessa." : ""}`,
+Um barqueiro velho cochila ao lado de um bote. ${hasFlag("kelpie_divida") ? "\n\nE você sente na mão uma umidade que não vem do rio. A trança da crina do kelpie pinga, como se lembrasse de uma promessa." : ""}`,
     choices: [
       {
         t: "Chamar o nome da água negra: Abhainn Dubh",
-        if: () => F("kelpie_divida") && !F("kelpie_usado"),
+        if: () => hasFlag("kelpie_divida") && !hasFlag("kelpie_usado"),
         go: "c2_tay_kelpie",
       },
       {
         t: "Pagar o barqueiro",
         sub: "5 pennies",
-        if: () => S.coins >= 5,
+        if: () => state.coins >= 5,
         fx() {
-          S.coins -= 5;
+          state.coins -= 5;
         },
         go: "c2_tay_barco",
       },
       {
         t: "Atravessar a nado",
-        tag: () => (S.amulet === "crina" ? "+2 crina" : ""),
+        tag: () => (state.amulet === "crina" ? "+2 crina" : ""),
         test: {
           o: [
             ["natacao", 0],
@@ -589,13 +594,13 @@ Um barqueiro velho cochila ao lado de um bote. ${F("kelpie_divida") ? "\n\nE voc
   c2_tay_kelpie: {
     title: "O favor do kelpie",
     enter() {
-      S.flags.kelpie_usado = 1;
-      S.hp = maxHP(S);
+      state.flags.kelpie_usado = 1;
+      state.hp = maxHP(state);
       gain(2, "Favor cobrado");
     },
     text: () => `Você diz o nome baixinho, e o rio fica imóvel por um instante. Então um cavalo negro sobe da água, sem molhar a crina.
 
-“Uma vez só, filho dos homens”, diz o kelpie. Ele carrega você ${F("ailsa") ? "e Ailsa, que reza a viagem inteira, " : ""}até a outra margem, e no caminho a água fria cura suas feridas.
+“Uma vez só, filho dos homens”, diz o kelpie. Ele carrega você ${hasFlag("ailsa") ? "e Ailsa, que reza a viagem inteira, " : ""}até a outra margem, e no caminho a água fria cura suas feridas.
 
 Antes de afundar, ele fala sem olhar para trás: “O Lobo-Rei da Velha espera na colina. É maior que eu. Não lutes com ele no escuro.”`,
     choices: [{ t: "Subir até Dunsinane", go: "c2_dunsinane" }],
@@ -626,7 +631,11 @@ Um velho de hábito marrom e cabeça raspada espera na porta, apoiado num bácul
 
 “Sou o irmão Aodh, de Scone. Faz um ano que espero alguém. Ou os ingleses, ou… outra coisa.” Ele aperta os olhos. “Qual dos dois és tu?”`,
     choices: [
-      { t: "Contar o que Blackwood disse sobre os monges que riam", if: () => F("bw_divida"), go: "c2_aodh" },
+      {
+        t: "Contar o que Blackwood disse sobre os monges que riam",
+        if: () => hasFlag("bw_divida"),
+        go: "c2_aodh",
+      },
       { t: "Mostrar a marca que a Dama deixou na sua testa", go: "c2_aodh" },
       {
         t: "Responder em latim de igreja e em gaélico antigo",
@@ -638,7 +647,7 @@ Um velho de hábito marrom e cabeça raspada espera na porta, apoiado num bácul
     title: "Palavras antigas",
     enter() {
       gain(2, "Gaélico antigo");
-      S.flags.aodh_amigo = 1;
+      state.flags.aodh_amigo = 1;
     },
     text: () => `Você responde com as palavras que Mairi usava nos ritos, e o velho monge arregala os olhos. Depois ri, um riso de criança.
 
@@ -660,7 +669,7 @@ Um velho de hábito marrom e cabeça raspada espera na porta, apoiado num bácul
     choices: [
       {
         t: "Pedir que ele mostre o caminho até a Pedra",
-        go: () => (F("hale_morto") ? "c2_betulas" : "c2_cerco"),
+        go: () => (hasFlag("hale_morto") ? "c2_betulas" : "c2_cerco"),
       },
     ],
   },
@@ -687,7 +696,7 @@ Um velho de hábito marrom e cabeça raspada espera na porta, apoiado num bácul
   c2_hale_vencido: {
     title: "Os corvos no chão",
     enter() {
-      S.flags.hale_morto = 1;
+      state.flags.hale_morto = 1;
       giveWeapon("machado");
       gain(3, "Sir Osric Hale vencido");
     },
@@ -699,7 +708,7 @@ Você pega o machado dinamarquês da sela do cavaleiro. Aodh faz o sinal da cruz
   c2_betulas_ferido: {
     title: "Fuga entre as árvores",
     enter() {
-      S.hp = Math.max(S.hp, 4);
+      state.hp = Math.max(state.hp, 4);
     },
     text: () =>
       `Você cai, e o monge arrasta você para dentro do bosque com uma força que um velho não devia ter. Atrás de vocês, os ingleses gritam e perdem o rastro na névoa.`,
@@ -731,8 +740,8 @@ Entre os troncos, alguém observa: uma figura alta feita de folhas, musgo e galh
   c2_ghillie_guia: {
     title: "O caminho escondido",
     enter() {
-      S.flags.ghillie = 1;
-      S.inv.ervas = (S.inv.ervas || 0) + 2;
+      state.flags.ghillie = 1;
+      state.inv.ervas = (state.inv.ervas || 0) + 2;
       note("+2 maços de ervas");
       gain(3, "Amizade do Ghillie Dhu");
     },
@@ -754,7 +763,7 @@ Por ali, um túnel de raízes desce colina adentro, até a parte de trás do tú
     title: "O sono dos pictos",
     text: () => `A entrada do túmulo é uma boca de pedra na encosta, ladeada por pedras entalhadas com símbolos que ninguém mais sabe ler: um crescente cortado por uma flecha quebrada, uma fera de focinho longo.
 
-${F("ghillie") ? "Graças ao túnel do Ghillie Dhu, vocês chegam pelos fundos. Mas mesmo ali, algo se mexe na escuridão." : "Quando vocês se aproximam, a terra treme."} Um guerreiro sai do escuro. A pele é cinzenta, coberta de espirais azuis, e os olhos são dois buracos vazios. Na mão, um machado de pedra.
+${hasFlag("ghillie") ? "Graças ao túnel do Ghillie Dhu, vocês chegam pelos fundos. Mas mesmo ali, algo se mexe na escuridão." : "Quando vocês se aproximam, a terra treme."} Um guerreiro sai do escuro. A pele é cinzenta, coberta de espirais azuis, e os olhos são dois buracos vazios. Na mão, um machado de pedra.
 
 Ele fala numa língua que só Aodh entende. O monge traduz, pálido: “Ele pergunta: *quem desce ao sono da Pedra?*”`,
     choices: [
@@ -794,7 +803,7 @@ Aodh solta o ar que estava prendendo. “Os pictos não tinham reis sobre a Pedr
   c2_tumulo_mal: {
     title: "Oração no escuro",
     enter() {
-      S.hp = Math.max(S.hp, 3);
+      state.hp = Math.max(state.hp, 3);
     },
     text: () => `Você cai na terra fria do túmulo. Aodh se põe entre você e o guardião e reza em voz alta, numa mistura de latim e de uma língua muito mais velha. O morto para, hesita, e volta para a escuridão de onde veio.
 
@@ -827,7 +836,7 @@ Então a geada começa a subir pelas paredes. Seu hálito vira fumaça. Da pared
   c2_cailleach_verdade: {
     title: "O inverno também é necessário",
     enter() {
-      S.flags.cailleach_verdade = 1;
+      state.flags.cailleach_verdade = 1;
       gain(3, "Palavras com a Velha");
     },
     text: () => `A Velha olha para você com o olho único por muito tempo. Depois, para surpresa de todos, ela responde.
@@ -840,7 +849,7 @@ Ela se vira para ir embora, e a geada recua. “Mas os meus cães não sabem con
   c2_cailleach_furia: {
     title: "A fúria da Velha",
     enter() {
-      S.fp = Math.max(0, S.fp - 2);
+      state.fp = Math.max(0, state.fp - 2);
       note("−2 PF · O frio da Cailleach", "hurt");
     },
     text: () => `O olho da Velha se fecha devagar. “Então que os meus cães decidam.”
@@ -852,17 +861,17 @@ Ela bate o cajado no chão, e a geada explode pelas paredes. Lá fora, na boca d
     title: "O Lobo-Rei do Inverno",
     text: () => `Na boca da caverna, a noite virou nevasca, em março. No meio da neve espera um lobo branco do tamanho de um cavalo, com geada na juba e olhos de gelo azul. Atrás dele, um lobo menor mostra os dentes.
 
-O **Lobo-Rei do Inverno**, o cão de caça da própria Cailleach.${F("cailleach_saber") ? " Você se lembra: eles odeiam fogo e sorveira." : ""}`,
+O **Lobo-Rei do Inverno**, o cão de caça da própria Cailleach.${hasFlag("cailleach_saber") ? " Você se lembra: eles odeiam fogo e sorveira." : ""}`,
     choices: [
       {
         t: "Lutar pela Pedra",
         fight: () => ({
           e: ["lobo_rei", "lobo_inverno"],
           allies: [...comAilsa(), ALLY.aodh],
-          blindAll: F("cailleach_saber") ? 1 : 0,
+          blindAll: hasFlag("cailleach_saber") ? 1 : 0,
           win: "c2_vitoria",
           lose: "c2_aodh_sacrificio",
-          intro: F("cailleach_saber")
+          intro: hasFlag("cailleach_saber")
             ? "Você acende a sorveira, e os lobos hesitam diante da chama vermelha."
             : "Aodh ergue o báculo e começa a rezar.",
         }),
@@ -883,8 +892,8 @@ Aodh se apoia no báculo, rindo e chorando ao mesmo tempo. “Ainda não, Velha.
   c2_aodh_sacrificio: {
     title: "O último sermão",
     enter() {
-      S.flags.aodh_morto = 1;
-      S.hp = Math.max(S.hp, 3);
+      state.flags.aodh_morto = 1;
+      state.hp = Math.max(state.hp, 3);
     },
     text: () => `Você cai, e o Lobo-Rei avança. Então o irmão Aodh se põe na frente dele, ergue o báculo e reza em voz alta.
 
@@ -897,7 +906,7 @@ Uma estátua de gelo fica na boca da caverna, de braços abertos. Ela não derre
     eyebrow: "Sob a colina",
     title: "O selo",
     enter() {
-      S.sangue = Math.max(S.sangue, 2);
+      state.sangue = Math.max(state.sangue, 2);
       giveItem("fragmento");
       gain(6, "Fim do Capítulo II");
     },
@@ -911,7 +920,7 @@ Um pedaço do tamanho de uma unha se solta da Pedra e cai na sua mão, morno. A 
         t: "Espinhos de Sorveira",
         sub: "Galhos brotam do chão: 2d de perfuração, sem defesa · 2 PF",
         fx() {
-          if (!S.skills.sp_espinhos) S.skills.sp_espinhos = 2;
+          if (!state.skills.sp_espinhos) state.skills.sp_espinhos = 2;
         },
         go: "c2_fim",
       },
@@ -919,7 +928,7 @@ Um pedaço do tamanho de uma unha se solta da Pedra e cai na sua mão, morno. A 
         t: "Fogo de Beltane",
         sub: "Chama azul: 3d de queimadura · 3 PF",
         fx() {
-          if (!S.skills.sp_beltane) S.skills.sp_beltane = 2;
+          if (!state.skills.sp_beltane) state.skills.sp_beltane = 2;
         },
         go: "c2_fim",
       },
@@ -929,32 +938,33 @@ Um pedaço do tamanho de uma unha se solta da Pedra e cai na sua mão, morno. A 
     eyebrow: "Fim do Capítulo II · Maio de 1297",
     title: "Fogo em Lanark",
     enter() {
-      S.flags.cap2_fim = 1;
-      S.hp = maxHP(S);
-      S.fp = maxFP(S);
+      state.flags.cap2_fim = 1;
+      state.hp = maxHP(state);
+      state.fp = maxFP(state);
     },
     text: () => {
       const l = [];
       l.push(
-        F("aodh_morto")
+        hasFlag("aodh_morto")
           ? "O irmão Aodh virou gelo na boca da caverna, de braços abertos."
           : "O irmão Aodh ficou em Dunsinane, guardando a Pedra.",
       );
       l.push(
-        F("hale_morto")
+        hasFlag("hale_morto")
           ? "Sir Osric Hale está morto."
           : "Sir Osric Hale ainda caça o monge de Dunsinane, e agora conhece seu rosto.",
       );
-      if (F("cailleach_verdade")) l.push("A Cailleach falou com você de verdade. Ela não é só inimiga.");
-      if (F("kelpie_usado")) l.push("O favor do kelpie foi cobrado.");
-      else if (F("kelpie_divida")) l.push("O kelpie ainda lhe deve um favor.");
-      if (F("ghillie")) l.push("O Ghillie Dhu das bétulas é seu amigo.");
-      if (F("sangue_frio")) l.push("Tam ainda não o perdoou pela torre.");
+      if (hasFlag("cailleach_verdade"))
+        l.push("A Cailleach falou com você de verdade. Ela não é só inimiga.");
+      if (hasFlag("kelpie_usado")) l.push("O favor do kelpie foi cobrado.");
+      else if (hasFlag("kelpie_divida")) l.push("O kelpie ainda lhe deve um favor.");
+      if (hasFlag("ghillie")) l.push("O Ghillie Dhu das bétulas é seu amigo.");
+      if (hasFlag("sangue_frio")) l.push("Tam ainda não o perdoou pela torre.");
       return `Você volta a Cartland no fim de abril. Em maio, a notícia corre os vales como fogo em palha seca: **em Lanark, um homem chamado William Wallace matou o xerife Heselrig** e queimou o salão dele. A Escócia inteira está pegando em armas.
 
 Tam aparece na boca da caverna, ofegante. “Wallace está juntando um exército. Diz que o inglês vai mandar o dele, e que a luta vai ser numa ponte.” Ele olha para você. “Numa ponte de madeira, perto de Stirling.”
 
-Seu título agora é **${title(S)}**, com ${S.earned} pontos de experiência acumulados.
+Seu título agora é **${title(state)}**, com ${state.earned} pontos de experiência acumulados.
 
 <ul class="end-list">${l.map((x) => `<li>${x}</li>`).join("")}</ul>
 

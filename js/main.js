@@ -23,7 +23,7 @@ document.getElementById("btnSheet").onclick = () => {
 };
 function boot(data) {
   if (data && data.S) {
-    S = migrate(data.S);
+    state = migrate(data.S);
     CHECK = data.CHECK || null;
     render();
   } else showTitle();

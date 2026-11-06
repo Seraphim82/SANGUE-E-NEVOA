@@ -12,6 +12,7 @@ img/portraits/<chave>.jpg (720 px, 3:4). Requer: pip install pillow
 import base64
 import io
 import json
+import re
 import os
 import sys
 import urllib.error
@@ -25,7 +26,11 @@ from prompts import CENAS, ESTILO, ESTILO_RETRATO, RETRATOS  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 MODELO = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-3-pro-image")
+if not re.fullmatch(r"[\w.-]+", MODELO):
+    sys.exit(f"Nome de modelo inválido: {MODELO!r}")
 URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODELO}:streamGenerateContent?alt=sse"
+if not URL.startswith("https://generativelanguage.googleapis.com/"):
+    sys.exit("URL da API inesperada.")
 
 
 def chave_api():
@@ -59,7 +64,7 @@ def gerar(chave):
         headers={"Content-Type": "application/json", "x-goog-api-key": chave_api()},
     )
     dados = None
-    with urllib.request.urlopen(req, timeout=400) as resp:
+    with urllib.request.urlopen(req, timeout=400) as resp:  # nosec B310: URL fixa em https, validada acima
         for linha in resp:
             linha = linha.decode().strip()
             if not linha.startswith("data:"):
