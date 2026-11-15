@@ -998,7 +998,7 @@ const CINEMA = (() => {
     sceneBackdrop(c, f, t, v.wide ? 0.3 : 0.55);
     if (v.hero) {
       const p = heroPortrait(state);
-      if (p) standing(c, p, HERO_SPOT.x + dx, H * 1.5);
+      if (p) standing(c, p, HERO_SPOT.x + dx, H * 1.12);
       if (v.pose === "dor") {
         c.fillStyle = "rgba(150,20,10,.25)";
         c.fillRect(0, 0, W, H);
@@ -1012,7 +1012,7 @@ const CINEMA = (() => {
           c.rotate(0.35);
           c.translate(-FOE_SPOT.x, -H);
         }
-        standing(c, p, FOE_SPOT.x + dx, H * 1.5);
+        standing(c, p, FOE_SPOT.x + dx, H * 1.12);
         c.restore();
       } else {
         c.save();

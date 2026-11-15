@@ -29,10 +29,10 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 - **Sistema inspirado em GURPS:** atributos (ST, DX, IQ, HT), perícias com dificuldade, combate com defesa ativa, armadura (RD), tipos de dano, choque e testes de HT.
 - **Progressão:** pontos de personagem, técnicas de combate, magia druídica em quatro círculos (Sangue Antigo), vestimentas, armas e amuletos que evoluem na forja até o nível Lendário.
 - **Combate por turnos** com aliados, amuletos de uso ativo, frio, sede e regeneração dos inimigos.
-- **149 pinturas** (97 cenas, 20 retratos de inimigos e 32 retratos do herói: 4 aparências em 8 roupas) com animações por cima: névoa, brasas, neve e vento.
-- **Modo cinema:** depois de cada ação no combate, a luta é encenada em tela cheia, com faixas de cinema, câmera, golpes por tipo de arma, magias, faíscas e câmera lenta no acerto crítico. Os movimentos usam molas amortecidas, suaves e contínuos. Cada capítulo abre com uma cartela de título, e as pinturas das cenas se fundem umas nas outras. Dá para pular com um toque, deixar mais rápido ou desligar no menu.
+- **Cerca de 290 pinturas:** 97 cenas, 20 retratos de inimigos, 32 retratos do herói (4 aparências em 8 roupas) e cerca de 145 planos de ação para as lutas, com animações por cima: névoa, brasas, neve e vento.
+- **Modo cinema:** depois de cada ação no combate, a luta é montada como num filme, cortando entre planos pintados: o rosto do seu herói em fúria, o close da arma que ele usa, o inimigo atingido ou caindo, a espada aparando com faíscas, o escudo segurando o golpe. Câmera que aproxima, borrão nos cortes rápidos, clarão no impacto e câmera lenta no acerto crítico. Cada capítulo abre com uma cartela de título, e as pinturas das cenas se fundem umas nas outras. Dá para pular com um toque, deixar mais rápido ou desligar no menu.
 - **Aparência do herói** escolhida na criação, e uma **galeria da jornada** na tela do personagem que mostra como ele estava no começo de cada capítulo.
-- **Trilha sonora gerada em tempo real** (Web Audio API) em cinco climas, com vinhetas e efeitos.
+- **Trilha sonora com 12 músicas** de instrumentos de época (harpa celta, gaita de foles, flauta, rabeca, bodhrán), uma para cada tipo de cena: tema, aldeia, estrada, taverna, suspense, lugares assombrados, magia, combate, combate contra criaturas, lamento, vitória e final. As músicas se fundem ao trocar de cena. Sem as faixas, toca a música gerada em tempo real.
 
 | Cena | Combate | Personagem |
 |---|---|---|
@@ -54,6 +54,8 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 ├── img/scenes/             Pinturas das cenas (21:9)
 ├── img/portraits/          Retratos dos inimigos (3:4)
 ├── img/heroes/             Retratos pintados do herói, por aparência e roupa
+├── img/action/             Planos de ação do cinema de combate (21:9)
+├── audio/                  Trilha sonora (12 faixas em MP3)
 ├── docs/
 │   ├── livro-do-jogador.md     Regras completas, capítulos e bestiário
 │   ├── ARQUITETURA.md          Como o código funciona e como acrescentar conteúdo
@@ -107,6 +109,18 @@ python3 tools/gerar_imagens.py aldeia retrato:kelpie
 ```
 
 Os retratos do herói usam a chave `heroi:<aparência>_<roupa>` (por exemplo `heroi:ruiva_malha`). Gere primeiro o de roupas de lã de cada aparência: ele serve de referência para o rosto nas outras roupas. Depois acrescente as chaves geradas em `HERO_PORTRAITS`, em `js/data/appearance.js`. Enquanto um retrato não existir, o jogo desenha o herói no canvas.
+
+Os planos de ação do cinema usam a chave `acao:<nome>`, por exemplo `acao:heroi_furia_ruiva_malha`, `acao:arma_golpe_espada` ou `acao:inimigo_atingido_recruta`. Depois de gerar, rode `node tools/listar_planos.mjs` para atualizar a lista do jogo.
+
+### Gerar a trilha sonora
+
+As músicas foram compostas com o modelo Lyria, do Gemini:
+
+```bash
+python3 tools/gerar_musica.py combate taverna
+```
+
+Sem argumentos, gera as faixas que ainda não existem em `audio/`.
 
 Os prompts ficam em `tools/prompts.py`. Sem argumentos, o script gera só as imagens que ainda não existem.
 

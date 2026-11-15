@@ -1,5 +1,17 @@
 # Histórico de versões
 
+## 1.3.0 · Trilha sonora gravada e lutas em planos de cinema
+
+### Novidades
+- **Trilha sonora com 12 músicas** compostas com instrumentos de época (harpa celta, gaita de foles, flauta, rabeca e bodhrán), uma para cada tipo de cena: tema, aldeia, estrada, taverna, suspense, lugares assombrados, magia, combate, combate contra criaturas, lamento, vitória e final. A troca entre elas é suave.
+- **Lutas montadas como cinema:** em vez de mover retratos inteiros, cada golpe corta entre planos pintados: o rosto do herói em fúria ou ferido, o close da arma que ele usa, o inimigo atacando, atingido ou caindo, a arma aparando com faíscas e o escudo bloqueando.
+- Cerca de 145 planos de ação novos: o herói nas 4 aparências e 8 roupas, as 12 armas e os 20 inimigos.
+
+### Técnico
+- `tools/gerar_musica.py` (Lyria) e `tools/listar_planos.mjs`.
+- CSP libera áudio do próprio site (`media-src 'self'`).
+- Teste novo: toda cena tem uma faixa da trilha.
+
 ## 1.2.0 · Modo cinema e aparência do herói
 
 ### Novidades

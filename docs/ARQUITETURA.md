@@ -83,11 +83,20 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 `js/art/cinema.js` encena o combate sem tocar na lógica. Cada botão de ação passa pela função `film()` de `js/ui/render.js`: ela chama `CINEMA.begin()`, roda a ação normalmente e chama `CINEMA.end()`. Enquanto a ação roda, `js/core/combat.js` registra tomadas com `CINEMA.shot({...})` (ataque do herói, de aliado ou do inimigo, magia, cura, defesa, finta, amuleto, fuga, fim do combate). A lógica e a página terminam na hora; o cinema só desenha por cima, numa camada de tela cheia.
 
 - Os sons do combate ficam guardados (`AUD.hold()` e `AUD.release()`) e tocam no momento do golpe na cena.
-- Cada tomada vira um roteiro com eventos marcados no tempo. Os eventos mudam o alvo de molas amortecidas (posição, altura, braço, opacidade, zoom e centro da câmera), e as molas fazem o movimento. A inclinação do corpo vem da velocidade.
-- O herói é o retrato pintado de `img/heroes/` se existir, ou a figura de `js/art/figure.js` sem fundo e com o braço girando (`armAngle`). Os inimigos usam os retratos de `img/portraits/` ou as silhuetas procedurais.
+- `montage()` transforma as tomadas numa lista de planos, como um editor de filme. Um ataque do herói que acerta vira três planos: o rosto dele em fúria (`heroi_furia_<aparência>_<roupa>`), o close da arma no golpe (`arma_golpe_<arma>`) e o inimigo atingido (`inimigo_atingido_<retrato>`), seguido da queda (`inimigo_queda_<retrato>`) se ele morrer. O golpe do inimigo usa `inimigo_ataque_<retrato>` e depois `heroi_dor_...`, o close da arma aparando (`arma_aparo_<arma>`), o escudo (`escudo`) ou o rosto do herói esquivando.
+- Cada plano tem duração, zoom e deslocamento da câmera, clarão, tremor, câmera lenta, tom de cor e eventos marcados no tempo (sons, faíscas, números de dano). Os cortes rápidos chegam com borrão de movimento.
+- Os planos ficam em `img/action/` e só são carregados os listados em `ACTION_SHOTS` (`js/data/action-shots.js`, gerado por `tools/listar_planos.mjs`). `CINEMA.preload()` começa a baixá-los quando o combate começa. Se um plano faltar, o cinema usa outro plano ou os retratos pintados sobre a cena.
 - `CINEMA.shot()` sem gravação em andamento não faz nada, então chamar as funções de combate direto (como fazem os testes de stress) não abre filme nenhum.
-- Um clique, toque ou tecla para o filme. Com "reduzir movimento" no sistema ou com o modo desligado no menu (`sen-cinema` no `localStorage`), nada é encenado. Um limite de 20 segundos e um `try/catch` no quadro garantem que a camada nunca prenda o jogador.
+- Um clique, toque ou tecla para o filme. Com "reduzir movimento" no sistema ou com o modo desligado no menu (`sen-cinema` no `localStorage`), nada é encenado. Um limite de 25 segundos e um `try/catch` no quadro garantem que a camada nunca prenda o jogador.
 - `CINEMA.titleCard()` abre os capítulos. `go()` chama essa função ao entrar pela primeira vez numa cena `cN_inicio`, e também registra o herói na galeria da jornada (`recordJourney()`).
+
+## Trilha sonora
+
+`js/audio/soundtrack.js` toca as 12 faixas de `audio/` e faz a fusão entre elas. `trackFor(id)`, em `js/story/scene-meta.js`, escolhe a faixa de cada cena pelo clima e pela ilustração: tavernas, aldeias, estradas, lugares assombrados, magia, lamento, vitória e finais. O combate escolhe entre `combate` e `combate_feerico` pelos inimigos.
+
+- No site, a faixa passa pela Web Audio API, que faz a fusão. Aberto do disco (`file://`), o navegador não deixa a Web Audio ler o arquivo, e a fusão é feita pelo volume do elemento de áudio.
+- Se uma faixa não carregar, toca a música gerada em tempo real no clima mais próximo.
+- A CSP do `index.html` libera áudio só do próprio site (`media-src 'self'`).
 
 ## Aparência e galeria da jornada
 
