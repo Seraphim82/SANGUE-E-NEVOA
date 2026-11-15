@@ -119,6 +119,7 @@ Como os scripts compartilham o escopo global, `tools/globais.mjs` lê o `index.h
 | `tests/playthrough.mjs` | Grafo da história com várias combinações de marcas; partidas completas com um jogador automático que evolui o personagem |
 | `tests/sabotage.mjs` | 18 cenários de falha: saves corrompidos e adulterados, armazenamento bloqueado, imagens fora do ar, sem áudio, cliques em rajada, redimensionamento |
 | `tests/security.mjs` | XSS pelo nome e pelo save, poluição de protótipo, CSP, tráfego de rede e varredura do código |
+| `tests/rigor.mjs` | O jogo servido por HTTP e jogado por toques num iPhone emulado: toda escolha de toda cena responde a um toque, partidas inteiras até o epílogo, tela do personagem, cinema com todos os inimigos, toque que atravessa o cinema, telas de 320 px, 3.000 saves corrompidos, arquivos faltando |
 | `tests/cinema.mjs` | Cinema abre, fecha e pode ser pulado; todas as ações e magias encenadas sem erro; modos do menu; movimento reduzido; cartela de capítulo; aparência e galeria, inclusive adulteradas no save |
 | `tests/stress.mjs` | Volume de partidas, sessão longa e memória, desempenho da animação, combate em massa, limite de partículas |
 

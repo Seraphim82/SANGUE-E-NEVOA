@@ -1,5 +1,17 @@
 # Histórico de versões
 
+## 1.3.2 · Testes rigorosos e varredura de segurança
+
+### Correções
+- O toque que pula a cena de luta não atravessa mais para o botão de baixo. Antes, às vezes o mesmo toque pulava o cinema e atacava de novo.
+- O fim do Capítulo I não diz mais que o Capítulo II está "em preparação".
+- O jogo ganhou ícone de aba (o navegador recebia erro ao procurá-lo).
+
+### Testes
+- Nova bateria `npm run test:rigor`: o jogo servido por HTTP e jogado por toques num iPhone emulado. Toda escolha das 221 cenas responde a um toque; partidas inteiras até o epílogo; tela do personagem; cinema com os 20 inimigos; telas de 320 px; 3.000 saves corrompidos; nenhum arquivo faltando.
+- Segurança: varredura do histórico do Git e de e-mails pessoais, CSP diretiva por diretiva, rede com o jogo servido por HTTP e saves com aparência e galeria adulteradas. 10 de 10 passam.
+- A integração contínua roda os testes rigorosos a cada envio.
+
 ## 1.3.1 · Correções do celular e tela do personagem pintada
 
 ### Correções

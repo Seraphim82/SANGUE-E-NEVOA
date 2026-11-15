@@ -1459,3 +1459,11 @@ button,
   border-radius: 6px;
   display: block;
 }
+/* Película invisível que segura o resto do toque que pulou o cinema */
+.cinema.shield {
+  background: transparent;
+  animation: none;
+}
+.cinema.shield > * {
+  visibility: hidden;
+}

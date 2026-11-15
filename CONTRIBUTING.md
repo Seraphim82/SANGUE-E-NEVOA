@@ -40,6 +40,6 @@ npm run format
 npm test
 ```
 
-`npm test` roda lint, o teste de história e os testes de sabotagem, segurança e cinema. Se a mudança mexe em combate, desempenho ou animação, rode também `npm run test:stress`.
+`npm test` roda lint, o teste de história e os testes de sabotagem, segurança e cinema. Se a mudança mexe em combate, desempenho ou animação, rode também `npm run test:stress`. Se mexe na interface, no cinema ou em qualquer coisa que a pessoa toca, rode `npm run test:rigor`: ele joga por toques num celular emulado. Quando um teste falha, corrija o código, não o teste.
 
 No pull request, descreva o que mudou e por quê, e como você testou. Se a mudança altera regras ou números de equilíbrio, atualize o [Livro do Jogador](docs/livro-do-jogador.md).

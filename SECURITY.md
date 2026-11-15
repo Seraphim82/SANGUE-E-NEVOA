@@ -21,6 +21,6 @@ A resposta vem em até 7 dias. Se a falha for confirmada, a correção é public
 - **Todo texto exibido passa por escape de HTML**, inclusive o nome do herói.
 - **Saves tratados como dados não confiáveis:** validados campo a campo por `sanitizeSave()` antes do uso, com proteção contra poluição de protótipo.
 - **Nenhum segredo no repositório:** a chave da API do Gemini, usada só pelas ferramentas de desenvolvimento, vem da variável de ambiente `GEMINI_API_KEY`.
-- **Testes automatizados de segurança** (`npm run test:security`) e auditoria de dependências na integração contínua.
+- **Testes automatizados de segurança** (`npm run test:security`): XSS, poluição de protótipo, CSP diretiva por diretiva, tráfego de rede com o jogo servido por HTTP, saves adulterados e varredura do código e do histórico do Git em busca de chaves e dados pessoais. Auditoria de dependências na integração contínua.
 
 Detalhes, testes e limitações conhecidas: [docs/RELATORIO-DE-QUALIDADE.md](docs/RELATORIO-DE-QUALIDADE.md).

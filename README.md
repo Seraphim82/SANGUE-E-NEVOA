@@ -62,7 +62,7 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 │   ├── ARQUITETURA.md          Como o código funciona e como acrescentar conteúdo
 │   ├── RELATORIO-DE-QUALIDADE.md  Revisão de código e testes de sabotagem, stress e segurança
 │   └── analise-gemini.md       Revisão de game design feita com o Gemini
-├── tests/                  História, sabotagem, stress, segurança e cinema (Playwright)
+├── tests/                  História, sabotagem, stress, segurança, cinema e testes rigorosos por toques (Playwright)
 ├── tools/                  Geração de imagens e consulta ao Gemini (Python); globais do ESLint
 └── .github/workflows/      Integração contínua
 ```
@@ -85,6 +85,7 @@ npx playwright install chromium
 |---|---|
 | `npm test` | Lint e os testes de história, sabotagem, segurança e cinema |
 | `npm run test:cinema` | Só os testes do modo cinema, da aparência e da galeria da jornada |
+| `npm run test:rigor` | Testes rigorosos: o jogo servido por HTTP e jogado por toques num iPhone emulado (toda escolha de toda cena, partidas inteiras, tela do personagem, cinema, saves corrompidos; cerca de 12 minutos) |
 | `npm run test:stress` | Stress: 200 partidas completas, sessão longa, desempenho, 3.000 combates (cerca de 4 minutos) |
 | `npm run lint` | ESLint em todo o projeto |
 | `npm run format` | Formata o código com Prettier |

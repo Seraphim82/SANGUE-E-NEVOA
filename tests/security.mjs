@@ -5,9 +5,10 @@
  *
  * Uso: npm run test:security
  */
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
-import { abrirJogo, comecarJogo, executar, verificar, RAIZ, SAVE_KEY } from "./lib/harness.mjs";
+import { abrirJogo, comecarJogo, executar, servirJogo, verificar, RAIZ, SAVE_KEY } from "./lib/harness.mjs";
 
 const PAYLOADS_XSS = [
   `<img src=x onerror="window.__xss=1">`,
@@ -215,6 +216,11 @@ const casos = [
         ["token do GitHub", /\bgh[pousr]_[A-Za-z0-9]{36}/],
         ["chave privada", /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
         ["chave escrita no código", /x-goog-api-key["']?\s*:\s*["'][A-Za-z0-9_-]{20,}["']/],
+        // Dados pessoais: nenhum e-mail fora dos endereços genéricos de exemplo e de robôs.
+        [
+          "e-mail pessoal",
+          /\b[A-Za-z0-9._%+-]+@(?!example\.com|anthropic\.com|users\.noreply\.github\.com)[A-Za-z0-9.-]+\.[a-z]{2,}\b/,
+        ],
       ];
       const regrasDoJogo = [
         ["eval ou new Function", /\beval\s*\(|new Function\s*\(/],
@@ -236,5 +242,149 @@ const casos = [
     },
   ],
 ];
+
+casos.push(
+  [
+    "Histórico do Git sem chaves, tokens nem e-mails pessoais",
+    async () => {
+      if (!existsSync(path.join(RAIZ, ".git"))) return "sem repositório Git: pulado";
+      const historico = execFileSync("git", ["log", "-p", "--all", "--no-color"], {
+        cwd: RAIZ,
+        maxBuffer: 512 * 1024 * 1024,
+      }).toString();
+      const autores = execFileSync("git", ["log", "--all", "--format=%ae%n%ce"], { cwd: RAIZ }).toString();
+      const achados = [];
+      if (/AIza[0-9A-Za-z_-]{35}/.test(historico)) achados.push("chave do Google");
+      if (/\bgh[pousr]_[A-Za-z0-9]{36}/.test(historico)) achados.push("token do GitHub");
+      if (/\bsk-(ant-)?[A-Za-z0-9_-]{20,}/.test(historico)) achados.push("chave de API");
+      if (/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(historico)) achados.push("chave privada");
+      const emails = new Set(autores.split("\n").filter(Boolean));
+      for (const e of emails)
+        if (!/@(example\.com|anthropic\.com|users\.noreply\.github\.com)$/.test(e))
+          achados.push(`autor ${e}`);
+      verificar(!achados.length, `encontrado no histórico: ${achados.join(", ")}`);
+      return `${historico.split("\ncommit ").length} commits verificados`;
+    },
+  ],
+  [
+    "CSP completa: cada diretiva no valor mais restrito que o jogo aceita",
+    async (browser) => {
+      const { page, context } = await abrirJogo(browser);
+      const csp = await page.evaluate(
+        () => document.querySelector('meta[http-equiv="Content-Security-Policy"]')?.content || "",
+      );
+      await context.close();
+      const dir = Object.fromEntries(
+        csp
+          .split(";")
+          .map((d) => d.trim().split(/\s+/))
+          .filter((d) => d[0])
+          .map(([k, ...v]) => [k, v.join(" ")]),
+      );
+      const esperado = {
+        "default-src": "'self'",
+        "script-src": "'self'",
+        "connect-src": "'none'",
+        "object-src": "'none'",
+        "base-uri": "'none'",
+        "form-action": "'none'",
+        "media-src": "'self'",
+        "font-src": "https://fonts.gstatic.com",
+      };
+      const erradas = Object.entries(esperado)
+        .filter(([k, v]) => dir[k] !== v)
+        .map(([k, v]) => `${k} = "${dir[k]}" (esperado "${v}")`);
+      if (/\*|https?:(?!\/\/fonts\.)/.test(dir["img-src"] || ""))
+        erradas.push(`img-src aberto demais: ${dir["img-src"]}`);
+      if (/unsafe-eval|unsafe-inline/.test(dir["script-src"] || ""))
+        erradas.push("script-src aceita código inseguro");
+      verificar(!erradas.length, erradas.join("; "));
+      return `${Object.keys(dir).length} diretivas`;
+    },
+  ],
+  [
+    "Rede pelo servidor HTTP, com música e cinema: nada sai do site além das fontes",
+    async (browser) => {
+      const servidor = await servirJogo();
+      const context = await browser.newContext();
+      const externos = new Set();
+      const origem = new URL(servidor.url).origin;
+      context.on("request", (r) => {
+        const u = r.url();
+        if (!u.startsWith(origem) && !/^(data:|blob:|https:\/\/fonts\.(googleapis|gstatic)\.com\/)/.test(u))
+          externos.add(u);
+      });
+      await context.addInitScript(() =>
+        localStorage.setItem("sen-audio", JSON.stringify({ music: true, sfx: true })),
+      );
+      const page = await context.newPage();
+      const erros = [];
+      page.on("pageerror", (e) => erros.push(e.message));
+      await page.goto(servidor.url);
+      await comecarJogo(page);
+      await page.evaluate(() => {
+        CINEMA.stop();
+        for (const id of ["c1_taverna_ok", "c1_visao", "c1_pantano_ok", "c3_intendente"]) go(id);
+        runOutcome({ e: ["kelpie"], win: "c1_inicio", lose: "c1_inicio" });
+      });
+      await page.click("#aAtk");
+      await page.waitForTimeout(1500);
+      await context.close();
+      await servidor.fechar();
+      verificar(!erros.length, `erro de execução: ${erros[0]}`);
+      verificar(!externos.size, `acessos fora do site: ${[...externos].slice(0, 5).join(", ")}`);
+      verificar(!servidor.falhas.length, `arquivos pedidos que não existem: ${servidor.falhas.join(", ")}`);
+      return "só o próprio site e as fontes";
+    },
+  ],
+  [
+    "Aparência e galeria adulteradas no save não fazem o jogo buscar arquivos fora das pastas dele",
+    async (browser) => {
+      const servidor = await servirJogo();
+      const context = await browser.newContext();
+      const pedidos = [];
+      const origem = new URL(servidor.url).origin;
+      // Só os pedidos ao próprio site importam aqui; as fontes do Google têm teste próprio.
+      context.on("request", (r) => {
+        const u = new URL(r.url());
+        if (u.origin === origem) pedidos.push(u.pathname);
+      });
+      const save = {
+        name: "X",
+        origin: "pastor",
+        mode: "playing",
+        scene: "c1_inicio",
+        look: "../../../etc/passwd",
+        armor: "la",
+        journey: [
+          { ch: 1, armor: '"><img src=x onerror="window.__xss=1">', weapon: "funda" },
+          { ch: 2, armor: "la", weapon: "../index", amulet: "../../x" },
+          { ch: 3, armor: "la", weapon: "funda", amulet: "<svg onload=window.__xss=1>" },
+        ],
+      };
+      await context.addInitScript(([k, v]) => localStorage.setItem(k, v), [SAVE_KEY, JSON.stringify(save)]);
+      const page = await context.newPage();
+      await page.goto(servidor.url);
+      await page.click("#bCont");
+      await page.evaluate(() => openChar("roupa"));
+      await page.waitForTimeout(800);
+      const r = await page.evaluate(() => ({
+        xss: window.__xss === 1,
+        look: state.look,
+        journey: state.journey.length,
+      }));
+      await context.close();
+      await servidor.fechar();
+      const permitido =
+        /^\/(index\.html|css\/|js\/|img\/(scenes|portraits|heroes|action|items)\/[a-z0-9_]+\.jpg$|img\/favicon\.png$|audio\/[a-z_]+\.mp3$)/;
+      const estranhos = pedidos.filter((p) => p.startsWith("/") && p !== "/" && !permitido.test(p));
+      verificar(!r.xss, "um campo do save executou código");
+      verificar(r.look === "ruivo", `aparência adulterada aceita: ${r.look}`);
+      verificar(r.journey === 1, `a galeria aceitou ${r.journey} registros adulterados`);
+      verificar(!estranhos.length, `pedidos fora das pastas do jogo: ${estranhos.slice(0, 5).join(", ")}`);
+      return "nada fora das pastas do jogo";
+    },
+  ],
+);
 
 process.exit((await executar("Testes de segurança", casos)) ? 1 : 0);

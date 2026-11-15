@@ -78,3 +78,48 @@ export async function comecarJogo(page) {
   await page.click("#eOk");
   await page.waitForTimeout(200);
 }
+
+const TIPOS = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json",
+  ".jpg": "image/jpeg",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".mp3": "audio/mpeg",
+  ".ico": "image/x-icon",
+};
+
+/**
+ * Serve o jogo por HTTP, como o GitHub Pages, para os testes enxergarem arquivos que
+ * faltam (404) e o áudio passar pela Web Audio. Devolve { url, fechar, falhas }, onde
+ * `falhas` lista os caminhos pedidos que não existem.
+ */
+export async function servirJogo() {
+  const http = await import("node:http");
+  const fs = await import("node:fs");
+  const falhas = [];
+  const servidor = http.createServer((req, res) => {
+    const caminho = decodeURIComponent(new URL(req.url, "http://x").pathname);
+    const arquivo = path.normalize(path.join(RAIZ, caminho === "/" ? "/index.html" : caminho));
+    // Nunca serve nada fora da pasta do jogo.
+    if (!arquivo.startsWith(RAIZ + path.sep)) {
+      res.writeHead(403).end();
+      return;
+    }
+    fs.readFile(arquivo, (erro, dados) => {
+      if (erro) {
+        if (!caminho.endsWith("favicon.ico")) falhas.push(caminho);
+        res.writeHead(404).end();
+        return;
+      }
+      res.writeHead(200, { "Content-Type": TIPOS[path.extname(arquivo)] || "application/octet-stream" });
+      res.end(dados);
+    });
+  });
+  await new Promise((ok) => servidor.listen(0, "127.0.0.1", ok));
+  const url = `http://127.0.0.1:${servidor.address().port}/index.html`;
+  return { url, falhas, fechar: () => new Promise((ok) => servidor.close(ok)) };
+}

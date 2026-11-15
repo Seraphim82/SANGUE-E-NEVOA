@@ -882,6 +882,8 @@ const CINEMA = (() => {
       last: performance.now(),
       raf: 0,
     };
+    clearTimeout(shieldTimer);
+    el.classList.remove("shield");
     el.hidden = false;
     film.raf = requestAnimationFrame(frame);
   }
@@ -1175,16 +1177,38 @@ const CINEMA = (() => {
 
   // ---------------------------------------------------------------- controles
 
+  /** Quanto tempo a película fica depois do toque que pula a cena, segurando o resto dele. */
+  const SHIELD_MS = 450;
+  let shieldTimer = 0;
+
   function setupOverlay() {
     const el = overlay();
     if (!el) return;
+    const dropShield = () => {
+      clearTimeout(shieldTimer);
+      el.classList.remove("shield");
+      if (!film) el.hidden = true;
+    };
     const skip = (e) => {
       if (!film) return;
       e.preventDefault();
       e.stopPropagation();
       stop();
+      if (e.type !== "pointerdown") return;
+      // O filme some no começo do toque, mas o fim dele (o "click") ainda vem. Sem a
+      // película, ele cairia no botão que estava por baixo e repetiria a ação.
+      el.hidden = false;
+      el.classList.add("shield");
+      clearTimeout(shieldTimer);
+      shieldTimer = setTimeout(dropShield, SHIELD_MS);
     };
     el.addEventListener("pointerdown", skip);
+    el.addEventListener("click", (e) => {
+      if (!el.classList.contains("shield")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      dropShield();
+    });
     document.addEventListener("keydown", (e) => {
       if (film) skip(e);
     });

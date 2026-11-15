@@ -12,7 +12,8 @@ Este relatório documenta a revisão de código e os testes de sabotagem, stress
 | Testes de história | 221 cenas válidas e alcançáveis; partidas completas do Capítulo I ao epílogo sem travamentos |
 | Testes de sabotagem | 18 casos. **8 falhavam** antes das correções; hoje 18 de 18 passam |
 | Testes de stress | 5 casos. 1 bug encontrado (limite de partículas) e corrigido; hoje 5 de 5 passam |
-| Testes de segurança | 6 casos, 6 de 6 passam. 8 problemas de segurança encontrados na revisão e corrigidos |
+| Testes de segurança | 10 casos, 10 de 10 passam. 8 problemas de segurança encontrados na revisão e corrigidos |
+| Testes rigorosos (1.3.2) | 14 casos com toques reais num iPhone emulado e o jogo servido por HTTP. **3 bugs reais encontrados** e corrigidos; hoje 14 de 14 passam (seção 7) |
 | Dependências (`npm audit`) | 4 alertas moderados corrigidos. Zero vulnerabilidades |
 | Ferramentas em Python (Bandit) | 2 alertas médios e 2 baixos corrigidos. Nenhum problema restante |
 | Integração contínua | GitHub Actions roda formatação, lint, testes, auditoria e stress a cada envio |
@@ -141,7 +142,11 @@ O jogo é uma página estática, sem servidor, sem contas e sem envio de dados. 
 | 3 | Poluição de protótipo com `__proto__` e `constructor` no save e nas preferências de áudio | ✓ nenhuma propriedade injetada |
 | 4 | Script injetado na página e código montado a partir de texto (`setTimeout` com texto, equivalente a `eval`) | ✓ ambos bloqueados pela CSP, com 2 violações registradas |
 | 5 | Tráfego de rede durante o jogo, com música ligada | ✓ só arquivos locais e fontes do Google |
-| 6 | Varredura do código: chaves do Google, OpenAI, Anthropic e GitHub, chaves privadas, chaves escritas no código, `eval`, `document.write`, URLs `http://` e manipuladores de evento inline | ✓ 47 arquivos, nenhum achado |
+| 6 | Varredura do código: chaves do Google, OpenAI, Anthropic e GitHub, chaves privadas, chaves escritas no código, e-mails pessoais, `eval`, `document.write`, URLs `http://` e manipuladores de evento inline | ✓ nenhum achado |
+| 7 | Histórico inteiro do Git: chaves, tokens, chaves privadas e e-mails de autores | ✓ nenhum achado; autores só com endereços genéricos |
+| 8 | CSP diretiva por diretiva (`default-src`, `script-src`, `connect-src`, `object-src`, `base-uri`, `form-action`, `media-src`, `font-src`, `img-src`) | ✓ todas no valor mais restrito que o jogo aceita |
+| 9 | Rede com o jogo servido por HTTP, música e cinema ligados | ✓ só o próprio site e as fontes do Google; nenhum arquivo faltando |
+| 10 | Aparência e galeria da jornada adulteradas no save (caminhos `../`, HTML, `onerror`) | ✓ descartadas; nenhum pedido fora das pastas do jogo |
 
 ### 4.3 Problemas encontrados e corrigidos
 
@@ -198,9 +203,44 @@ O arquivo `.github/workflows/ci.yml` roda a cada envio para a branch `main` e a 
 
 1. Instala as dependências (`npm ci`) e o Chromium do Playwright.
 2. Verifica a formatação (`npm run format:check`).
-3. Roda lint e os testes de história, sabotagem e segurança (`npm test`).
+3. Roda lint e os testes de história, sabotagem, segurança e cinema (`npm test`).
 4. Audita as dependências (`npm audit --audit-level=moderate`).
-5. Roda o stress com 100 partidas.
+5. Roda os testes rigorosos com 2 partidas inteiras por toques.
+6. Roda o stress com 100 partidas.
+
+---
+
+## 7. Testes rigorosos (versão 1.3.2)
+
+Um bug no iPhone ("Partir em missão" preso na loja do Capítulo III) passou por todos os testes anteriores. A causa: eles chamavam as funções do jogo por dentro, ou clicavam com mouse, e abriam a página direto do disco. Uma pessoa joga no celular, por toques, com o jogo vindo de um servidor. Por isso foi criada a bateria `tests/rigor.mjs`, com uma regra: quando um teste falha, muda o código, não o teste.
+
+### 7.1 O que é testado
+
+| # | Caso | Como |
+|---|---|---|
+| 1 | Todo arquivo de imagem e música citado no código existe | 214 arquivos conferidos |
+| 2 | Toda pintura de cena existe ou tem ilustração de reserva | 92 pinturas |
+| 3 | **Toda escolha visível das 221 cenas responde a um único toque** e leva a uma tela com saída | 315 toques num iPhone emulado |
+| 4 | **Partidas inteiras só com toques**, com cinema ligado e pulado com toque, da criação ao epílogo | 4 partidas; reprova se 4 toques seguidos não tiverem efeito |
+| 5 | Tela do personagem: todas as abas, itens, vestir, empunhar, forjar e fechar; toda imagem carrega | 105 toques |
+| 6 | Criação do herói por toques | |
+| 7 | Cinema com os 20 inimigos e 19 tipos de tomada | 380 tomadas |
+| 8 | O cinema nunca prende a tela: fecha sozinho a tempo | |
+| 9 | Nada vaza para os lados numa tela de 320 px | 6 telas |
+| 10 | 3.000 saves corrompidos ao acaso não quebram o jogo nem poluem o protótipo | |
+| 11 | Save da versão anterior (sem aparência nem galeria) continua jogável | |
+| 12 | **O toque que pula o cinema não atravessa** e aciona o botão de baixo | 6 tentativas em momentos diferentes |
+| 13 | Nenhum texto diz que um capítulo que já existe está "em preparação" | 221 cenas |
+| 14 | Nenhum arquivo pedido pelo jogo falta no servidor (erro 404) | |
+
+### 7.2 Bugs encontrados e corrigidos
+
+| # | Bug | Como aparecia | Correção |
+|---|---|---|---|
+| 1 | Escolha presa no celular | Cada escolha pedia dois toques; no iPhone, o segundo virava zoom e se perdia | Um toque basta; botões com `touch-action: manipulation` (versão 1.3.1) |
+| 2 | **Toque que atravessa o cinema** | O filme sumia no começo do toque, e o fim dele caía no botão de ataque por baixo, atacando de novo sem querer (3 de 6 tentativas) | Uma película invisível segura o resto do toque por 450 ms |
+| 3 | Texto desatualizado | O fim do Capítulo I dizia que o Capítulo II estava "em preparação" | Texto corrigido |
+| 4 | Ícone da aba ausente | O navegador pedia `favicon` e recebia erro 404 | Ícone criado a partir do retrato do kelpie |
 
 ---
 
@@ -216,6 +256,10 @@ npx playwright install chromium
 
 ```bash
 npm test
+```
+
+```bash
+npm run test:rigor
 ```
 
 ```bash

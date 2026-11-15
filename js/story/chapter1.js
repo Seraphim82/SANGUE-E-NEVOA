@@ -819,7 +819,7 @@ Ela tira dos ombros um manto feito da própria névoa e o põe nos seus. Depois 
 
 Em maio de 1297, em Lanark, um homem chamado William Wallace vai matar o xerife Heselrig, e a Escócia inteira vai pegar em armas. Mas a sua guerra é outra: encontrar a verdadeira Pedra do Destino antes da Cailleach.
 
-**Capítulo II: O Martelo e a Pedra** está em preparação.`;
+**Capítulo II: O Martelo e a Pedra** começa agora.`;
     },
     choices: [
       { t: "Começar o Capítulo II", go: "c2_inicio" },
