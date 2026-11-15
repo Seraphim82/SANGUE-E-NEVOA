@@ -222,12 +222,14 @@ ACAO_GERAIS = {
 }
 
 ACAO_INIMIGO = {
- "ataque": "This exact same character as in the reference image, same face, clothing and equipment, lunging forward toward "
-           "the left of the frame in a furious attack, weapon raised high, mouth open in a shout. Medium close-up, subject "
-           "on the right third of the frame, motion blur.",
- "atingido": "This exact same character as in the reference image, same face, clothing and equipment, at the instant of being "
-             "struck hard: body twisting away to the right, face contorted in pain, spray of blood and dust, staggering. "
-             "Medium close-up, subject on the right third of the frame.",
- "queda": "This exact same character as in the reference image, same clothing and equipment, collapsing to the muddy ground, "
-          "defeated, weapon falling from the hand, seen from a low angle in dim light. Subject on the right half of the frame.",
+ "ataque": "This exact same character or creature as in the reference image, same face, body, clothing and equipment, lunging "
+           "forward toward the left of the frame in a furious attack (weapon raised high, or claws and teeth bared if it is a "
+           "beast or a spirit), mouth open in a shout or snarl. Medium close-up, subject on the right third of the frame, motion blur.",
+ "atingido": "This exact same character or creature as in the reference image, same face, body, clothing and equipment, at the "
+             "instant of being struck hard: body twisting away to the right, face contorted in pain, spray of blood (or of water, "
+             "mist or dark ichor if it is a supernatural being) and dust, staggering. Medium close-up, subject on the right third "
+             "of the frame.",
+ "queda": "This exact same character or creature as in the reference image, same body, clothing and equipment, collapsing to "
+          "the muddy ground, defeated (a supernatural being dissolving into mist), seen from a low angle in dim light. Subject on "
+          "the right half of the frame.",
 }

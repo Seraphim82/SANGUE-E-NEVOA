@@ -166,7 +166,7 @@ const CINEMA = (() => {
     return { plate: `inimigo_${pose}_${foe?.pic}`, fallback: { foe, pose } };
   }
   function weaponPlate(kind) {
-    return { plate: `arma_${kind}_${state.weapon}`, fallback: { wide: true } };
+    return { plate: `arma_${kind}_${state.weapon}`, fallback: heroPlate("furia") };
   }
 
   /** Transforma as tomadas gravadas na lista de planos do filme. */
@@ -992,6 +992,8 @@ const CINEMA = (() => {
   function drawView(c, f, view, t, dx) {
     const im = view.plate ? plate(view.plate) : null;
     if (im) return cover(c, im, dx);
+    // Sem o plano, usa a reserva, que pode ser outro plano (o rosto do herói no lugar da arma).
+    if (view.plate && view.fallback.plate) return drawView(c, f, view.fallback, t, dx);
     const v = view.plate ? view.fallback : view;
     sceneBackdrop(c, f, t, v.wide ? 0.3 : 0.55);
     if (v.hero) {
