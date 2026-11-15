@@ -2,6 +2,10 @@
 
 **Crônicas das Terras Altas · Escócia, 1296–1314**
 
+### [▶ Jogar agora no navegador](https://seraphim82.github.io/SANGUE-E-NEVOA/)
+
+Funciona no computador, no tablet e no celular, sem instalar nada.
+
 RPG narrativo para navegador, com regras inspiradas em GURPS (testes de 3d6, atributos e perícias compradas com pontos), ambientado nas guerras de independência da Escócia e misturado ao folclore escocês: kelpies, Baobhan Sìth, o Barrete Vermelho, o Sluagh e a Cailleach, a Velha do Inverno.
 
 Você começa como gente comum de uma aldeia às margens do Clyde e atravessa dezoito anos de história, da noite em que a aldeia queima até a batalha de Bannockburn, ganhando experiência, equipamento e o poder que dorme no seu sangue.
