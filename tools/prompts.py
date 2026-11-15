@@ -149,3 +149,31 @@ RETRATOS.update({
  "guarda": "a hard-faced Scottish man-at-arms in the service of a traitor lord, leather and mail, a spear, cold eyes",
  "avatar": "the ancient Cailleach, hag goddess of winter, blue skin, one glowing eye, long white hair whipped by a blizzard, a staff of holly crowned with ice, colossal and terrifying",
 })
+
+# Retratos do herói: 4 aparências × 8 roupas, salvos em img/heroes/<aparência>_<roupa>.jpg.
+# A primeira roupa gerada de cada aparência serve de referência para as outras,
+# para o rosto continuar o mesmo enquanto o equipamento evolui.
+ESTILO_HEROI = ("Painterly realistic full-body portrait of the player hero of a dark historical-fantasy role-playing game set in "
+                "Scotland in 1296, oil-painting texture, dramatic warm rim light, standing in a ready combat stance facing "
+                "three-quarters to the right, whole body visible from head to feet, isolated on a pure black background "
+                "fading to black at the edges. Historically plausible late-13th-century clothing. No text, no frame, no logos. ")
+
+HEROIS_APARENCIA = {
+ "ruivo": "A young Scottish commoner man in his early twenties, weathered fair skin, unruly copper-red hair and a short red beard, grey-green eyes.",
+ "moreno": "A young Scottish commoner man in his early twenties, olive-tanned weathered skin, black hair tied back and a short dark beard, brown eyes.",
+ "ruiva": "A young Scottish commoner woman in her early twenties, freckled fair skin, long braided copper-red hair, grey-green eyes, strong and lean.",
+ "morena": "A young Scottish commoner woman in her early twenties, tanned weathered skin, long dark-brown hair in a loose braid, brown eyes, strong and lean.",
+}
+
+HEROIS_ROUPA = {
+ "la": "Wearing plain undyed wool tunic and hose, a simple leather belt, worn turnshoes.",
+ "gibao": "Wearing a padded quilted linen gambeson over a wool tunic, leather belt and boots.",
+ "tartan": "Wearing a cream wool tunic with a belted plaid wrapped over one shoulder, bare knees, wool hose.",
+ "couro": "Wearing a dark boiled-leather jerkin with visible stitching over a wool tunic, leather bracers.",
+ "malha": "Wearing a riveted mail hauberk and mail coif under a faded dark-red surcoat.",
+ "gibao_stirling": "Wearing a reinforced war gambeson with iron studs and a blue saltire badge, battle-worn after the bridge of Stirling.",
+ "peles": "Wearing heavy grey winter-wolf furs over leather, frost on the fur, a wolf-head hood thrown back.",
+ "nevoa": "Wearing a long flowing grey-blue cloak woven from mist, its edges dissolving into vapour, faint pale glow.",
+}
+
+HEROIS = {f"{a}_{r}": (a, r) for a in HEROIS_APARENCIA for r in HEROIS_ROUPA}

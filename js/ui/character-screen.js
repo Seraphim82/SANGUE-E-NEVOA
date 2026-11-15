@@ -167,6 +167,7 @@ function figState() {
     amulet: state.amulet,
     shield: canShield(state),
     woad: state.sangue >= 1,
+    ...(HERO_LOOKS[state.look] || HERO_LOOKS[DEFAULT_LOOK]).figure,
   };
   if (sel && owned(slot, sel)) {
     if (slot === "roupa") st.look = ARMOR[sel].look;
@@ -195,7 +196,20 @@ function startFig() {
     }
     const c = cv.getContext("2d");
     c.setTransform(w / FIG.W, 0, 0, h / FIG.H, 0, 0);
-    FIG.draw(c, reduce ? 2 : now / 1000, figState());
+    const st = figState();
+    // Com o retrato pintado da roupa escolhida, ele toma o lugar da figura desenhada.
+    const painted = heroPortrait(
+      state,
+      DASH.tab === "roupa" && owned("roupa", DASH.sel.roupa) ? DASH.sel.roupa : null,
+    );
+    if (painted) {
+      const breath = reduce ? 1 : 1 + 0.008 * Math.sin(now / 900);
+      c.fillStyle = "#0b0d10";
+      c.fillRect(0, 0, FIG.W, FIG.H);
+      const ph = FIG.H * breath;
+      const pw = (ph * painted.width) / painted.height;
+      c.drawImage(painted, (FIG.W - pw) / 2, FIG.H - ph, pw, ph);
+    } else FIG.draw(c, reduce ? 2 : now / 1000, st);
     if (!reduce) DASH.raf = requestAnimationFrame(step);
   };
   DASH.raf = requestAnimationFrame(step);
@@ -279,7 +293,7 @@ function renderDash() {
   <nav class="dash-tabs" aria-label="Seções">${SLOTS.map(([k, n]) => `<button class="dash-tab ${k === slot ? "on" : ""}" data-t="${k}">${n}${k === "evolucao" && ev ? `<span class="badge">${ev}</span>` : ""}</button>`).join("")}</nav>
   <div class="dash-body">
    <div class="figure"><canvas id="figcv" aria-label="Retrato do personagem"></canvas>
-    <div class="fig-stats"><span>PV <b>${state.hp}/${maxHP(state)}</b></span><span>RD <b>${armorRD(state)}</b></span><span>Esquiva <b>${dodge(state)}</b></span><span>Aparar <b>${parry(state)}</b></span><span>Dano <b>${fmtDmg(weaponDmg(state))}</b></span></div></div>
+    <div class="fig-stats"><span>PV <b>${state.hp}/${maxHP(state)}</b></span><span>RD <b>${armorRD(state)}</b></span><span>Esquiva <b>${dodge(state)}</b></span><span>Aparar <b>${parry(state)}</b></span><span>Dano <b>${fmtDmg(weaponDmg(state))}</b></span></div>${journeyHTML()}</div>
    <div class="dash-panel"><div class="tiles">${tiles}</div>
     <div class="detail">${
       own
@@ -302,9 +316,48 @@ function renderDash() {
   if (eq) eq.onclick = () => equipItem(slot, sel);
   const u = ov.querySelector("#dUp");
   if (u) u.onclick = () => doUpgrade(slot, sel);
+  drawJourney(ov);
   DASH.raf && cancelAnimationFrame(DASH.raf);
   DASH.raf = 0;
   startFig();
+}
+const ROMAN = ["", "I", "II", "III", "IV", "V", "VI"];
+/** A galeria da jornada: como o herói estava no começo de cada capítulo. */
+function journeyHTML() {
+  const list = state.journey || [];
+  if (!list.length) return "";
+  return `<div class="journey"><div class="lvl">Sua jornada</div><div class="journey-row">${list
+    .map(
+      (
+        j,
+        i,
+      ) => `<figure><canvas width="${FIG.W}" height="${FIG.H}" data-j="${i}" aria-label="Capítulo ${ROMAN[j.ch]}: ${esc(ARMOR[j.armor].n)}, ${esc(WEAPONS[j.weapon].n)}"></canvas>
+     <figcaption>Cap. ${ROMAN[j.ch]}</figcaption></figure>`,
+    )
+    .join("")}</div></div>`;
+}
+function drawJourney(root) {
+  const looks = (HERO_LOOKS[state.look] || HERO_LOOKS[DEFAULT_LOOK]).figure;
+  root.querySelectorAll("canvas[data-j]").forEach((cv) => {
+    const j = state.journey[Number(cv.dataset.j)];
+    if (!j) return;
+    const c = cv.getContext("2d");
+    const painted = heroPortrait(state, j.armor);
+    if (painted) {
+      const pw = (FIG.H * painted.width) / painted.height;
+      c.drawImage(painted, (FIG.W - pw) / 2, 0, pw, FIG.H);
+      return;
+    }
+    FIG.draw(c, 2, {
+      look: ARMOR[j.armor].look,
+      weapon: j.weapon,
+      wl: j.wl,
+      amulet: j.amulet,
+      shield: false,
+      woad: j.sangue >= 1,
+      ...looks,
+    });
+  });
 }
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {

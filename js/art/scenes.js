@@ -1646,14 +1646,54 @@ const ART = (() => {
     raf = 0;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const FX = { hit: {}, hurt: 0 };
-  function show(key, opts) {
-    cur = { key, opts: opts || {}, combat: null };
+  /** Tempo da fusão entre a pintura da cena anterior e a nova, em milissegundos. */
+  const CROSSFADE_MS = 900;
+  let prev = null;
+  function changeTo(next) {
+    if (cur && cur.key !== next.key && !reduce) prev = { ...cur, since: performance.now() };
+    cur = next;
     kick();
+  }
+  function show(key, opts) {
+    changeTo({ key, opts: opts || {}, combat: null });
   }
   function showCombat(key, getter) {
-    cur = { key, opts: {}, combat: getter };
-    kick();
+    changeTo({ key, opts: {}, combat: getter });
   }
+  /** Cenas cuja pintura já mostra o inimigo: em combate, usam a ilustração procedural sem ele. */
+  const PAINTED_WITH_FOE = new Set([
+    "vau",
+    "kelpie_rio",
+    "torre_dentro",
+    "caes",
+    "rochedos",
+    "lobos",
+    "boca",
+    "musgo",
+    "sluagh_ceu",
+    "tumulo",
+    "ponte",
+    "cerco",
+    "cailleach_final",
+    "callendar",
+  ]);
+
+  /**
+   * Pinta o fundo de uma cena: a pintura (com animações por cima) ou, se ela não existir
+   * ou já mostrar o inimigo durante um combate, a ilustração procedural.
+   */
+  function paintBackground(c, key, t, opts = {}) {
+    const im = IMGS[key];
+    const hidePaintedFoe = opts.combat && PAINTED_WITH_FOE.has(key);
+    if (!hidePaintedFoe && im && im.complete && im.naturalWidth) {
+      cover(c, im, t);
+      paintFx(c, t, key);
+      return;
+    }
+    const fn = SCENES[key] || SCENES[FALLBACK[key]] || SCENES.titulo;
+    fn(c, t, opts.combat ? { ...opts, bare: 1 } : opts);
+  }
+
   function draw(now) {
     const cv = document.getElementById("art");
     if (!cv || !cur) return;
@@ -1668,31 +1708,14 @@ const ART = (() => {
     const c = cv.getContext("2d");
     c.setTransform(w / W, 0, 0, h / H, 0, 0);
     const t = reduce ? 3 : now / 1000;
-    const fn = SCENES[cur.key] || SCENES[FALLBACK[cur.key]] || SCENES.titulo;
     c.clearRect(0, 0, W, H);
-    const im = IMGS[cur.key];
-    const dup =
-      cur.combat &&
-      {
-        vau: 1,
-        kelpie_rio: 1,
-        torre_dentro: 1,
-        caes: 1,
-        rochedos: 1,
-        lobos: 1,
-        boca: 1,
-        musgo: 1,
-        sluagh_ceu: 1,
-        tumulo: 1,
-        ponte: 1,
-        cerco: 1,
-        cailleach_final: 1,
-        callendar: 1,
-      }[cur.key];
-    if (!dup && im && im.complete && im.naturalWidth) {
-      cover(c, im, t);
-      paintFx(c, t, cur.key);
-    } else fn(c, t, cur.combat ? { ...cur.opts, bare: 1 } : cur.opts);
+    const fade = prev ? (now - prev.since) / CROSSFADE_MS : 1;
+    if (fade < 1) {
+      paintBackground(c, prev.key, t, prev.combat ? { ...prev.opts, combat: true } : prev.opts);
+      c.globalAlpha = fade * fade * (3 - 2 * fade);
+    } else prev = null;
+    paintBackground(c, cur.key, t, cur.combat ? { ...cur.opts, combat: true } : cur.opts);
+    c.globalAlpha = 1;
     wind += (windGoal - wind) * 0.08;
     if (!cur.combat && wind > 0.02) windLayer(c, t, wind);
     if (cur.combat) {
@@ -1786,5 +1809,20 @@ const ART = (() => {
     if (!document.hidden) kick();
   });
   addEventListener("resize", () => kick());
-  return { show, showCombat, FX, kick, setWind };
+  return {
+    show,
+    showCombat,
+    FX,
+    kick,
+    setWind,
+    paintBackground,
+    glow,
+    W,
+    H,
+    /** Retrato pintado (já recortado) de um inimigo, ou null se ainda não carregou. */
+    portrait: (k) => PORT[k] || null,
+    maskPortrait,
+    /** Silhueta procedural de um inimigo, usada quando não há retrato. */
+    foeSilhouette: (c, k, x, y, t, col) => (FOE[k] || FOE.recruta)(c, x, y, t, col),
+  };
 })();

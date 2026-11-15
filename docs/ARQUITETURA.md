@@ -78,6 +78,21 @@ c2_exemplo: {
 
 Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg` existir, ela vira o fundo; senão, o jogo usa uma ilustração procedural (ou a de `FALLBACK`, em `js/art/scenes.js`). Em combate, cenas cuja pintura já mostra o inimigo usam a versão procedural, para não duplicar a figura.
 
+## Modo cinema
+
+`js/art/cinema.js` encena o combate sem tocar na lógica. Cada botão de ação passa pela função `film()` de `js/ui/render.js`: ela chama `CINEMA.begin()`, roda a ação normalmente e chama `CINEMA.end()`. Enquanto a ação roda, `js/core/combat.js` registra tomadas com `CINEMA.shot({...})` (ataque do herói, de aliado ou do inimigo, magia, cura, defesa, finta, amuleto, fuga, fim do combate). A lógica e a página terminam na hora; o cinema só desenha por cima, numa camada de tela cheia.
+
+- Os sons do combate ficam guardados (`AUD.hold()` e `AUD.release()`) e tocam no momento do golpe na cena.
+- Cada tomada vira um roteiro com eventos marcados no tempo. Os eventos mudam o alvo de molas amortecidas (posição, altura, braço, opacidade, zoom e centro da câmera), e as molas fazem o movimento. A inclinação do corpo vem da velocidade.
+- O herói é o retrato pintado de `img/heroes/` se existir, ou a figura de `js/art/figure.js` sem fundo e com o braço girando (`armAngle`). Os inimigos usam os retratos de `img/portraits/` ou as silhuetas procedurais.
+- `CINEMA.shot()` sem gravação em andamento não faz nada, então chamar as funções de combate direto (como fazem os testes de stress) não abre filme nenhum.
+- Um clique, toque ou tecla para o filme. Com "reduzir movimento" no sistema ou com o modo desligado no menu (`sen-cinema` no `localStorage`), nada é encenado. Um limite de 20 segundos e um `try/catch` no quadro garantem que a camada nunca prenda o jogador.
+- `CINEMA.titleCard()` abre os capítulos. `go()` chama essa função ao entrar pela primeira vez numa cena `cN_inicio`, e também registra o herói na galeria da jornada (`recordJourney()`).
+
+## Aparência e galeria da jornada
+
+`js/data/appearance.js` define as aparências (`HERO_LOOKS`), os retratos pintados disponíveis (`HERO_PORTRAITS`) e a galeria. `state.look` e `state.journey` são validados em `sanitizeSave()`: aparência desconhecida volta ao padrão, e a galeria aceita só um registro por capítulo, com roupa, arma e amuleto que existem.
+
 ## Segurança
 
 - Todo texto vindo do jogador ou do save passa por `esc()` antes de ir para a página. Use `heroName()` para o nome do herói.
@@ -95,6 +110,7 @@ Como os scripts compartilham o escopo global, `tools/globais.mjs` lê o `index.h
 | `tests/playthrough.mjs` | Grafo da história com várias combinações de marcas; partidas completas com um jogador automático que evolui o personagem |
 | `tests/sabotage.mjs` | 18 cenários de falha: saves corrompidos e adulterados, armazenamento bloqueado, imagens fora do ar, sem áudio, cliques em rajada, redimensionamento |
 | `tests/security.mjs` | XSS pelo nome e pelo save, poluição de protótipo, CSP, tráfego de rede e varredura do código |
+| `tests/cinema.mjs` | Cinema abre, fecha e pode ser pulado; todas as ações e magias encenadas sem erro; modos do menu; movimento reduzido; cartela de capítulo; aparência e galeria, inclusive adulteradas no save |
 | `tests/stress.mjs` | Volume de partidas, sessão longa e memória, desempenho da animação, combate em massa, limite de partículas |
 
 Rode `npm test` sempre depois de mexer no código, e `npm run test:stress` se a mudança tocar em combate, animação ou desempenho.

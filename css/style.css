@@ -1270,6 +1270,130 @@ input[type="text"] {
     font-size: 16.5px;
   }
 }
+/* Escolha da aparência na criação */
+.looks {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 6px 0 18px;
+}
+.look {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  font:
+    600 12px/1.2 "Alegreya Sans SC",
+    sans-serif;
+  cursor: pointer;
+}
+.look canvas {
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 400 / 520;
+  height: auto;
+}
+.look.sel {
+  border-color: #e08a45;
+  box-shadow: 0 0 0 1px #e08a45 inset;
+}
+@media (max-width: 520px) {
+  .looks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Galeria da jornada na tela do personagem */
+.journey {
+  margin-top: 14px;
+  text-align: center;
+}
+.journey-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.journey figure {
+  margin: 0;
+  width: 54px;
+}
+.journey canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 400 / 520;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.journey figcaption {
+  font:
+    600 11px/1.4 "Alegreya Sans SC",
+    sans-serif;
+  opacity: 0.7;
+}
+/* Cinema: a luta encenada depois de cada ação, e a abertura de cada capítulo */
+.cinema {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  cursor: pointer;
+  animation: cinema-in 0.35s ease-out;
+}
+.cinema[hidden] {
+  display: none;
+}
+.cinema canvas {
+  width: min(100vw, calc(100vh * 1000 / 420));
+  aspect-ratio: 1000 / 420;
+  display: block;
+}
+.cinema-skip {
+  position: absolute;
+  bottom: 12px;
+  margin: 0;
+  font:
+    600 12px/1 "Alegreya Sans SC",
+    sans-serif;
+  letter-spacing: 0.08em;
+  color: rgba(230, 235, 236, 0.45);
+}
+@keyframes cinema-in {
+  from {
+    opacity: 0;
+  }
+}
+/* O texto da cena entra parágrafo a parágrafo, como num filme */
+.prose p {
+  animation: line-in 0.7s ease-out both;
+}
+.prose p:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.prose p:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.prose p:nth-child(4) {
+  animation-delay: 0.36s;
+}
+.prose p:nth-child(n + 5) {
+  animation-delay: 0.48s;
+}
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

@@ -4,6 +4,8 @@
 "use strict";
 
 const FIG = (() => {
+  /** Ponto em torno do qual o braço direito gira nos golpes. */
+  const SHOULDER = { x: 248, y: 192 };
   const W = 400,
     H = 520,
     TAU = Math.PI * 2;
@@ -300,11 +302,8 @@ const FIG = (() => {
       c.fill();
     }
   }
-  function draw(c, t, st) {
-    const P = pats(c),
-      L = st.look || {},
-      SKIN = "#d4ab86",
-      HAIR = "#3a2618";
+  /** Fundo do retrato: luz de cima, poeira no ar e sombra no chão. */
+  function drawBackdrop(c, t) {
     const g = c.createRadialGradient(200, 190, 10, 200, 260, 380);
     g.addColorStop(0, "#2a3b44");
     g.addColorStop(1, "#090d0f");
@@ -328,6 +327,22 @@ const FIG = (() => {
     c.scale(1, 0.16);
     glow(c, 0, 0, 180, "0,0,0", 0.6);
     c.restore();
+  }
+
+  /**
+   * Desenha o herói.
+   * @param st.look       aparência da vestimenta
+   * @param st.armAngle   giro do braço direito e da arma a partir do ombro, em radianos (para golpes)
+   * @param st.transparent sem fundo, para usar a figura como ator nas cenas de cinema
+   * @param st.skin cor da pele; st.hair cor do cabelo
+   * @param st.longHair cabelo longo, solto sobre os ombros; st.beard barba
+   */
+  function draw(c, t, st) {
+    const P = pats(c),
+      L = st.look || {},
+      SKIN = st.skin || "#d4ab86",
+      HAIR = st.hair || "#3a2618";
+    if (!st.transparent) drawBackdrop(c, t);
     const br = Math.sin(t * 1.7) * 1.3,
       sw = Math.sin(t * 1.1) * 5;
     c.save();
@@ -548,16 +563,6 @@ const FIG = (() => {
       c.arc(125, 322, 11, 0, TAU);
       c.fill();
     }
-    limb(
-      c,
-      [
-        [244, 192],
-        [266, 254],
-        [276, 316],
-      ],
-      24,
-      sleeve,
-    );
     if (L.plaid)
       limb(
         c,
@@ -568,10 +573,6 @@ const FIG = (() => {
         26,
         P.tartan,
       );
-    c.fillStyle = SKIN;
-    c.beginPath();
-    c.arc(277, 322, 11, 0, TAU);
-    c.fill();
     c.fillStyle = SKIN;
     c.fillRect(190, 152, 20, 30);
     if (L.coif) {
@@ -599,6 +600,18 @@ const FIG = (() => {
       c.quadraticCurveTo(158, 176, 170 + sw * 0.3, 206);
       c.lineTo(182, 150);
       c.fill();
+      if (st.longHair) {
+        c.beginPath();
+        c.moveTo(228, 126);
+        c.quadraticCurveTo(244, 176, 232 - sw * 0.3, 212);
+        c.lineTo(218, 150);
+        c.fill();
+        c.beginPath();
+        c.moveTo(174, 140);
+        c.quadraticCurveTo(160, 196, 176 + sw * 0.3, 222);
+        c.lineTo(186, 160);
+        c.fill();
+      }
     }
     c.fillStyle = SKIN;
     c.beginPath();
@@ -619,8 +632,38 @@ const FIG = (() => {
     c.fillRect(207, 134, 7, 3);
     c.fillStyle = "rgba(120,60,40,.6)";
     c.fillRect(194, 156, 12, 2);
+    if (st.beard) {
+      c.fillStyle = HAIR;
+      c.beginPath();
+      c.moveTo(172, 140);
+      c.quadraticCurveTo(176, 178, 200, 184);
+      c.quadraticCurveTo(224, 178, 228, 140);
+      c.quadraticCurveTo(214, 162, 200, 162);
+      c.quadraticCurveTo(186, 162, 172, 140);
+      c.fill();
+    }
     amulet(c, st.amulet);
+    // Braço direito e arma giram juntos a partir do ombro.
+    c.save();
+    c.translate(SHOULDER.x, SHOULDER.y);
+    c.rotate(st.armAngle || 0);
+    c.translate(-SHOULDER.x, -SHOULDER.y);
+    limb(
+      c,
+      [
+        [244, 192],
+        [266, 254],
+        [276, 316],
+      ],
+      24,
+      sleeve,
+    );
+    c.fillStyle = SKIN;
+    c.beginPath();
+    c.arc(277, 322, 11, 0, TAU);
+    c.fill();
     weapon(c, st.weapon, st.wl || 0, t);
+    c.restore();
     if (L.glow) {
       for (let i = 0; i < 6; i++) {
         const y = 470 - ((t * 20 + i * 80) % 420);

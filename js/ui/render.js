@@ -108,16 +108,25 @@ function renderCombat() {
         renderCombat();
       }),
   );
-  el.querySelector("#aAtk").onclick = () => playerAttack("normal");
-  el.querySelector("#aAll").onclick = () => playerAttack("allout");
-  el.querySelector("#aDef").onclick = playerTotalDef;
-  el.querySelector("#aHerb").onclick = playerHerbs;
-  el.querySelectorAll("[data-tech]").forEach((b) => (b.onclick = () => playerTech(b.dataset.tech)));
+  // Cada ação é gravada pelo cinema e encenada depois que a lógica termina.
+  const film = (fn) => () => {
+    CINEMA.begin(state.combat);
+    try {
+      fn();
+    } finally {
+      CINEMA.end();
+    }
+  };
+  el.querySelector("#aAtk").onclick = film(() => playerAttack("normal"));
+  el.querySelector("#aAll").onclick = film(() => playerAttack("allout"));
+  el.querySelector("#aDef").onclick = film(playerTotalDef);
+  el.querySelector("#aHerb").onclick = film(playerHerbs);
+  el.querySelectorAll("[data-tech]").forEach((b) => (b.onclick = film(() => playerTech(b.dataset.tech))));
   const am = el.querySelector("#aAmu");
-  if (am) am.onclick = playerAmulet;
+  if (am) am.onclick = film(playerAmulet);
   const fl = el.querySelector("#aFlee");
-  if (fl) fl.onclick = playerFlee;
-  el.querySelectorAll("[data-sp]").forEach((b) => (b.onclick = () => playerCast(b.dataset.sp)));
+  if (fl) fl.onclick = film(playerFlee);
+  el.querySelectorAll("[data-sp]").forEach((b) => (b.onclick = film(() => playerCast(b.dataset.sp))));
   ART.showCombat(C.art || meta(state.scene)[0], () =>
     state && state.combat ? { foes: state.combat.foes, sel: selTarget } : null,
   );

@@ -26,6 +26,8 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 - **Progressão:** pontos de personagem, técnicas de combate, magia druídica em quatro círculos (Sangue Antigo), vestimentas, armas e amuletos que evoluem na forja até o nível Lendário.
 - **Combate por turnos** com aliados, amuletos de uso ativo, frio, sede e regeneração dos inimigos.
 - **117 pinturas** (97 cenas e 20 retratos de inimigos) com animações por cima: névoa, brasas, neve e vento.
+- **Modo cinema:** depois de cada ação no combate, a luta é encenada em tela cheia, com faixas de cinema, câmera, golpes por tipo de arma, magias, faíscas e câmera lenta no acerto crítico. Os movimentos usam molas amortecidas, suaves e contínuos. Cada capítulo abre com uma cartela de título, e as pinturas das cenas se fundem umas nas outras. Dá para pular com um toque, deixar mais rápido ou desligar no menu.
+- **Aparência do herói** escolhida na criação, e uma **galeria da jornada** na tela do personagem que mostra como ele estava no começo de cada capítulo.
 - **Trilha sonora gerada em tempo real** (Web Audio API) em cinco climas, com vinhetas e efeitos.
 
 | Cena | Combate | Personagem |
@@ -42,17 +44,18 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 │   ├── core/               Mecânica, estado, validação de save, combate e fluxo entre cenas
 │   ├── story/              Capítulos I a VI e a tabela de imagem e música de cada cena
 │   ├── ui/                 Telas: cena, ficha, criação, evolução, personagem, menu, vento
-│   ├── art/                Ilustração das cenas e retrato animado do herói
+│   ├── art/                Ilustração das cenas, retrato animado do herói e modo cinema
 │   ├── audio/              Trilha sonora e efeitos
 │   └── main.js             Inicialização
 ├── img/scenes/             Pinturas das cenas (21:9)
 ├── img/portraits/          Retratos dos inimigos (3:4)
+├── img/heroes/             Retratos pintados do herói, por aparência e roupa (quando gerados)
 ├── docs/
 │   ├── livro-do-jogador.md     Regras completas, capítulos e bestiário
 │   ├── ARQUITETURA.md          Como o código funciona e como acrescentar conteúdo
 │   ├── RELATORIO-DE-QUALIDADE.md  Revisão de código e testes de sabotagem, stress e segurança
 │   └── analise-gemini.md       Revisão de game design feita com o Gemini
-├── tests/                  História, sabotagem, stress e segurança (Playwright)
+├── tests/                  História, sabotagem, stress, segurança e cinema (Playwright)
 ├── tools/                  Geração de imagens e consulta ao Gemini (Python); globais do ESLint
 └── .github/workflows/      Integração contínua
 ```
@@ -73,7 +76,8 @@ npx playwright install chromium
 
 | Comando | O que faz |
 |---|---|
-| `npm test` | Lint e os testes de história, sabotagem e segurança |
+| `npm test` | Lint e os testes de história, sabotagem, segurança e cinema |
+| `npm run test:cinema` | Só os testes do modo cinema, da aparência e da galeria da jornada |
 | `npm run test:stress` | Stress: 200 partidas completas, sessão longa, desempenho, 3.000 combates (cerca de 4 minutos) |
 | `npm run lint` | ESLint em todo o projeto |
 | `npm run format` | Formata o código com Prettier |
@@ -97,6 +101,8 @@ export GEMINI_API_KEY="sua-chave-do-google-ai-studio"
 ```bash
 python3 tools/gerar_imagens.py aldeia retrato:kelpie
 ```
+
+Os retratos do herói usam a chave `heroi:<aparência>_<roupa>` (por exemplo `heroi:ruiva_malha`). Gere primeiro o de roupas de lã de cada aparência: ele serve de referência para o rosto nas outras roupas. Depois acrescente as chaves geradas em `HERO_PORTRAITS`, em `js/data/appearance.js`. Enquanto um retrato não existir, o jogo desenha o herói no canvas.
 
 Os prompts ficam em `tools/prompts.py`. Sem argumentos, o script gera só as imagens que ainda não existem.
 

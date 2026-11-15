@@ -530,7 +530,21 @@ const AUD = (() => {
     music.gain.linearRampToValueAtTime(0.5, now + 1.8);
   }
   let lastSting = 0;
+  /** Sons guardados enquanto o cinema grava uma ação; ele os toca na hora do golpe. */
+  let held = null;
+  function hold() {
+    held = [];
+  }
+  function release() {
+    const out = held || [];
+    held = null;
+    return out;
+  }
   function sting(name) {
+    if (held) {
+      if (held.length < 40) held.push(name);
+      return;
+    }
     if (!live() || !pref.sfx) return;
     const t = ctx.currentTime + 0.02,
       d = sfx;
@@ -633,5 +647,5 @@ const AUD = (() => {
     noise(sfx, t, strong ? 1.7 : 1.3, strong ? 0.32 : 0.15, 320, "bandpass", 0.9, strong ? 1500 : 950);
     noise(sfx, t + 0.1, strong ? 1.4 : 1, strong ? 0.12 : 0.06, 2500, "highpass", 0.5);
   }
-  return { unlock, mood, sting, setMusic, setSfx, pref, gust };
+  return { unlock, mood, sting, hold, release, setMusic, setSfx, pref, gust };
 })();

@@ -5,6 +5,7 @@ Uso:
     python3 tools/gerar_imagens.py              # gera tudo o que ainda não existe
     python3 tools/gerar_imagens.py aldeia fogo  # gera (ou refaz) cenas específicas
     python3 tools/gerar_imagens.py retrato:kelpie
+    python3 tools/gerar_imagens.py heroi:ruiva_malha
 
 As cenas são salvas em img/scenes/<chave>.jpg (1600 px, 21:9) e os retratos em
 img/portraits/<chave>.jpg (720 px, 3:4). Requer: pip install pillow
@@ -22,7 +23,16 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
-from prompts import CENAS, ESTILO, ESTILO_RETRATO, RETRATOS  # noqa: E402
+from prompts import (  # noqa: E402
+    CENAS,
+    ESTILO,
+    ESTILO_HEROI,
+    ESTILO_RETRATO,
+    HEROIS,
+    HEROIS_APARENCIA,
+    HEROIS_ROUPA,
+    RETRATOS,
+)
 
 RAIZ = Path(__file__).resolve().parent.parent
 MODELO = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-3-pro-image")
@@ -41,17 +51,37 @@ def chave_api():
 
 
 def destino(chave):
+    if chave.startswith("heroi:"):
+        return RAIZ / "img" / "heroes" / f"{chave[6:]}.jpg"
     if chave.startswith("retrato:"):
         return RAIZ / "img" / "portraits" / f"{chave[8:]}.jpg"
     return RAIZ / "img" / "scenes" / f"{chave}.jpg"
 
 
+def partes_heroi(nome):
+    """Texto do retrato do herói e, se já existir, o retrato em lã da mesma aparência como referência."""
+    aparencia, roupa = HEROIS[nome]
+    texto = ESTILO_HEROI + HEROIS_APARENCIA[aparencia] + " " + HEROIS_ROUPA[roupa]
+    base = destino(f"heroi:{aparencia}_la")
+    if roupa == "la" or not base.exists():
+        return [{"text": texto}]
+    referencia = base64.b64encode(base.read_bytes()).decode()
+    return [
+        {"inlineData": {"mimeType": "image/jpeg", "data": referencia}},
+        {"text": "Paint this exact same person, same face, hair and build, in a new portrait. " + texto},
+    ]
+
+
 def gerar(chave):
-    retrato = chave.startswith("retrato:")
-    nome = chave[8:] if retrato else chave
-    texto = ESTILO_RETRATO + RETRATOS[nome] if retrato else ESTILO + CENAS[nome]
+    heroi = chave.startswith("heroi:")
+    retrato = chave.startswith("retrato:") or heroi
+    if heroi:
+        partes = partes_heroi(chave[6:])
+    else:
+        nome = chave[8:] if retrato else chave
+        partes = [{"text": ESTILO_RETRATO + RETRATOS[nome] if retrato else ESTILO + CENAS[nome]}]
     corpo = {
-        "contents": [{"role": "user", "parts": [{"text": texto}]}],
+        "contents": [{"role": "user", "parts": partes}],
         "generationConfig": {
             "responseModalities": ["IMAGE"],
             "imageConfig": {"aspectRatio": "3:4" if retrato else "21:9"},
@@ -85,7 +115,9 @@ def gerar(chave):
 
 
 def main():
-    todas = list(CENAS) + [f"retrato:{k}" for k in RETRATOS]
+    # Os retratos em lã vêm primeiro: servem de referência para as outras roupas.
+    herois = sorted(HEROIS, key=lambda k: not k.endswith("_la"))
+    todas = list(CENAS) + [f"retrato:{k}" for k in RETRATOS] + [f"heroi:{k}" for k in herois]
     chaves = sys.argv[1:] or [k for k in todas if not destino(k).exists()]
     for chave in chaves:
         try:

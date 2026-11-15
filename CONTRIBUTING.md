@@ -40,6 +40,6 @@ npm run format
 npm test
 ```
 
-`npm test` roda lint, o teste de história, os testes de sabotagem e os de segurança. Se a mudança mexe em combate, desempenho ou animação, rode também `npm run test:stress`.
+`npm test` roda lint, o teste de história e os testes de sabotagem, segurança e cinema. Se a mudança mexe em combate, desempenho ou animação, rode também `npm run test:stress`.
 
 No pull request, descreva o que mudou e por quê, e como você testou. Se a mudança altera regras ou números de equilíbrio, atualize o [Livro do Jogador](docs/livro-do-jogador.md).

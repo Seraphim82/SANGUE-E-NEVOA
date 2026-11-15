@@ -54,6 +54,13 @@ function clog(h) {
   state.combat.log.push(h);
 }
 const rtxt = (r) => `<span class="r">[3d6: ${r.dice.join("+")} = ${r.sum} contra ${r.target}]</span>`;
+/** Como o cinema encena o golpe da arma atual: corte, impacto, perfuração, pedra ou flecha. */
+function strikeKind(wkey) {
+  if (wkey === "funda") return "stone";
+  if (wkey === "arco" || wkey === "arco_longo") return "arrow";
+  return WEAPONS[wkey]?.type || "cr";
+}
+const rollInfo = (r) => ({ dice: r.dice, sum: r.sum, target: r.target });
 function aliveFoes() {
   return state.combat.foes.filter((f) => f.hp > 0);
 }
@@ -79,8 +86,10 @@ function playerAttack(mode) {
   const r = test(tgt);
   C.last = r;
   AUD.sting("dado");
+  const kind = strikeKind(state.weapon);
   if (!r.ok) {
     AUD.sting("erro");
+    CINEMA.shot({ type: "strike", by: "hero", foe: selTarget, outcome: "miss", kind, roll: rollInfo(r) });
     clog(
       `Você ataca ${f.n} com ${w.n.toLowerCase()} e erra. ${rtxt(r)}${r.critFail ? ' <span class="bad">Falha crítica! Você perde o equilíbrio.</span>' : ""}`,
     );
@@ -91,6 +100,7 @@ function playerAttack(mode) {
     const d = test(f.def);
     if (d.ok) {
       AUD.sting("erro");
+      CINEMA.shot({ type: "strike", by: "hero", foe: selTarget, outcome: "parry", kind, roll: rollInfo(r) });
       clog(
         `Você acerta, mas ${f.n} se defende. ${rtxt(r)} <span class="r">defesa ${d.sum} contra ${f.def}</span>`,
       );
@@ -104,6 +114,17 @@ function playerAttack(mode) {
   let pen = Math.max(0, raw - effRD);
   let inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[w.type].m)) : 0;
   f.hp -= inj;
+  CINEMA.shot({
+    type: "strike",
+    by: "hero",
+    foe: selTarget,
+    outcome: "hit",
+    kind,
+    dmg: inj,
+    crit: r.critOk,
+    killed: f.hp <= 0,
+    roll: rollInfo(r),
+  });
   ART.FX.hit[selTarget] = performance.now();
   AUD.sting("golpe");
   clog(
@@ -155,13 +176,17 @@ function playerTech(k) {
     AUD.sting("dado");
     if (r.ok) {
       const d = test(f.def);
+      CINEMA.shot({ type: "feint", foe: selTarget, ok: !d.ok || r.critOk, roll: rollInfo(r) });
       if (!d.ok || r.critOk) {
         f.feinted = true;
         clog(
           `<span class="ok">Você finge um golpe e ${f.n} morde a isca. O próximo ataque não poderá ser defendido.</span> ${rtxt(r)}`,
         );
       } else clog(`${f.n} não cai na finta. ${rtxt(r)}`);
-    } else clog(`Sua finta sai desajeitada. ${rtxt(r)}`);
+    } else {
+      CINEMA.shot({ type: "feint", foe: selTarget, ok: false, roll: rollInfo(r) });
+      clog(`Sua finta sai desajeitada. ${rtxt(r)}`);
+    }
     return enemyPhase();
   }
   if (k === "folego") {
@@ -171,6 +196,7 @@ function playerTech(k) {
     const b = state.hp;
     state.hp = Math.min(maxHP(state), state.hp + d.total);
     state.fp = Math.min(maxFP(state), state.fp + 2);
+    CINEMA.shot({ type: "heal", source: "folego", amount: state.hp - b });
     AUD.sting("sucesso");
     clog(`<span class="ok">Você puxa o ar frio das Highlands: +${state.hp - b} PV e +2 PF.</span>`);
     return enemyPhase();
@@ -180,6 +206,7 @@ function playerAmulet() {
   const C = state.combat;
   if (C.used.amu || !state.amulet) return;
   C.used.amu = 1;
+  CINEMA.shot({ type: "amulet", key: state.amulet });
   AUD.sting("magia");
   if (state.amulet === "sorveira") {
     C.rowan = 3;
@@ -217,6 +244,7 @@ function playerTotalDef() {
   const C = state.combat;
   C.totaldef = true;
   C.allout = false;
+  CINEMA.shot({ type: "guard" });
   clog("Você assume uma <b>defesa total</b> (+2 nas defesas).");
   enemyPhase();
 }
@@ -235,11 +263,14 @@ function playerCast(k) {
   const r = test(lv - C.shock);
   C.last = r;
   if (!r.ok) {
+    CINEMA.shot({ type: "spell", key: k, foe: selTarget, outcome: "fail", roll: rollInfo(r) });
     clog(`Você conjura ${SK[k].n}, mas a magia se dissipa. ${rtxt(r)}`);
     if (r.critFail) addSinal();
     return enemyPhase();
   }
   const f = C.foes[selTarget];
+  const hpBefore = C.foes.map((g) => Math.max(0, g.hp));
+  const hpStart = state.hp;
   AUD.sting("magia");
   if (k !== "sp_cura" && k !== "sp_nevoa") ART.FX.hit[selTarget] = performance.now();
   if (k === "sp_luz") {
@@ -291,6 +322,17 @@ function playerCast(k) {
     state.hp = Math.min(maxHP(state), state.hp + d.total);
     clog(`<span class="ok">Uma luz de primavera fecha suas feridas: +${state.hp - b} PV.</span> ${rtxt(r)}`);
   }
+  CINEMA.shot({
+    type: "spell",
+    key: k,
+    foe: selTarget,
+    outcome: "ok",
+    dmg: Math.max(0, hpBefore[selTarget] - Math.max(0, f.hp)),
+    heal: state.hp - hpStart,
+    killed: f.hp <= 0 && hpBefore[selTarget] > 0,
+    all: C.foes.map((g, i) => ({ foe: i, dmg: Math.max(0, hpBefore[i] - Math.max(0, g.hp)) })),
+    roll: rollInfo(r),
+  });
   if (f.hp <= 0 && k !== "sp_tempestade" && k !== "sp_estacoes") clog(`<span class="ok">${f.n} cai.</span>`);
   enemyPhase();
 }
@@ -300,7 +342,9 @@ function playerHerbs() {
   state.inv.ervas--;
   C.allout = false;
   C.totaldef = false;
+  const before = state.hp;
   const r = healHerbs();
+  CINEMA.shot({ type: "heal", source: "ervas", amount: state.hp - before });
   clog(r);
   enemyPhase();
 }
@@ -324,10 +368,12 @@ function playerFlee() {
     return;
   }
   if (C.mist) {
+    CINEMA.shot({ type: "flee", ok: true });
     clog("Você some na névoa.");
     return endCombat("flee");
   }
   const r = test(state.attrs.DX);
+  CINEMA.shot({ type: "flee", ok: r.ok });
   if (r.ok) {
     clog(`Você foge! ${rtxt(r)}`);
     return endCombat("flee");
@@ -342,12 +388,15 @@ function enemyPhase() {
     const fs = aliveFoes();
     if (!fs.length) break;
     const f = C.foes[selTarget] && C.foes[selTarget].hp > 0 ? C.foes[selTarget] : fs[0];
+    const fi = C.foes.indexOf(f);
     const r = test(a.skill);
     if (!r.ok) {
+      CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "miss" });
       clog(`${a.n} ataca ${f.n} e erra.`);
       continue;
     }
     if (test(f.def).ok) {
+      CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "parry" });
       clog(`${a.n} ataca, mas ${f.n} se defende.`);
       continue;
     }
@@ -355,6 +404,7 @@ function enemyPhase() {
     const pen = Math.max(0, d.total + (a.fey && f.fey ? 2 : 0) - f.rd);
     const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[a.type].m)) : 0;
     f.hp -= inj;
+    CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "hit", dmg: inj, killed: f.hp <= 0 });
     clog(`<span class="ok">${a.n} acerta ${f.n}: ${inj} de dano.</span>`);
     if (f.hp <= 0) clog(`<span class="ok">${f.n} cai.</span>`);
   }
@@ -363,7 +413,9 @@ function enemyPhase() {
   let took = 0;
   for (const f of aliveFoes()) {
     if (state.hp <= 0) break;
+    const fi = C.foes.indexOf(f);
     if (f.stun) {
+      CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome: "stunned" });
       f.stun = 0;
       clog(`${f.n} ainda está atordoado e não ataca.`);
       continue;
@@ -376,6 +428,7 @@ function enemyPhase() {
       (C.stone > 0 ? 2 : 0);
     const r = test(atk);
     if (!r.ok) {
+      CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome: "miss", roll: rollInfo(r) });
       clog(`${f.n} ataca e erra. ${rtxt(r)}`);
       continue;
     }
@@ -385,6 +438,8 @@ function enemyPhase() {
         dv0 + (C.totaldef ? 2 : 0) + (f.fey && state.amulet === "sorveira" ? 2 : 0) - (C.feroz ? 2 : 0);
       const d = test(dv);
       if (d.ok) {
+        const outcome = dn === "Esquiva" ? "dodge" : dn === "Bloqueio" ? "block" : "parry";
+        CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome, roll: rollInfo(r) });
         clog(
           `${f.n} ataca, mas você usa ${dn.toLowerCase()} e evita o golpe. <span class="r">[defesa ${d.sum} contra ${dv}]</span>`,
         );
@@ -397,6 +452,15 @@ function enemyPhase() {
     const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[f.type].m)) : 0;
     state.hp -= inj;
     took += inj;
+    CINEMA.shot({
+      type: "strike",
+      by: "foe",
+      foe: fi,
+      outcome: inj > 0 ? "hit" : "block",
+      dmg: inj,
+      crit: r.critOk,
+      roll: rollInfo(r),
+    });
     if (inj > 0) {
       ART.FX.hurt = performance.now();
       AUD.sting("ferido");
@@ -462,6 +526,7 @@ function endCombat(res) {
   const spec = C.spec;
   state.combat = null;
   state.banner = null;
+  CINEMA.shot({ type: "end", result: res });
   if (res === "win") {
     AUD.sting("vitoria");
     const xp = C.foes.reduce((a, f) => a + f.xp, 0);
@@ -486,6 +551,7 @@ function endCombat(res) {
   }
 }
 function die() {
+  CINEMA.shot({ type: "end", result: "death" });
   AUD.sting("derrota");
   state.dead = true;
   state.combat = null;

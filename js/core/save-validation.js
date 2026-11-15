@@ -148,6 +148,30 @@ function sanitizeCombat(raw) {
   };
 }
 
+/** Valida a galeria da jornada: um retrato por capítulo, só com peças que existem. */
+function sanitizeJourney(raw) {
+  if (!Array.isArray(raw)) return [];
+  const seen = new Set();
+  const out = [];
+  for (const j of raw.slice(0, JOURNEY_MAX)) {
+    if (!isPlainObject(j)) continue;
+    const ch = j.ch;
+    if (!Number.isInteger(ch) || ch < 1 || ch > JOURNEY_MAX || seen.has(ch)) continue;
+    if (!Object.hasOwn(ARMOR, j.armor) || !Object.hasOwn(WEAPONS, j.weapon)) continue;
+    seen.add(ch);
+    out.push({
+      ch,
+      armor: j.armor,
+      weapon: j.weapon,
+      wl: clampInt(j.wl, 0, 3, 0),
+      amulet: Object.hasOwn(AMULETS, j.amulet) ? j.amulet : null,
+      sangue: clampInt(j.sangue, 0, SAVE_LIMITS.maxBloodLevel, 0),
+      hpMax: clampInt(j.hpMax, 1, 99, 10),
+    });
+  }
+  return out;
+}
+
 /**
  * Valida um save. Devolve um herói pronto para jogar ou `null`.
  * @param {unknown} raw objeto lido do armazenamento (já convertido de JSON)
@@ -160,6 +184,7 @@ function sanitizeSave(raw) {
   const name = typeof raw.name === "string" ? raw.name.trim().slice(0, SAVE_LIMITS.nameLength) : "";
   const c = newChar(name || "Rowan", raw.origin);
   c.mode = "playing";
+  if (typeof raw.look === "string" && Object.hasOwn(HERO_LOOKS, raw.look)) c.look = raw.look;
 
   for (const a of Object.keys(c.attrs)) {
     c.attrs[a] = clampInt(raw.attrs?.[a], SAVE_LIMITS.attrMin, SAVE_LIMITS.attrMax, c.attrs[a]);
@@ -203,6 +228,8 @@ function sanitizeSave(raw) {
     for (const id of Object.keys(raw.visited)) if (Object.hasOwn(SC, id)) c.visited[id] = 1;
   c.scene = sanitizeScene(raw.scene);
   c.combat = sanitizeCombat(raw.combat);
+
+  c.journey = sanitizeJourney(raw.journey);
 
   c.hp = clampInt(raw.hp, -maxHP(c) * 5, maxHP(c), maxHP(c));
   c.fp = clampInt(raw.fp, 0, maxFP(c), maxFP(c));

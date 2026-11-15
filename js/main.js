@@ -21,6 +21,7 @@ document.getElementById("btnSheet").onclick = () => {
   const s = document.getElementById("sheet");
   if (s) s.dataset.open = String(sheetOpen);
 };
+CINEMA.setupOverlay();
 function boot(data) {
   if (data && data.S) {
     state = migrate(data.S);

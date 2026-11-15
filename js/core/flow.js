@@ -8,6 +8,11 @@ function go(id, keepBanner) {
   state.scene = id;
   const sc = SC[id];
   AUD.mood(meta(id)[1]);
+  const opening = /^c(\d)_inicio$/.exec(id);
+  if (opening && !state.visited[id]) {
+    recordJourney(state, Number(opening[1]));
+    if (sc.eyebrow) CINEMA.titleCard(sc.eyebrow, meta(id)[0]);
+  }
   if (sc.enter && !state.visited[id]) {
     state.visited[id] = 1;
     sc.enter();

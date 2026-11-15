@@ -20,13 +20,28 @@ export function abrirNavegador(args = []) {
   return chromium.launch(opcoes);
 }
 
-/** Abre o jogo. `antes` roda no navegador antes de qualquer script do jogo. */
-export async function abrirJogo(browser, { antes, rotas, viewport } = {}) {
+/** Chave da preferência do modo cinema no localStorage. */
+export const CINEMA_KEY = "sen-cinema";
+
+/**
+ * Abre o jogo. `antes` roda no navegador antes de qualquer script do jogo.
+ * O cinema fica desligado, porque a camada dele cobre a página e bloquearia os cliques
+ * dos testes; passe `cinema: true` para testá-lo.
+ */
+export async function abrirJogo(browser, { antes, rotas, viewport, cinema = false } = {}) {
   const context = await browser.newContext({ viewport: viewport || { width: 1280, height: 860 } });
   if (rotas) await rotas(context);
   const page = await context.newPage();
   const erros = [];
   page.on("pageerror", (e) => erros.push(e.message));
+  if (!cinema)
+    await page.addInitScript((key) => {
+      try {
+        localStorage.setItem(key, JSON.stringify({ mode: "desligado" }));
+      } catch {
+        // Sem armazenamento, o teste segue com o padrão.
+      }
+    }, CINEMA_KEY);
   if (antes) await page.addInitScript(antes);
   await page.goto(URL_JOGO);
   await page.waitForTimeout(300);

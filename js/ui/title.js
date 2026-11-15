@@ -4,6 +4,7 @@
 "use strict";
 
 let draftOrigin = "pastor";
+let draftLook = DEFAULT_LOOK;
 function showTitle(fresh) {
   const saved = loadSave();
   state = null;
@@ -34,6 +35,13 @@ function renderOriginPick() {
    <div class="tag">Criação de personagem · 1 de 2</div>
    <h1 style="font-size:clamp(2rem,5vw,3rem)">Quem é você?</h1>
    <label class="field" for="inName">Nome<input type="text" id="inName" value="Rowan" maxlength="24" autocomplete="off"></label>
+   <div class="field">Aparência</div>
+   <div class="looks">${Object.entries(HERO_LOOKS)
+     .map(
+       ([k, l]) => `<button class="look ${k === draftLook ? "sel" : ""}" data-look="${k}" aria-label="${l.n}">
+     <canvas width="${FIG.W}" height="${FIG.H}"></canvas><span>${l.n}</span></button>`,
+     )
+     .join("")}</div>
    <div class="origins">${Object.entries(ORIGINS)
      .map(
        ([k, o]) => `<button class="origin ${k === draftOrigin ? "sel" : ""}" data-o="${k}">
@@ -57,16 +65,38 @@ function renderOriginPick() {
       (b.onclick = () => {
         draftOrigin = b.dataset.o;
         app.querySelectorAll(".origin").forEach((x) => x.classList.toggle("sel", x === b));
+        app
+          .querySelectorAll(".look")
+          .forEach((l) => drawLookPreview(l.querySelector("canvas"), l.dataset.look));
       }),
   );
+  app.querySelectorAll(".look").forEach((b) => {
+    drawLookPreview(b.querySelector("canvas"), b.dataset.look);
+    b.onclick = () => {
+      draftLook = b.dataset.look;
+      app.querySelectorAll(".look").forEach((x) => x.classList.toggle("sel", x === b));
+    };
+  });
   document.getElementById("bBack").onclick = () => showTitle();
   document.getElementById("bNext").onclick = () => {
     const nm = (document.getElementById("inName").value || "").trim() || "Rowan";
     state = newChar(nm, draftOrigin);
+    state.look = draftLook;
     openEvolve();
   };
 }
 function renderCreate() {
   app.innerHTML = "";
   openEvolve();
+}
+
+/** Desenha a figura parada de uma aparência, com a roupa e a arma da origem escolhida. */
+function drawLookPreview(cv, look) {
+  const o = ORIGINS[draftOrigin];
+  FIG.draw(cv.getContext("2d"), 2, {
+    look: ARMOR[o.armor].look,
+    weapon: o.weapons[0],
+    shield: o.shield && WEAPONS[o.weapons[0]].hands === 1,
+    ...HERO_LOOKS[look].figure,
+  });
 }

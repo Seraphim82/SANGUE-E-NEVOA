@@ -1,6 +1,6 @@
 {
   "name": "sangue-e-nevoa",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "RPG narrativo inspirado em GURPS, ambientado na Escócia de 1296 a 1314, com folclore escocês.",
   "private": true,
   "type": "module",
@@ -9,11 +9,12 @@
     "lint": "node tools/globais.mjs && eslint js tests tools eslint.config.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run lint && npm run test:story && npm run test:sabotage && npm run test:security",
+    "test": "npm run lint && npm run test:story && npm run test:sabotage && npm run test:security && npm run test:cinema",
     "test:story": "node tests/playthrough.mjs",
     "test:sabotage": "node tests/sabotage.mjs",
     "test:security": "node tests/security.mjs",
     "test:stress": "node tests/stress.mjs",
+    "test:cinema": "node tests/cinema.mjs",
     "test:all": "npm test && npm run test:stress"
   },
   "devDependencies": {

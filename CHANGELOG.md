@@ -1,5 +1,20 @@
 # Histórico de versões
 
+## 1.2.0 · Modo cinema e aparência do herói
+
+### Novidades
+- **Modo cinema no combate:** depois de cada ação, a luta é encenada em tela cheia. Faixas de cinema, câmera que acompanha e aproxima, golpes por tipo de arma (corte, impacto, perfuração, pedra de funda e flecha), magias com efeitos próprios, faíscas, números de dano, tremor e câmera lenta no acerto crítico. Os dados rolados aparecem na faixa de baixo, com a legenda da ação.
+- **Movimentos com molas amortecidas:** avanço, golpe, recuo, esquiva e queda são suaves e contínuos, com inclinação pela velocidade e respiração lenta.
+- **Abertura de capítulo** com cartela de título sobre a pintura, e **fusão** entre as pinturas das cenas. O texto entra parágrafo a parágrafo.
+- **Aparência do herói** escolhida na criação (quatro opções). A figura muda de cabelo, pele e barba.
+- **Galeria da jornada** na tela do personagem: como o herói estava no começo de cada capítulo.
+- Opção **Cenas de luta** no menu: completas, rápidas ou desligadas. Um toque ou tecla pula a cena.
+- Ferramenta de imagens pronta para os retratos pintados do herói (`heroi:<aparência>_<roupa>`), com o primeiro retrato como referência do rosto.
+
+### Segurança e testes
+- `look` e `journey` do save validados em `sanitizeSave()`.
+- 11 testes novos em `tests/cinema.mjs`, incluídos no `npm test`.
+
 ## 1.1.0 · Revisão de qualidade e segurança
 
 ### Segurança

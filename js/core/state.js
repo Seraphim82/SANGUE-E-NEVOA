@@ -30,6 +30,8 @@ function newChar(name, ok) {
   const c = {
     name,
     origin: ok,
+    look: DEFAULT_LOOK,
+    journey: [],
     attrs: { ...o.attrs },
     skills: { ...o.skills },
     adv: o.adv.map((a) => ({ ...a })),

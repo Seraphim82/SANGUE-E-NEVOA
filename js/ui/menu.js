@@ -3,6 +3,8 @@
  */
 "use strict";
 
+/** Os modos do cinema na ordem em que o botão do menu passa por eles. */
+const CINEMA_LABELS = { completo: "Completas", rapido: "Rápidas", desligado: "Desligadas" };
 function openMenu() {
   const ov = document.getElementById("overlay");
   ov.hidden = false;
@@ -14,6 +16,7 @@ function openMenu() {
      <button class="choice" id="mTitle"><span>Tela inicial</span><span class="arrow">→</span></button>
      <button class="choice" id="mRules"><span>Resumo das regras</span><span class="arrow">→</span></button>
      <div class="toggle-row"><span>Música</span><button class="mini ${AUD.pref.music ? "on" : ""}" id="tMusic">${AUD.pref.music ? "Ligada" : "Desligada"}</button></div>
+     <div class="toggle-row"><span>Cenas de luta</span><button class="mini ${CINEMA.mode !== "desligado" ? "on" : ""}" id="tCinema">${CINEMA_LABELS[CINEMA.mode]}</button></div>
      <div class="toggle-row"><span>Efeitos sonoros</span><button class="mini ${AUD.pref.sfx ? "on" : ""}" id="tSfx">${AUD.pref.sfx ? "Ligados" : "Desligados"}</button></div>
    </div>
    <div id="rules" hidden class="prose" style="margin-top:16px">
@@ -30,6 +33,11 @@ function openMenu() {
   q("tMusic").onclick = () => {
     AUD.setMusic(!AUD.pref.music);
     syncSound();
+    openMenu();
+  };
+  q("tCinema").onclick = () => {
+    const order = Object.keys(CINEMA_LABELS);
+    CINEMA.setMode(order[(order.indexOf(CINEMA.mode) + 1) % order.length]);
     openMenu();
   };
   q("tSfx").onclick = () => {
