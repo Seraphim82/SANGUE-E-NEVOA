@@ -9,7 +9,7 @@
 - **Aparência do herói** escolhida na criação (quatro opções). A figura muda de cabelo, pele e barba.
 - **Galeria da jornada** na tela do personagem: como o herói estava no começo de cada capítulo.
 - Opção **Cenas de luta** no menu: completas, rápidas ou desligadas. Um toque ou tecla pula a cena.
-- Ferramenta de imagens pronta para os retratos pintados do herói (`heroi:<aparência>_<roupa>`), com o primeiro retrato como referência do rosto.
+- **32 retratos pintados do herói** (4 aparências em 8 roupas), com o mesmo rosto em todas as roupas. Aparecem na criação, no cinema, na tela do personagem (aba de roupas) e na galeria da jornada. Gerados com `heroi:<aparência>_<roupa>` em `tools/gerar_imagens.py`.
 
 ### Segurança e testes
 - `look` e `journey` do save validados em `sanitizeSave()`.

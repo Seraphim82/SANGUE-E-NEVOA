@@ -197,11 +197,12 @@ function startFig() {
     const c = cv.getContext("2d");
     c.setTransform(w / FIG.W, 0, 0, h / FIG.H, 0, 0);
     const st = figState();
-    // Com o retrato pintado da roupa escolhida, ele toma o lugar da figura desenhada.
-    const painted = heroPortrait(
-      state,
-      DASH.tab === "roupa" && owned("roupa", DASH.sel.roupa) ? DASH.sel.roupa : null,
-    );
+    // Na aba de roupas, o retrato pintado toma o lugar da figura desenhada. Nas de arma e
+    // amuleto fica a figura, que mostra a arma e o amuleto escolhidos e o nível deles.
+    const painted =
+      DASH.tab === "roupa"
+        ? heroPortrait(state, owned("roupa", DASH.sel.roupa) ? DASH.sel.roupa : null)
+        : null;
     if (painted) {
       const breath = reduce ? 1 : 1 + 0.008 * Math.sin(now / 900);
       c.fillStyle = "#0b0d10";
@@ -336,7 +337,8 @@ function journeyHTML() {
     )
     .join("")}</div></div>`;
 }
-function drawJourney(root) {
+function drawJourney(root, tries = 0) {
+  let loading = false;
   const looks = (HERO_LOOKS[state.look] || HERO_LOOKS[DEFAULT_LOOK]).figure;
   root.querySelectorAll("canvas[data-j]").forEach((cv) => {
     const j = state.journey[Number(cv.dataset.j)];
@@ -344,10 +346,14 @@ function drawJourney(root) {
     const c = cv.getContext("2d");
     const painted = heroPortrait(state, j.armor);
     if (painted) {
+      c.fillStyle = "#0b0d10";
+      c.fillRect(0, 0, FIG.W, FIG.H);
       const pw = (FIG.H * painted.width) / painted.height;
       c.drawImage(painted, (FIG.W - pw) / 2, 0, pw, FIG.H);
       return;
     }
+    // O retrato ainda está carregando: desenha a figura agora e tenta de novo daqui a pouco.
+    if (HERO_PORTRAITS.has(`${state.look || DEFAULT_LOOK}_${j.armor}`)) loading = true;
     FIG.draw(c, 2, {
       look: ARMOR[j.armor].look,
       weapon: j.weapon,
@@ -358,6 +364,8 @@ function drawJourney(root) {
       ...looks,
     });
   });
+  const first = root.querySelector("canvas[data-j]");
+  if (loading && tries < 10) setTimeout(() => first?.isConnected && drawJourney(root, tries + 1), 300);
 }
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {

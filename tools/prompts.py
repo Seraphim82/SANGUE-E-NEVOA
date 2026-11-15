@@ -156,7 +156,8 @@ RETRATOS.update({
 ESTILO_HEROI = ("Painterly realistic full-body portrait of the player hero of a dark historical-fantasy role-playing game set in "
                 "Scotland in 1296, oil-painting texture, dramatic warm rim light, standing in a ready combat stance facing "
                 "three-quarters to the right, whole body visible from head to feet, isolated on a pure black background "
-                "fading to black at the edges. Historically plausible late-13th-century clothing. No text, no frame, no logos. ")
+                "fading to black at the edges. Historically plausible late-13th-century clothing. Empty hands, fists loosely "
+                "clenched at the sides: no weapon, no shield, no staff, nothing held. No text, no frame, no logos. ")
 
 HEROIS_APARENCIA = {
  "ruivo": "A young Scottish commoner man in his early twenties, weathered fair skin, unruly copper-red hair and a short red beard, grey-green eyes.",

@@ -90,13 +90,25 @@ function renderCreate() {
   openEvolve();
 }
 
-/** Desenha a figura parada de uma aparência, com a roupa e a arma da origem escolhida. */
-function drawLookPreview(cv, look) {
+/** Desenha uma aparência com a roupa e a arma da origem escolhida: o retrato pintado, se houver. */
+function drawLookPreview(cv, look, tries = 0) {
   const o = ORIGINS[draftOrigin];
-  FIG.draw(cv.getContext("2d"), 2, {
+  const c = cv.getContext("2d");
+  const painted = heroPortrait({ look }, o.armor);
+  if (painted) {
+    c.fillStyle = "#0b0d10";
+    c.fillRect(0, 0, FIG.W, FIG.H);
+    const pw = (FIG.H * painted.width) / painted.height;
+    c.drawImage(painted, (FIG.W - pw) / 2, 0, pw, FIG.H);
+    return;
+  }
+  FIG.draw(c, 2, {
     look: ARMOR[o.armor].look,
     weapon: o.weapons[0],
     shield: o.shield && WEAPONS[o.weapons[0]].hands === 1,
     ...HERO_LOOKS[look].figure,
   });
+  // O retrato ainda está carregando: tenta de novo daqui a pouco.
+  if (HERO_PORTRAITS.has(`${look}_${o.armor}`) && tries < 10)
+    setTimeout(() => cv.isConnected && drawLookPreview(cv, look, tries + 1), 300);
 }

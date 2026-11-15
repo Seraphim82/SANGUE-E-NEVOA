@@ -30,10 +30,16 @@ const DEFAULT_LOOK = "ruivo";
 
 /**
  * Retratos pintados já gerados, no formato "<aparência>_<roupa>". Só os listados aqui
- * são carregados, para o jogo não pedir arquivos que não existem. Enquanto a lista
- * estiver vazia, o herói é desenhado pela figura do canvas.
+ * são carregados, para o jogo não pedir arquivos que não existem. Sem retrato (ou
+ * enquanto ele carrega), o herói é desenhado pela figura do canvas.
  */
-const HERO_PORTRAITS = new Set([]);
+const HERO_PORTRAITS = new Set(
+  Object.keys(HERO_LOOKS).flatMap((look) =>
+    ["la", "gibao", "tartan", "couro", "malha", "gibao_stirling", "peles", "nevoa"].map(
+      (o) => `${look}_${o}`,
+    ),
+  ),
+);
 const heroPortraitCache = {};
 
 /** Retrato pintado do herói na roupa atual, ou `null` se ainda não houver (ou não carregou). */

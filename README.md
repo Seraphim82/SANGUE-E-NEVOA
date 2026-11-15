@@ -25,7 +25,7 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 - **Sistema inspirado em GURPS:** atributos (ST, DX, IQ, HT), perícias com dificuldade, combate com defesa ativa, armadura (RD), tipos de dano, choque e testes de HT.
 - **Progressão:** pontos de personagem, técnicas de combate, magia druídica em quatro círculos (Sangue Antigo), vestimentas, armas e amuletos que evoluem na forja até o nível Lendário.
 - **Combate por turnos** com aliados, amuletos de uso ativo, frio, sede e regeneração dos inimigos.
-- **117 pinturas** (97 cenas e 20 retratos de inimigos) com animações por cima: névoa, brasas, neve e vento.
+- **149 pinturas** (97 cenas, 20 retratos de inimigos e 32 retratos do herói: 4 aparências em 8 roupas) com animações por cima: névoa, brasas, neve e vento.
 - **Modo cinema:** depois de cada ação no combate, a luta é encenada em tela cheia, com faixas de cinema, câmera, golpes por tipo de arma, magias, faíscas e câmera lenta no acerto crítico. Os movimentos usam molas amortecidas, suaves e contínuos. Cada capítulo abre com uma cartela de título, e as pinturas das cenas se fundem umas nas outras. Dá para pular com um toque, deixar mais rápido ou desligar no menu.
 - **Aparência do herói** escolhida na criação, e uma **galeria da jornada** na tela do personagem que mostra como ele estava no começo de cada capítulo.
 - **Trilha sonora gerada em tempo real** (Web Audio API) em cinco climas, com vinhetas e efeitos.
@@ -49,7 +49,7 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 │   └── main.js             Inicialização
 ├── img/scenes/             Pinturas das cenas (21:9)
 ├── img/portraits/          Retratos dos inimigos (3:4)
-├── img/heroes/             Retratos pintados do herói, por aparência e roupa (quando gerados)
+├── img/heroes/             Retratos pintados do herói, por aparência e roupa
 ├── docs/
 │   ├── livro-do-jogador.md     Regras completas, capítulos e bestiário
 │   ├── ARQUITETURA.md          Como o código funciona e como acrescentar conteúdo

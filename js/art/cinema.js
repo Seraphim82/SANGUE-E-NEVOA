@@ -188,8 +188,10 @@ const CINEMA = (() => {
     c.rotate(lean);
     c.scale(breath, breath);
     if (portrait) {
-      const h = 400;
+      // O retrato tem uma margem abaixo dos pés: desce um pouco para eles tocarem o chão.
+      const h = 350;
       const w = (h * portrait.width) / portrait.height;
+      c.translate(0, h * 0.05);
       drawTinted(c, portrait, -w / 2, -h, w, h, a.flashColor, a.flash);
     } else {
       const g = heroCanvas.getContext("2d");
