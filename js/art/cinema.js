@@ -3,27 +3,27 @@
  *
  * A lógica do combate continua instantânea e é a única fonte da verdade. Enquanto ela
  * roda, registra tomadas com CINEMA.shot(): quem atacou quem, se acertou e quanto feriu.
- * Ao fim da ação do jogador, CINEMA.end() encena essas tomadas numa camada por cima da
- * página. Um clique, toque ou tecla pula a cena. Com "reduzir movimento" ativado no
- * sistema, ou com o cinema desligado no menu, nada é encenado.
+ * Ao fim da ação do jogador, CINEMA.end() monta cada tomada como uma sequência de planos
+ * pintados (o rosto do herói, o close da arma, o inimigo atingido) e corta entre eles
+ * como num filme: aproximação lenta da câmera, borrão no corte rápido, clarão no impacto,
+ * tremor, faíscas e câmera lenta no acerto crítico.
  *
- * Os movimentos usam molas amortecidas (oscilador harmônico): cada ator tem uma posição
- * alvo e a mola o leva até ela de forma suave e contínua, sem trancos. A inclinação do
- * corpo vem da velocidade, e uma respiração lenta mantém as figuras vivas.
+ * Os planos ficam em img/action/<chave>.jpg (lista em ACTION_SHOTS). Quando um plano não
+ * existe, o cinema usa o retrato pintado do herói ou do inimigo sobre a cena.
+ *
+ * Um clique, toque ou tecla pula a cena. Com "reduzir movimento" ativado no sistema, ou
+ * com o cinema desligado no menu, nada é encenado.
  */
 "use strict";
 
 const CINEMA = (() => {
   const W = 1000;
   const H = 420;
-  const FEET_Y = 385;
-  const HERO_HOME = 290;
-  const FOE_HOME = 710;
   const BAR_HEIGHT = 46;
   const MAX_SHOTS = 24;
-  const WATCHDOG_MS = 20000;
+  const WATCHDOG_MS = 25000;
   const PREF_KEY = "sen-cinema";
-  /** Velocidade de cada modo: 1 é o tempo normal, 0 desliga. */
+  /** Ritmo de cada modo: 1 é o tempo normal, menor é mais rápido, 0 desliga. */
   const MODES = { completo: 1, rapido: 0.55, desligado: 0 };
   /** Sons do combate que o cinema toca no momento do impacto, em vez de na hora do clique. */
   const COMBAT_SOUNDS = new Set(["dado", "erro", "golpe", "ferido", "magia", "sucesso"]);
@@ -43,10 +43,13 @@ const CINEMA = (() => {
     pedra: [200, 200, 160],
     fragmento: [110, 170, 255],
   };
+  /** Onde ficam o herói e o inimigo nos planos fechados (terço esquerdo e terço direito). */
+  const HERO_SPOT = { x: 330, y: 190 };
+  const FOE_SPOT = { x: 680, y: 190 };
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let mode = loadMode();
-  let capture = null; // gravação em andamento: { shots, roster, art }
+  let capture = null; // gravação em andamento
   let film = null; // filme em exibição
 
   // ---------------------------------------------------------------- preferências
@@ -73,15 +76,48 @@ const CINEMA = (() => {
 
   const enabled = () => !reduceMotion && MODES[mode] > 0;
 
+  // ---------------------------------------------------------------- planos pintados
+
+  const shotImages = {};
+
+  /** Começa a baixar um plano, se ele existir. */
+  function want(key) {
+    if (!ACTION_SHOTS.has(key) || shotImages[key]) return;
+    const im = new Image();
+    im.src = `img/action/${key}.jpg`;
+    shotImages[key] = im;
+  }
+
+  /** O plano já carregado, ou `null`. */
+  function plate(key) {
+    const im = shotImages[key];
+    return im && im.complete && im.naturalWidth ? im : null;
+  }
+
+  const heroKey = () => `${state.look || DEFAULT_LOOK}_${state.armor}`;
+
+  /** Baixa antes do primeiro golpe os planos que este combate pode usar. */
+  function preload(combat) {
+    if (!enabled() || !combat || !state) return;
+    want(`heroi_furia_${heroKey()}`);
+    want(`heroi_dor_${heroKey()}`);
+    want(`arma_golpe_${state.weapon}`);
+    want(`arma_aparo_${state.weapon}`);
+    if (canShield(state)) want("escudo");
+    for (const f of combat.foes) {
+      for (const pose of ["ataque", "atingido", "queda"]) want(`inimigo_${pose}_${f.pic || f.k}`);
+    }
+  }
+
   // ---------------------------------------------------------------- gravação
 
   /** Começa a gravar as tomadas de uma ação do jogador no combate `combat`. */
   function begin(combat) {
     if (!enabled() || !combat) return;
+    preload(combat);
     capture = {
       shots: [],
       art: combat.art,
-      target: typeof selTarget === "number" ? selTarget : 0,
       roster: combat.foes.map((f) => ({ k: f.k, pic: f.pic || f.k, n: f.n, max: f.max, hp: f.hp })),
     };
     AUD.hold();
@@ -95,7 +131,7 @@ const CINEMA = (() => {
   /** Termina a gravação e encena o que aconteceu. */
   function end() {
     if (!capture) return;
-    const { shots, roster, art, target } = capture;
+    const { shots, roster, art } = capture;
     capture = null;
     const held = AUD.release();
     if (!shots.length) {
@@ -103,182 +139,655 @@ const CINEMA = (() => {
       return;
     }
     const later = held.filter((s) => !COMBAT_SOUNDS.has(s));
-    startFilm({ kind: "combat", shots, roster, art, target, later });
+    startFilm({ kind: "combat", cuts: montage(shots, roster), roster, art, later });
   }
 
-  // ---------------------------------------------------------------- física
+  // ---------------------------------------------------------------- montagem
 
-  /** Mola amortecida: `to` é o alvo, `k` a rigidez e `d` o amortecimento. */
-  function spring(value, k = 170, d = 20) {
-    return { v: value, vel: 0, to: value, k, d };
+  const heroLabel = () => (state?.name ? state.name : "Você");
+
+  /**
+   * Um plano da montagem.
+   * @param view o que mostrar: { plate } um plano pintado, { hero } o retrato do herói,
+   *   { foe } o retrato de um inimigo, ou { wide } a cena inteira
+   * @param o duração (dur), zoom inicial e final (z0, z1), deslocamento (x0, x1), corte com
+   *   borrão (whip), clarão (flash), tremor (shake), câmera lenta (slow), escurecer (dark),
+   *   legenda (sub), dados (dice) e eventos marcados no tempo (at: [[tempo, função]])
+   */
+  function cut(view, o) {
+    return { view, dur: 0.5, z0: 1, z1: 1.06, x0: 0, x1: 0, at: [], ...o };
   }
 
-  function stepSpring(s, dt, speed) {
-    const k = s.k / (speed * speed);
-    const d = s.d / speed;
-    const a = -k * (s.v - s.to) - d * s.vel;
-    s.vel += a * dt;
-    s.v += s.vel * dt;
+  /** Planos do herói e do inimigo, com o retrato como reserva quando o plano não existe. */
+  function heroPlate(pose) {
+    return { plate: `heroi_${pose}_${heroKey()}`, fallback: { hero: true, pose } };
+  }
+  function foePlate(foe, pose) {
+    return { plate: `inimigo_${pose}_${foe?.pic}`, fallback: { foe, pose } };
+  }
+  function weaponPlate(kind) {
+    return { plate: `arma_${kind}_${state.weapon}`, fallback: { wide: true } };
   }
 
-  function makeActor(x) {
-    return {
-      x: spring(x),
-      y: spring(0),
-      arm: spring(0, 260, 24),
-      alpha: spring(1, 90, 18),
-      flash: 0,
-      flashColor: "255,255,255",
-      ghost: 0,
-      phase: Math.random() * 6,
-    };
-  }
+  /** Transforma as tomadas gravadas na lista de planos do filme. */
+  function montage(shots, roster) {
+    const cuts = [];
+    const add = (...list) => cuts.push(...list);
+    const dmgText =
+      (s, color = "#ffd27a") =>
+      (fx) =>
+        fx.text(`−${s.dmg}`, FOE_SPOT.x - 40, 150, color, 58);
 
-  function stepActor(a, dt, speed) {
-    for (const key of ["x", "y", "arm", "alpha"]) stepSpring(a[key], dt, speed);
-    a.flash = Math.max(0, a.flash - dt * 3.5);
-    a.ghost = Math.max(0, a.ghost - dt * 2.5);
-  }
+    for (const s of shots) {
+      const foe = s.foe !== undefined ? roster[s.foe] : null;
+      const name = foe?.n || "";
+      const roll = s.roll || null;
+      const fall = () => {
+        if (foe) foe.hp = Math.max(0, foe.hp - (s.dmg || 0));
+        if (s.killed)
+          add(
+            cut(foePlate(foe, "queda"), {
+              dur: 1.1,
+              z0: 1.04,
+              z1: 1.14,
+              dark: true,
+              sub: `${name} cai`,
+              at: [[0, () => AUD.sting("golpe")]],
+            }),
+          );
+      };
 
-  // ---------------------------------------------------------------- figuras
-
-  const heroCanvas = document.createElement("canvas");
-  heroCanvas.width = FIG.W;
-  heroCanvas.height = FIG.H;
-  const tintCanvas = document.createElement("canvas");
-
-  function heroLook(armAngle, t) {
-    const look = HERO_LOOKS[state?.look] || HERO_LOOKS[DEFAULT_LOOK];
-    return {
-      look: ARMOR[state.armor]?.look,
-      weapon: state.weapon,
-      wl: upLevel("arma", state.weapon),
-      amulet: state.amulet,
-      shield: canShield(state),
-      woad: state.sangue >= 1,
-      transparent: true,
-      armAngle,
-      ...look.figure,
-      t,
-    };
-  }
-
-  /** Desenha uma imagem com um brilho colorido por cima (golpe recebido). */
-  function drawTinted(c, img, x, y, w, h, color, amount) {
-    c.drawImage(img, x, y, w, h);
-    if (amount <= 0) return;
-    tintCanvas.width = img.width;
-    tintCanvas.height = img.height;
-    const t = tintCanvas.getContext("2d");
-    t.clearRect(0, 0, img.width, img.height);
-    t.drawImage(img, 0, 0);
-    t.globalCompositeOperation = "source-atop";
-    t.fillStyle = `rgba(${color},${Math.min(0.85, amount)})`;
-    t.fillRect(0, 0, img.width, img.height);
-    c.drawImage(tintCanvas, x, y, w, h);
-  }
-
-  function drawHero(c, a, t) {
-    const portrait = heroPortrait(state);
-    const breath = 1 + 0.012 * Math.sin(t * 2.1 + a.phase);
-    const lean = Math.max(-0.22, Math.min(0.22, a.x.vel * 0.0006));
-    c.save();
-    c.globalAlpha = Math.max(0, Math.min(1, a.alpha.v));
-    c.translate(a.x.v, FEET_Y + a.y.v);
-    c.rotate(lean);
-    c.scale(breath, breath);
-    if (portrait) {
-      // O retrato tem uma margem abaixo dos pés: desce um pouco para eles tocarem o chão.
-      const h = 350;
-      const w = (h * portrait.width) / portrait.height;
-      c.translate(0, h * 0.05);
-      drawTinted(c, portrait, -w / 2, -h, w, h, a.flashColor, a.flash);
-    } else {
-      const g = heroCanvas.getContext("2d");
-      g.clearRect(0, 0, FIG.W, FIG.H);
-      FIG.draw(g, t, heroLook(a.arm.v, t));
-      const h = 400;
-      const w = (h * FIG.W) / FIG.H;
-      // Os pés da figura ficam a 470 de 520 px: alinha esse ponto com o chão da cena.
-      drawTinted(c, heroCanvas, -w / 2, -h * (470 / 520), w, h, a.flashColor, a.flash);
+      if (s.type === "strike" && s.by === "hero") {
+        const sub = `${heroLabel()} ${s.kind === "stone" || s.kind === "arrow" ? "dispara contra" : "ataca"} ${name}`;
+        add(
+          cut(heroPlate("furia"), {
+            dur: 0.55,
+            z0: 1.0,
+            z1: 1.1,
+            x0: 10,
+            x1: -25,
+            sub,
+            dice: roll,
+            at: [[0, () => AUD.sting("dado")]],
+          }),
+        );
+        if (s.outcome === "parry") {
+          add(
+            cut(weaponPlate("aparo"), {
+              dur: 0.75,
+              whip: true,
+              flash: 0.7,
+              shake: 14,
+              z0: 1.12,
+              z1: 1.04,
+              sub,
+              dice: roll,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("erro");
+                    fx.sparks(W / 2, H / 2, "255,210,140", 40, 520);
+                    fx.text("DEFENDIDO", W / 2, 120, "#e8eef0", 40);
+                  },
+                ],
+              ],
+            }),
+          );
+          continue;
+        }
+        add(
+          cut(weaponPlate("golpe"), {
+            dur: 0.32,
+            whip: true,
+            z0: 1.05,
+            z1: 1.18,
+            x0: 40,
+            x1: -40,
+            sub,
+            dice: roll,
+          }),
+        );
+        if (s.outcome === "miss") {
+          add(
+            cut(
+              { wide: true, foe },
+              {
+                dur: 0.7,
+                z0: 1.08,
+                z1: 1.02,
+                sub,
+                dice: roll,
+                at: [
+                  [
+                    0,
+                    (fx) => {
+                      AUD.sting("erro");
+                      fx.text("ERROU", W / 2, 130, "#d3dcdd", 44);
+                    },
+                  ],
+                ],
+              },
+            ),
+          );
+          continue;
+        }
+        add(
+          cut(foePlate(foe, "atingido"), {
+            dur: s.crit ? 1.1 : 0.8,
+            flash: 1,
+            shake: s.crit ? 30 : 18,
+            slow: s.crit ? 0.4 : 0,
+            z0: 1.1,
+            z1: 1.02,
+            x0: -20,
+            x1: 15,
+            sub,
+            dice: roll,
+            at: [
+              [
+                0,
+                (fx) => {
+                  AUD.sting("golpe");
+                  fx.sparks(
+                    FOE_SPOT.x - 60,
+                    FOE_SPOT.y,
+                    s.crit ? "255,200,110" : "255,236,200",
+                    s.crit ? 50 : 28,
+                  );
+                  dmgText(s)(fx);
+                  if (s.crit) fx.text("ACERTO CRÍTICO", W / 2, 110, "#ffd27a", 44, 1.4);
+                },
+              ],
+            ],
+          }),
+        );
+        fall();
+      } else if (s.type === "strike" && s.by === "foe") {
+        const sub = `${name} ataca`;
+        if (s.outcome === "stunned") {
+          add(
+            cut(foePlate(foe, "atingido"), {
+              dur: 0.8,
+              z0: 1.02,
+              z1: 1.08,
+              sub: `${name} ainda está atordoado`,
+              at: [[0.1, (fx) => fx.text("ATORDOADO", FOE_SPOT.x, 120, "#ffd27a", 36)]],
+            }),
+          );
+          continue;
+        }
+        add(
+          cut(foePlate(foe, "ataque"), {
+            dur: 0.55,
+            z0: 1.0,
+            z1: 1.12,
+            x0: -10,
+            x1: 25,
+            sub,
+            dice: roll,
+            at: [[0, () => AUD.sting("dado")]],
+          }),
+        );
+        if (s.outcome === "hit") {
+          add(
+            cut(heroPlate("dor"), {
+              dur: s.crit ? 1.1 : 0.85,
+              whip: true,
+              flash: 0.6,
+              hurt: true,
+              shake: s.crit ? 30 : 20,
+              slow: s.crit ? 0.4 : 0,
+              z0: 1.12,
+              z1: 1.03,
+              x0: 20,
+              x1: -10,
+              sub,
+              dice: roll,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("ferido");
+                    fx.sparks(HERO_SPOT.x + 40, HERO_SPOT.y, "190,40,30", 22, 360);
+                    fx.text(`−${s.dmg}`, HERO_SPOT.x + 60, 150, "#ff7a6a", 58);
+                    if (s.crit) fx.text("CRÍTICO", W / 2, 110, "#ff7a6a", 44, 1.4);
+                  },
+                ],
+              ],
+            }),
+          );
+        } else if (s.outcome === "parry" || (s.outcome === "block" && !canShield(state))) {
+          const label = s.outcome === "parry" ? "APARADO" : "A ARMADURA SEGURA";
+          add(
+            cut(weaponPlate("aparo"), {
+              dur: 0.75,
+              whip: true,
+              flash: 0.7,
+              shake: 14,
+              z0: 1.12,
+              z1: 1.04,
+              sub,
+              dice: roll,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("erro");
+                    fx.sparks(W / 2, H / 2, "255,210,140", 40, 520);
+                    fx.text(label, W / 2, 120, "#9fd08a", 40);
+                  },
+                ],
+              ],
+            }),
+          );
+        } else if (s.outcome === "block") {
+          add(
+            cut(
+              { plate: "escudo", fallback: { wide: true } },
+              {
+                dur: 0.75,
+                whip: true,
+                flash: 0.6,
+                shake: 16,
+                z0: 1.12,
+                z1: 1.04,
+                sub,
+                dice: roll,
+                at: [
+                  [
+                    0,
+                    (fx) => {
+                      AUD.sting("erro");
+                      fx.sparks(W / 2, H / 2, "220,200,160", 34, 460);
+                      fx.text("BLOQUEIO", W / 2, 120, "#9fd08a", 40);
+                    },
+                  ],
+                ],
+              },
+            ),
+          );
+        } else if (s.outcome === "dodge") {
+          add(
+            cut(heroPlate("furia"), {
+              dur: 0.7,
+              whip: true,
+              z0: 1.1,
+              z1: 1.02,
+              x0: 60,
+              x1: -40,
+              sub,
+              dice: roll,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("erro");
+                    fx.text("ESQUIVA", W / 2, 120, "#9fd08a", 40);
+                  },
+                ],
+              ],
+            }),
+          );
+        } else {
+          add(
+            cut(
+              { wide: true, foe },
+              {
+                dur: 0.65,
+                z0: 1.08,
+                z1: 1.02,
+                sub,
+                dice: roll,
+                at: [
+                  [
+                    0,
+                    (fx) => {
+                      AUD.sting("erro");
+                      fx.text("ERROU", W / 2, 130, "#d3dcdd", 44);
+                    },
+                  ],
+                ],
+              },
+            ),
+          );
+        }
+      } else if (s.type === "ally") {
+        const sub = `${s.name} ataca ${name}`;
+        if (s.outcome === "hit") {
+          add(
+            cut(foePlate(foe, "atingido"), {
+              dur: 0.75,
+              flash: 0.8,
+              shake: 14,
+              z0: 1.08,
+              z1: 1.02,
+              sub,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("golpe");
+                    fx.sparks(FOE_SPOT.x - 60, FOE_SPOT.y, "220,235,255", 24);
+                    dmgText(s, "#cfe2ff")(fx);
+                  },
+                ],
+              ],
+            }),
+          );
+          fall();
+        } else {
+          add(
+            cut(
+              { wide: true, foe },
+              {
+                dur: 0.6,
+                sub,
+                at: [
+                  [
+                    0,
+                    (fx) => fx.text(s.outcome === "miss" ? "ERROU" : "DEFENDIDO", W / 2, 130, "#d3dcdd", 38),
+                  ],
+                ],
+              },
+            ),
+          );
+        }
+      } else if (s.type === "spell") {
+        const color = SPELL_COLORS[s.key] || [220, 230, 255];
+        const rgb = color.join(",");
+        const sub = `${heroLabel()} conjura ${SK[s.key]?.n || "uma magia"}`;
+        add(
+          cut(heroPlate("furia"), {
+            dur: 0.8,
+            z0: 1.0,
+            z1: 1.1,
+            sub,
+            dice: roll,
+            at: [
+              [
+                0,
+                (fx) => {
+                  AUD.sting("dado");
+                  fx.aura(HERO_SPOT.x, HERO_SPOT.y, color, 0.9);
+                  fx.rising(HERO_SPOT.x, H - 40, rgb, 40);
+                },
+              ],
+            ],
+          }),
+        );
+        if (s.outcome !== "ok") {
+          add(
+            cut(heroPlate("dor"), {
+              dur: 0.7,
+              sub,
+              dice: roll,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    fx.rising(HERO_SPOT.x, H - 40, "150,150,150", 30);
+                    fx.text("A MAGIA SE DISSIPA", W / 2, 120, "#d3dcdd", 36, 1.2);
+                  },
+                ],
+              ],
+            }),
+          );
+          continue;
+        }
+        const strikeFoe = ["sp_luz", "sp_espinhos", "sp_beltane"].includes(s.key);
+        if (strikeFoe) {
+          add(
+            cut(foePlate(foe, "atingido"), {
+              dur: 0.9,
+              flash: 1,
+              tint: rgb,
+              shake: s.key === "sp_luz" ? 6 : 18,
+              z0: 1.1,
+              z1: 1.02,
+              sub,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("magia");
+                    if (s.key === "sp_espinhos") fx.thorns(FOE_SPOT.x);
+                    else fx.aura(FOE_SPOT.x - 40, FOE_SPOT.y, color, 0.7);
+                    fx.sparks(FOE_SPOT.x - 60, FOE_SPOT.y, rgb, 40, 440);
+                    if (s.key === "sp_luz") fx.text("OFUSCADO", FOE_SPOT.x, 120, "#b8ffc4", 38);
+                    else dmgText(s)(fx);
+                  },
+                ],
+              ],
+            }),
+          );
+          if (s.key !== "sp_luz") fall();
+        } else {
+          const total = (s.all || []).reduce((sum, hit) => sum + hit.dmg, 0);
+          add(
+            cut(
+              { wide: true, foe },
+              {
+                dur: 1.0,
+                tint: rgb,
+                shake: s.key === "sp_tempestade" ? 14 : 0,
+                sub,
+                at: [
+                  [
+                    0,
+                    (fx) => {
+                      AUD.sting("magia");
+                      if (s.key === "sp_tempestade") {
+                        fx.effect("hail", { life: 1.1 });
+                        fx.text(`−${total} no total`, W / 2, 120, "#ffd27a", 44, 1.2);
+                      } else if (s.key === "sp_nevoa") {
+                        fx.effect("mist", { life: 1 });
+                        fx.text("NÉVOA", W / 2, 120, "#e3ebee", 44);
+                      } else {
+                        fx.aura(W / 2, H / 2, color, 1);
+                        fx.rising(W / 2, H - 40, rgb, 60);
+                        fx.text(`+${s.heal} PV`, W / 2, 130, "#9fd08a", 50);
+                      }
+                    },
+                  ],
+                ],
+              },
+            ),
+          );
+          if (s.key === "sp_tempestade")
+            for (const hit of s.all || []) {
+              const target = roster[hit.foe];
+              if (target) target.hp = Math.max(0, target.hp - hit.dmg);
+            }
+        }
+      } else if (s.type === "heal") {
+        add(
+          cut(
+            { hero: true },
+            {
+              dur: 0.9,
+              z0: 1.0,
+              z1: 1.06,
+              sub: s.source === "folego" ? "Fôlego das Highlands" : "Ervas sobre as feridas",
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("sucesso");
+                    fx.rising(HERO_SPOT.x, H - 40, "160,230,140", 50);
+                    fx.text(`+${s.amount} PV`, HERO_SPOT.x + 160, 140, "#9fd08a", 50);
+                  },
+                ],
+              ],
+            },
+          ),
+        );
+      } else if (s.type === "guard") {
+        add(
+          cut(
+            { hero: true },
+            {
+              dur: 0.8,
+              z0: 1.06,
+              z1: 1.0,
+              sub: `${heroLabel()} se fecha em defesa`,
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    fx.effect("shield", { x: HERO_SPOT.x + 110, y: HERO_SPOT.y, life: 0.7 });
+                    fx.text("DEFESA TOTAL", HERO_SPOT.x + 160, 130, "#cfe2ff", 38);
+                  },
+                ],
+              ],
+            },
+          ),
+        );
+      } else if (s.type === "feint") {
+        const sub = `${heroLabel()} finge um golpe`;
+        add(
+          cut(heroPlate("furia"), {
+            dur: 0.5,
+            z0: 1.0,
+            z1: 1.08,
+            sub,
+            dice: roll,
+            at: [[0, () => AUD.sting("dado")]],
+          }),
+        );
+        add(
+          cut(foePlate(foe, s.ok ? "atingido" : "ataque"), {
+            dur: 0.7,
+            whip: true,
+            sub,
+            dice: roll,
+            at: [
+              [
+                0,
+                (fx) =>
+                  fx.text(
+                    s.ok ? "FINTA!" : "NÃO CAIU NA FINTA",
+                    FOE_SPOT.x,
+                    120,
+                    s.ok ? "#ffd27a" : "#d3dcdd",
+                    38,
+                  ),
+              ],
+            ],
+          }),
+        );
+      } else if (s.type === "amulet") {
+        const color = AMULET_COLORS[s.key] || [255, 255, 255];
+        add(
+          cut(
+            { hero: true },
+            {
+              dur: 0.9,
+              z0: 1.0,
+              z1: 1.08,
+              sub: AMU_ACT[s.key]?.n || "Amuleto",
+              at: [
+                [
+                  0,
+                  (fx) => {
+                    AUD.sting("magia");
+                    fx.aura(HERO_SPOT.x, HERO_SPOT.y, color, 1);
+                    fx.rising(HERO_SPOT.x, H - 40, color.join(","), 40);
+                  },
+                ],
+              ],
+            },
+          ),
+        );
+      } else if (s.type === "flee") {
+        add(
+          cut(
+            { wide: true },
+            { dur: 0.7, z0: 1.0, z1: 1.1, sub: s.ok ? `${heroLabel()} foge` : `${heroLabel()} tenta fugir` },
+          ),
+        );
+      } else if (s.type === "end" && s.result === "win") {
+        add(
+          cut(heroPlate("furia"), {
+            dur: 1.5,
+            z0: 1.02,
+            z1: 1.14,
+            sub: "Vitória",
+            at: [
+              [
+                0,
+                (fx) => {
+                  fx.aura(HERO_SPOT.x, HERO_SPOT.y, [255, 210, 120], 1.4);
+                  fx.text("VITÓRIA", W / 2, 120, "#ffd27a", 60, 1.6);
+                },
+              ],
+            ],
+          }),
+        );
+      } else if (s.type === "end" && s.result !== "flee") {
+        add(
+          cut(heroPlate("dor"), {
+            dur: 1.5,
+            z0: 1.0,
+            z1: 1.12,
+            dark: true,
+            sub: s.result === "death" ? "O fim" : "Você cai",
+          }),
+        );
+      }
     }
-    c.restore();
-  }
-
-  function drawFoe(c, a, foe, t, scale = 1) {
-    if (!foe) return;
-    const img = ART.portrait(foe.pic);
-    const breath = 1 + 0.012 * Math.sin(t * 1.9 + a.phase);
-    const lean = Math.max(-0.22, Math.min(0.22, a.x.vel * 0.0006));
-    c.save();
-    c.globalAlpha = Math.max(0, Math.min(1, a.alpha.v));
-    c.translate(a.x.v, FEET_Y + a.y.v);
-    c.rotate(lean);
-    c.scale(breath * scale, breath * scale);
-    if (a.ghost > 0) {
-      c.save();
-      c.globalAlpha *= a.ghost * 0.4;
-      c.translate(-70, 0);
-      if (img) c.drawImage(img, -150, -400, 300, 400);
-      c.restore();
-    }
-    if (img) {
-      const h = 400;
-      const w = (h * img.width) / img.height;
-      drawTinted(c, img, -w / 2, -h, w, h, a.flashColor, a.flash);
-    } else {
-      c.scale(1.7, 1.7);
-      ART.foeSilhouette(c, foe.k, 0, 0, t, a.flash > 0.2 ? "#7a1410" : "#050608");
-    }
-    c.restore();
+    return cuts;
   }
 
   // ---------------------------------------------------------------- efeitos
 
-  function addText(f, text, x, y, color, size = 34, life = 1.1) {
-    f.fx.push({ type: "text", text, x, y, color, size, age: 0, life });
-  }
-
-  function addSparks(f, x, y, color, count = 18, power = 420) {
-    for (let i = 0; i < count; i++) {
-      const ang = Math.random() * Math.PI * 2;
-      const sp = power * (0.3 + Math.random() * 0.7);
-      f.particles.push({
-        x,
-        y,
-        vx: Math.cos(ang) * sp,
-        vy: Math.sin(ang) * sp - 120,
-        life: 0.5 + Math.random() * 0.4,
-        age: 0,
-        color,
-        size: 2 + Math.random() * 2.5,
-        gravity: 700,
-      });
-    }
-  }
-
-  function addRising(f, x, y, color, count = 30) {
-    for (let i = 0; i < count; i++) {
-      f.particles.push({
-        x: x + (Math.random() - 0.5) * 160,
-        y: y + Math.random() * 120,
-        vx: (Math.random() - 0.5) * 30,
-        vy: -60 - Math.random() * 90,
-        life: 0.9 + Math.random() * 0.6,
-        age: 0,
-        color,
-        size: 2 + Math.random() * 3,
-        gravity: -20,
-      });
-    }
-  }
-
-  function addEffect(f, type, props) {
-    f.fx.push({ type, age: 0, life: 0.35, ...props });
-  }
-
-  function impactPoint(f) {
-    return { x: f.foe.x.v - 40, y: FEET_Y - 210 };
+  function effectsApi(f) {
+    return {
+      text(text, x, y, color, size = 34, life = 1.1) {
+        f.fx.push({ type: "text", text, x, y, color, size, age: 0, life });
+      },
+      sparks(x, y, color, count = 18, power = 420) {
+        for (let i = 0; i < count; i++) {
+          const ang = Math.random() * Math.PI * 2;
+          const sp = power * (0.3 + Math.random() * 0.7);
+          f.particles.push({
+            x,
+            y,
+            vx: Math.cos(ang) * sp,
+            vy: Math.sin(ang) * sp - 120,
+            life: 0.5 + Math.random() * 0.4,
+            age: 0,
+            color,
+            size: 2 + Math.random() * 3,
+            gravity: 700,
+          });
+        }
+      },
+      rising(x, y, color, count = 30) {
+        for (let i = 0; i < count; i++) {
+          f.particles.push({
+            x: x + (Math.random() - 0.5) * 260,
+            y: y - Math.random() * 120,
+            vx: (Math.random() - 0.5) * 30,
+            vy: -60 - Math.random() * 110,
+            life: 0.9 + Math.random() * 0.7,
+            age: 0,
+            color,
+            size: 2 + Math.random() * 3,
+            gravity: -20,
+          });
+        }
+      },
+      aura(x, y, color, life) {
+        f.fx.push({ type: "aura", x, y, color, age: 0, life });
+      },
+      thorns(x) {
+        f.fx.push({ type: "thorns", x, age: 0, life: 0.9 });
+      },
+      effect(type, props) {
+        f.fx.push({ type, age: 0, life: 0.5, ...props });
+      },
+    };
   }
 
   function drawEffects(c, f, dt) {
@@ -298,74 +807,23 @@ const CINEMA = (() => {
       e.age += dt;
       const k = Math.min(1, e.age / e.life);
       const fade = 1 - k;
-      if (e.type === "slash") {
-        c.save();
-        c.translate(e.x, e.y);
-        c.rotate(e.dir || 0);
-        const sweep = -1.1 + k * 2.2;
-        c.lineCap = "round";
-        for (let i = 0; i < 3; i++) {
-          c.strokeStyle = `rgba(${e.color || "255,240,210"},${fade * (0.9 - i * 0.25)})`;
-          c.lineWidth = 10 - i * 3;
-          c.beginPath();
-          c.arc(0, 0, 120 + i * 8, sweep - 0.9, sweep);
-          c.stroke();
-        }
-        c.restore();
-      } else if (e.type === "ring") {
-        c.strokeStyle = `rgba(${e.color || "255,230,190"},${fade})`;
-        c.lineWidth = 8 * fade + 1;
-        c.beginPath();
-        c.arc(e.x, e.y, 20 + k * (e.size || 140), 0, Math.PI * 2);
-        c.stroke();
-      } else if (e.type === "thrust") {
-        c.strokeStyle = `rgba(255,245,225,${fade})`;
-        c.lineWidth = 6 * fade + 1;
-        c.beginPath();
-        c.moveTo(e.x - 260 * (1 - k * 0.3), e.y);
-        c.lineTo(e.x + 30, e.y);
-        c.stroke();
-      } else if (e.type === "projectile") {
-        const x = e.x0 + (e.x1 - e.x0) * k;
-        const y = e.y0 + (e.y1 - e.y0) * k - Math.sin(k * Math.PI) * (e.arc || 0);
-        c.strokeStyle = `rgba(230,220,200,${0.6})`;
-        c.lineWidth = e.arrow ? 3 : 2;
-        c.beginPath();
-        c.moveTo(x - (e.arrow ? 46 : 18), y + (e.arrow ? 0 : 2));
-        c.lineTo(x, y);
-        c.stroke();
-        c.fillStyle = "#d8d2c4";
-        c.beginPath();
-        c.arc(x, y, e.arrow ? 3 : 6, 0, Math.PI * 2);
-        c.fill();
-      } else if (e.type === "aura") {
-        ART.glow(c, e.x, e.y, 150 + 60 * Math.sin(k * Math.PI), e.color, 0.55 * Math.sin(k * Math.PI));
-      } else if (e.type === "beam") {
-        const g = c.createLinearGradient(e.x0, 0, e.x1, 0);
-        g.addColorStop(0, `rgba(${e.color},0)`);
-        g.addColorStop(1, `rgba(${e.color},${fade})`);
-        c.strokeStyle = g;
-        c.lineWidth = 14 * fade + 2;
-        c.beginPath();
-        c.moveTo(e.x0, e.y);
-        c.lineTo(e.x1, e.y);
-        c.stroke();
-        ART.glow(c, e.x1, e.y, 120, e.color, fade * 0.8);
+      if (e.type === "aura") {
+        ART.glow(c, e.x, e.y, 180 + 80 * Math.sin(k * Math.PI), e.color, 0.6 * Math.sin(k * Math.PI));
       } else if (e.type === "thorns") {
-        c.strokeStyle = `rgba(70,40,30,${fade})`;
-        c.lineWidth = 6;
-        for (let i = 0; i < 7; i++) {
-          const bx = e.x - 90 + i * 30;
-          const top = FEET_Y - 40 - Math.min(1, k * 3) * (90 + ((i * 37) % 70));
+        c.strokeStyle = `rgba(60,34,26,${fade})`;
+        c.lineWidth = 9;
+        for (let i = 0; i < 8; i++) {
+          const bx = e.x - 160 + i * 42;
+          const top = H - 60 - Math.min(1, k * 3) * (150 + ((i * 37) % 90));
           c.beginPath();
-          c.moveTo(bx, FEET_Y);
-          c.quadraticCurveTo(bx + 18, (FEET_Y + top) / 2, bx + 6, top);
+          c.moveTo(bx, H);
+          c.quadraticCurveTo(bx + 24, (H + top) / 2, bx + 8, top);
           c.stroke();
         }
       } else if (e.type === "hail") {
         c.strokeStyle = `rgba(220,235,255,${0.7 * fade})`;
         c.lineWidth = 2;
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 90; i++) {
           const x = (i * 97 + e.age * 900) % W;
           const y = (i * 53 + e.age * 1300) % H;
           c.beginPath();
@@ -374,22 +832,22 @@ const CINEMA = (() => {
           c.stroke();
         }
       } else if (e.type === "mist") {
-        c.fillStyle = `rgba(210,222,232,${0.5 * Math.sin(k * Math.PI)})`;
+        c.fillStyle = `rgba(210,222,232,${0.55 * Math.sin(k * Math.PI)})`;
         c.fillRect(0, 0, W, H);
       } else if (e.type === "shield") {
         c.strokeStyle = `rgba(150,200,255,${fade})`;
-        c.lineWidth = 5;
+        c.lineWidth = 6;
         c.beginPath();
-        c.arc(e.x, e.y, 70 + k * 30, -1.3, 1.3);
+        c.arc(e.x, e.y, 110 + k * 40, -1.3, 1.3);
         c.stroke();
       } else if (e.type === "text") {
-        const rise = k * 50;
+        const rise = k * 40;
         c.save();
-        c.globalAlpha = k < 0.15 ? k / 0.15 : fade < 0.3 ? fade / 0.3 : 1;
+        c.globalAlpha = k < 0.12 ? k / 0.12 : fade < 0.3 ? fade / 0.3 : 1;
         c.font = `700 ${e.size}px "Alegreya Sans SC", "Gill Sans", sans-serif`;
         c.textAlign = "center";
-        c.lineWidth = 6;
-        c.strokeStyle = "rgba(0,0,0,.75)";
+        c.lineWidth = 7;
+        c.strokeStyle = "rgba(0,0,0,.8)";
         c.strokeText(e.text, e.x, e.y - rise);
         c.fillStyle = e.color;
         c.fillText(e.text, e.x, e.y - rise);
@@ -399,416 +857,33 @@ const CINEMA = (() => {
     f.fx = f.fx.filter((e) => e.age < e.life);
   }
 
-  // ---------------------------------------------------------------- roteiros
-
-  const heroLabel = () => (state?.name ? state.name : "Você");
-
-  /**
-   * Cada tipo de tomada vira um roteiro: duração em segundos e eventos marcados no tempo.
-   * Os eventos mudam alvos de molas e criam efeitos; as molas cuidam do movimento.
-   */
-  function script(f, s) {
-    const foeIndex = s.foe ?? s.all?.[0]?.foe;
-    const foeData = foeIndex !== undefined ? f.roster[foeIndex] : null;
-    const name = foeData?.n || "";
-    const ev = [];
-    const at = (time, fn) => ev.push({ time, fn, done: false });
-    let dur = 1.2;
-
-    const focusOn = () => {
-      if (foeIndex !== undefined && f.focus !== foeIndex) {
-        f.focus = foeIndex;
-        f.foe.x.v = FOE_HOME + 260;
-        f.foe.x.to = FOE_HOME;
-        f.foe.alpha.v = 0;
-        f.foe.alpha.to = 1;
-        f.foe.y.to = 0;
-      }
-    };
-    const damageFoe = (dmg, killed) => {
-      if (foeData) foeData.hp = Math.max(0, foeData.hp - dmg);
-      if (killed) {
-        at(0.95, () => {
-          f.foe.alpha.to = 0;
-          f.foe.y.to = 90;
-          addText(f, `${name} cai`, FOE_HOME, FEET_Y - 330, "#e9e2d0", 26, 1.2);
-        });
-      }
-    };
-
-    if (s.type === "strike" && s.by === "hero") {
-      const ranged = s.kind === "stone" || s.kind === "arrow";
-      f.subtitle = `${heroLabel()} ${ranged ? "dispara contra" : "ataca"} ${name}`;
-      f.dice = s.roll || null;
-      at(0, () => {
-        focusOn();
-        AUD.sting("dado");
-        f.cam.cx.to = 470;
-        f.cam.zoom.to = 1.07;
-        f.hero.x.to = HERO_HOME - 40;
-        f.hero.arm.to = -1.5;
-      });
-      const hitTime = ranged ? 0.62 : 0.5;
-      if (ranged) {
-        at(0.32, () => {
-          f.hero.arm.to = 0.4;
-          addEffect(f, "projectile", {
-            x0: f.hero.x.v + 70,
-            y0: FEET_Y - 250,
-            x1: FOE_HOME - 30,
-            y1: FEET_Y - 220,
-            arc: s.kind === "stone" ? 60 : 12,
-            arrow: s.kind === "arrow",
-            life: 0.3,
-          });
-        });
-      } else {
-        at(0.24, () => {
-          f.hero.x.to = FOE_HOME - 175;
-          f.cam.zoom.to = 1.15;
-          f.cam.cx.to = 560;
-        });
-        at(0.44, () => (f.hero.arm.to = 1.05));
-      }
-      at(hitTime, () => {
-        const p = impactPoint(f);
-        if (s.outcome === "hit") {
-          if (s.kind === "cut") addEffect(f, "slash", { x: p.x, y: p.y, dir: 0.3 });
-          else if (s.kind === "imp" || s.kind === "arrow") addEffect(f, "thrust", { x: p.x, y: p.y });
-          else addEffect(f, "ring", { x: p.x, y: p.y });
-          addSparks(f, p.x, p.y, s.crit ? "255,210,120" : "255,236,200", s.crit ? 34 : 18);
-          f.foe.flash = 1;
-          f.foe.flashColor = "255,250,235";
-          f.foe.x.to = FOE_HOME + (s.crit ? 110 : 60);
-          f.shake = s.crit ? 26 : 14;
-          if (s.crit) {
-            f.slowUntil = f.time + 0.35;
-            addText(f, "ACERTO CRÍTICO", W / 2, 110, "#ffd27a", 40, 1.3);
-          }
-          addText(f, `−${s.dmg}`, p.x + 40, p.y - 40, "#ffd27a", 46);
-          AUD.sting("golpe");
-          damageFoe(s.dmg, s.killed);
-        } else if (s.outcome === "miss") {
-          f.foe.x.to = FOE_HOME + 130;
-          f.foe.y.to = -12;
-          f.foe.ghost = 1;
-          addText(f, "ERROU", p.x, p.y - 60, "#d3dcdd", 34);
-          AUD.sting("erro");
-        } else {
-          addSparks(f, p.x - 40, p.y + 10, "255,220,150", 22, 360);
-          addEffect(f, "ring", { x: p.x - 40, y: p.y + 10, size: 60, color: "255,220,150" });
-          f.hero.x.to = HERO_HOME + 120;
-          f.shake = 8;
-          addText(f, "DEFENDIDO", p.x, p.y - 60, "#d3dcdd", 34);
-          AUD.sting("erro");
-        }
-      });
-      at(0.8, () => {
-        f.hero.arm.to = 0;
-        f.hero.x.to = HERO_HOME;
-        if (!s.killed) {
-          f.foe.x.to = FOE_HOME;
-          f.foe.y.to = 0;
-        }
-        f.cam.zoom.to = 1.03;
-        f.cam.cx.to = W / 2;
-      });
-      dur = 1.3;
-    } else if (s.type === "strike" && s.by === "foe") {
-      f.subtitle = `${name} ataca`;
-      f.dice = s.roll || null;
-      if (s.outcome === "stunned") {
-        at(0, () => {
-          focusOn();
-          f.foe.x.to = FOE_HOME + 30;
-          addText(f, "ATORDOADO", FOE_HOME, FEET_Y - 320, "#ffd27a", 30);
-        });
-        at(0.35, () => (f.foe.x.to = FOE_HOME - 20));
-        at(0.6, () => (f.foe.x.to = FOE_HOME));
-        dur = 0.75;
-      } else {
-        at(0, () => {
-          focusOn();
-          f.foe.x.to = FOE_HOME + 45;
-          f.cam.cx.to = 520;
-          f.cam.zoom.to = 1.08;
-        });
-        at(0.22, () => {
-          f.foe.x.to = HERO_HOME + 175;
-          f.cam.zoom.to = 1.15;
-          f.cam.cx.to = 430;
-        });
-        at(0.45, () => {
-          const hx = f.hero.x.v + 40;
-          const hy = FEET_Y - 220;
-          if (s.outcome === "hit") {
-            f.hero.flash = 1;
-            f.hero.flashColor = "200,40,30";
-            f.hero.x.to = HERO_HOME - 70;
-            f.hurt = 1;
-            f.shake = s.crit ? 26 : 16;
-            addSparks(f, hx, hy, "200,60,40", 16, 300);
-            addText(f, `−${s.dmg}`, hx - 40, hy - 40, "#ff7a6a", 46);
-            if (s.crit) addText(f, "CRÍTICO", W / 2, 110, "#ff7a6a", 40, 1.3);
-            AUD.sting("ferido");
-          } else if (s.outcome === "dodge") {
-            f.hero.x.to = HERO_HOME - 120;
-            f.hero.y.to = -14;
-            f.hero.ghost = 1;
-            addText(f, "ESQUIVA", hx - 60, hy - 60, "#9fd08a", 34);
-            AUD.sting("erro");
-          } else if (s.outcome === "parry") {
-            f.hero.arm.to = -0.9;
-            addSparks(f, hx + 50, hy, "255,220,150", 24, 380);
-            addEffect(f, "ring", { x: hx + 50, y: hy, size: 60, color: "255,220,150" });
-            f.foe.x.to = FOE_HOME - 80;
-            f.shake = 8;
-            addText(f, "APARADO", hx, hy - 60, "#9fd08a", 34);
-            AUD.sting("erro");
-          } else if (s.outcome === "block") {
-            addEffect(f, "shield", { x: hx + 30, y: hy + 40, life: 0.5 });
-            addSparks(f, hx + 60, hy + 30, "180,210,255", 20, 340);
-            f.foe.x.to = FOE_HOME - 60;
-            f.shake = 8;
-            addText(f, "BLOQUEIO", hx, hy - 60, "#9fd08a", 34);
-            AUD.sting("erro");
-          } else {
-            f.foe.x.to = HERO_HOME + 60;
-            addText(f, "ERROU", hx, hy - 60, "#d3dcdd", 34);
-            AUD.sting("erro");
-          }
-        });
-        at(0.75, () => {
-          f.foe.x.to = FOE_HOME;
-          f.hero.x.to = HERO_HOME;
-          f.hero.y.to = 0;
-          f.hero.arm.to = 0;
-          f.cam.zoom.to = 1.03;
-          f.cam.cx.to = W / 2;
-        });
-        dur = 1.1;
-      }
-    } else if (s.type === "ally") {
-      f.subtitle = `${s.name} ataca ${name}`;
-      at(0, () => {
-        focusOn();
-        f.cam.cx.to = 600;
-      });
-      at(0.25, () => {
-        const p = impactPoint(f);
-        if (s.outcome === "hit") {
-          addEffect(f, "slash", { x: p.x, y: p.y, dir: -0.5, color: "210,230,255" });
-          addSparks(f, p.x, p.y, "220,235,255", 16);
-          f.foe.flash = 0.8;
-          f.foe.x.to = FOE_HOME + 50;
-          f.shake = 10;
-          addText(f, `−${s.dmg}`, p.x + 40, p.y - 40, "#cfe2ff", 40);
-          AUD.sting("golpe");
-          damageFoe(s.dmg, s.killed);
-        } else {
-          addText(f, s.outcome === "miss" ? "ERROU" : "DEFENDIDO", p.x, p.y - 60, "#d3dcdd", 30);
-        }
-      });
-      at(0.55, () => {
-        if (!s.killed) f.foe.x.to = FOE_HOME;
-        f.cam.cx.to = W / 2;
-      });
-      dur = s.killed ? 1.1 : 0.8;
-    } else if (s.type === "spell") {
-      const color = SPELL_COLORS[s.key] || [220, 230, 255];
-      const rgb = color.join(",");
-      f.subtitle = `${heroLabel()} conjura ${SK[s.key]?.n || "uma magia"}`;
-      f.dice = s.roll || null;
-      at(0, () => {
-        if (foeIndex !== undefined) focusOn();
-        AUD.sting("dado");
-        f.hero.arm.to = -2.2;
-        f.cam.zoom.to = 1.06;
-        addEffect(f, "aura", { x: f.hero.x.v, y: FEET_Y - 220, color, life: 0.9 });
-        addRising(f, f.hero.x.v, FEET_Y - 120, rgb, 24);
-      });
-      at(0.55, () => {
-        f.hero.arm.to = 0.6;
-        if (s.outcome !== "ok") {
-          addText(f, "A MAGIA SE DISSIPA", W / 2, 120, "#d3dcdd", 34, 1.2);
-          addRising(f, f.hero.x.v, FEET_Y - 220, "150,150,150", 30);
-          return;
-        }
-        AUD.sting("magia");
-        const p = impactPoint(f);
-        if (s.key === "sp_cura" || s.key === "sp_bride") {
-          addRising(f, f.hero.x.v, FEET_Y - 120, rgb, 50);
-          addText(f, `+${s.heal} PV`, f.hero.x.v, FEET_Y - 330, "#9fd08a", 44);
-        } else if (s.key === "sp_nevoa") {
-          addEffect(f, "mist", { life: 1 });
-          addText(f, "NÉVOA", W / 2, 120, "#e3ebee", 40);
-        } else if (s.key === "sp_luz") {
-          addEffect(f, "beam", { x0: f.hero.x.v + 60, x1: p.x, y: p.y, color, life: 0.5 });
-          f.foe.flash = 1;
-          f.foe.flashColor = "190,255,200";
-          addText(f, "OFUSCADO", p.x, p.y - 70, "#b8ffc4", 32);
-        } else if (s.key === "sp_espinhos") {
-          addEffect(f, "thorns", { x: FOE_HOME, life: 0.9 });
-          f.foe.flash = 1;
-          f.foe.flashColor = "200,60,60";
-          addText(f, `−${s.dmg}`, p.x + 40, p.y - 40, "#ffd27a", 46);
-          damageFoe(s.dmg, s.killed);
-        } else if (s.key === "sp_beltane") {
-          addEffect(f, "beam", { x0: f.hero.x.v + 60, x1: p.x, y: p.y, color, life: 0.5 });
-          addSparks(f, p.x, p.y, rgb, 40, 380);
-          f.foe.flash = 1;
-          f.foe.flashColor = "140,190,255";
-          addText(f, `−${s.dmg}`, p.x + 40, p.y - 40, "#ffd27a", 46);
-          damageFoe(s.dmg, s.killed);
-        } else if (s.key === "sp_tempestade") {
-          addEffect(f, "hail", { life: 1.1 });
-          f.shake = 12;
-          for (const hit of s.all || []) {
-            const target = f.roster[hit.foe];
-            if (target) target.hp = Math.max(0, target.hp - hit.dmg);
-          }
-          const total = (s.all || []).reduce((sum, hit) => sum + hit.dmg, 0);
-          addText(f, `−${total} no total`, W / 2, 120, "#ffd27a", 40, 1.2);
-        } else if (s.key === "sp_estacoes") {
-          addEffect(f, "aura", { x: W / 2, y: H / 2, color, life: 1 });
-          addRising(f, W / 2, H - 120, "255,200,120", 40);
-          addRising(f, W / 2, H - 120, "150,255,170", 30);
-          addText(f, `+${s.heal} PV`, f.hero.x.v, FEET_Y - 330, "#9fd08a", 44);
-        }
-      });
-      at(1.0, () => {
-        f.hero.arm.to = 0;
-        f.cam.zoom.to = 1.03;
-      });
-      dur = 1.35;
-    } else if (s.type === "heal") {
-      f.subtitle = s.source === "folego" ? "Fôlego das Highlands" : "Ervas sobre as feridas";
-      at(0, () => {
-        addRising(f, f.hero.x.v, FEET_Y - 100, "160,230,140", 40);
-        addText(f, `+${s.amount} PV`, f.hero.x.v, FEET_Y - 330, "#9fd08a", 44);
-        AUD.sting("sucesso");
-      });
-      dur = 0.9;
-    } else if (s.type === "guard") {
-      f.subtitle = `${heroLabel()} se fecha em defesa`;
-      at(0, () => {
-        f.hero.y.to = 12;
-        f.hero.arm.to = -0.7;
-        addEffect(f, "shield", { x: f.hero.x.v + 40, y: FEET_Y - 200, life: 0.6 });
-        addText(f, "DEFESA TOTAL", f.hero.x.v, FEET_Y - 340, "#cfe2ff", 32);
-      });
-      at(0.55, () => {
-        f.hero.y.to = 0;
-        f.hero.arm.to = 0;
-      });
-      dur = 0.75;
-    } else if (s.type === "feint") {
-      f.subtitle = `${heroLabel()} finge um golpe`;
-      f.dice = s.roll || null;
-      at(0, () => {
-        focusOn();
-        AUD.sting("dado");
-        f.hero.x.to = HERO_HOME + 90;
-        f.hero.arm.to = -0.8;
-      });
-      at(0.3, () => {
-        f.hero.x.to = HERO_HOME;
-        f.hero.arm.to = 0;
-        if (s.ok) {
-          f.foe.x.to = FOE_HOME + 50;
-          addText(f, "FINTA!", FOE_HOME, FEET_Y - 320, "#ffd27a", 34);
-        } else addText(f, "NÃO CAIU NA FINTA", FOE_HOME, FEET_Y - 320, "#d3dcdd", 28);
-      });
-      at(0.6, () => (f.foe.x.to = FOE_HOME));
-      dur = 0.85;
-    } else if (s.type === "amulet") {
-      const color = AMULET_COLORS[s.key] || [255, 255, 255];
-      f.subtitle = AMU_ACT[s.key]?.n || "Amuleto";
-      at(0, () => {
-        addEffect(f, "aura", { x: f.hero.x.v, y: FEET_Y - 210, color, life: 0.9 });
-        addRising(f, f.hero.x.v, FEET_Y - 160, color.join(","), 30);
-        AUD.sting("magia");
-      });
-      dur = 0.9;
-    } else if (s.type === "flee") {
-      f.subtitle = s.ok ? `${heroLabel()} foge` : `${heroLabel()} tenta fugir`;
-      at(0, () => (f.hero.x.to = s.ok ? -220 : HERO_HOME - 90));
-      at(0.5, () => {
-        if (!s.ok) f.hero.x.to = HERO_HOME;
-      });
-      dur = 0.85;
-    } else if (s.type === "end") {
-      if (s.result === "flee") {
-        dur = 0.2;
-      } else if (s.result === "win") {
-        f.subtitle = "Vitória";
-        at(0, () => {
-          f.foe.alpha.to = 0;
-          f.hero.arm.to = -1.6;
-          f.hero.x.to = HERO_HOME + 60;
-          f.cam.cx.to = 380;
-          f.cam.zoom.to = 1.1;
-          addEffect(f, "aura", { x: HERO_HOME + 60, y: FEET_Y - 220, color: [255, 210, 120], life: 1.3 });
-          addText(f, "VITÓRIA", W / 2, 120, "#ffd27a", 54, 1.5);
-        });
-        dur = 1.5;
-      } else {
-        f.subtitle = s.result === "death" ? "O fim" : "Você cai";
-        at(0, () => {
-          f.hero.y.to = 70;
-          f.hero.alpha.to = 0.35;
-          f.dark = 1;
-        });
-        dur = 1.4;
-      }
-    }
-    return { dur, ev, started: false };
-  }
-
   // ---------------------------------------------------------------- exibição
 
   const overlay = () => document.getElementById("cinema");
 
   function startFilm(spec) {
     const el = overlay();
-    if (!el) {
+    if (!el || (spec.kind === "combat" && !spec.cuts.length)) {
       (spec.later || []).forEach((s) => AUD.sting(s));
       return;
     }
     stop();
-    const speed = MODES[mode] || 1;
-    const f = {
+    film = {
       ...spec,
-      speed,
-      time: 0,
-      clock: 0,
+      speed: MODES[mode] || 1,
       index: -1,
       current: null,
       shotTime: 0,
-      hero: makeActor(HERO_HOME - 220),
-      foe: makeActor(FOE_HOME + 260),
-      focus: spec.target ?? null,
-      cam: { zoom: spring(1.0, 50, 13), cx: spring(W / 2, 50, 13) },
       shake: 0,
-      hurt: 0,
-      dark: 0,
       fx: [],
       particles: [],
-      subtitle: "",
-      dice: null,
       bars: 0,
-      slowUntil: 0,
       startedAt: performance.now(),
       last: performance.now(),
       raf: 0,
     };
-    f.hero.x.to = HERO_HOME;
-    f.foe.x.v = FOE_HOME + 140;
-    f.foe.x.to = FOE_HOME;
-    film = f;
     el.hidden = false;
-    el.classList.remove("closing");
-    f.raf = requestAnimationFrame(frame);
+    film.raf = requestAnimationFrame(frame);
   }
 
   /** Para o filme e devolve a página. Toca os sons que ficaram para o fim (vitória, derrota). */
@@ -822,12 +897,14 @@ const CINEMA = (() => {
     later.forEach((s) => AUD.sting(s));
   }
 
-  function nextShot(f) {
+  function nextCut(f) {
     f.index++;
-    if (f.kind === "title") return false;
-    if (f.index >= f.shots.length) return false;
-    f.current = script(f, f.shots[f.index]);
+    if (f.index >= f.cuts.length) return false;
+    f.current = f.cuts[f.index];
+    f.current.at.forEach((e) => (e.done = false));
     f.shotTime = 0;
+    f.shake = Math.max(f.shake, f.current.shake || 0);
+    f.fx = f.fx.filter((e) => e.type === "text" && e.age < e.life * 0.6);
     return true;
   }
 
@@ -835,37 +912,28 @@ const CINEMA = (() => {
     const f = film;
     if (!f) return;
     try {
-      let dt = Math.min(1 / 30, (now - f.last) / 1000);
+      const real = Math.min(1 / 30, (now - f.last) / 1000);
       f.last = now;
-      if (f.time < f.slowUntil) dt *= 0.35;
-      f.time += dt;
-      const sdt = dt / f.speed;
       if (now - f.startedAt > WATCHDOG_MS) return stop();
-
       if (f.kind === "combat") {
-        if (!f.current || f.shotTime >= f.current.dur) {
-          if (!nextShot(f)) {
-            f.closing = (f.closing || 0) + sdt;
-            if (f.closing > 0.35) return stop();
+        const cur = f.current;
+        const slow = cur?.slow && f.shotTime > 0.05 && f.shotTime < 0.05 + cur.slow ? 0.3 : 1;
+        const dt = (real * slow) / f.speed;
+        if (!cur || f.shotTime >= cur.dur) {
+          if (!nextCut(f)) return stop();
+        }
+        const api = effectsApi(f);
+        for (const e of f.current.at) {
+          if (!e.done && f.shotTime >= e[0]) {
+            e.done = true;
+            e[1](api);
           }
         }
-        if (f.current && f.shotTime < f.current.dur) {
-          for (const e of f.current.ev) {
-            if (!e.done && f.shotTime >= e.time) {
-              e.done = true;
-              e.fn();
-            }
-          }
-          f.shotTime += sdt;
-        }
-        stepActor(f.hero, dt, f.speed);
-        stepActor(f.foe, dt, f.speed);
-        stepSpring(f.cam.zoom, dt, f.speed);
-        stepSpring(f.cam.cx, dt, f.speed);
-        f.bars = Math.min(1, f.bars + sdt * 4);
-        drawCombat(f, sdt);
+        f.shotTime += dt;
+        f.bars = Math.min(1, f.bars + dt * 5);
+        drawCombat(f, dt);
       } else {
-        f.shotTime += sdt;
+        f.shotTime += real / f.speed;
         if (f.shotTime >= f.dur) return stop();
         drawTitle(f);
       }
@@ -893,67 +961,125 @@ const CINEMA = (() => {
     return c;
   }
 
-  function drawCombat(f, sdt) {
-    const c = canvasContext();
-    if (!c) return;
-    const t = performance.now() / 1000;
-    c.fillStyle = "#000";
-    c.fillRect(0, 0, W, H);
-    c.save();
-    const sx = (Math.random() - 0.5) * f.shake;
-    const sy = (Math.random() - 0.5) * f.shake;
-    f.shake *= Math.pow(0.0005, sdt);
-    c.translate(W / 2 + sx, H / 2 + sy);
-    c.scale(f.cam.zoom.v, f.cam.zoom.v);
-    c.translate(-f.cam.cx.v, -H / 2);
+  const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+  const easeInOut = (x) => x * x * (3 - 2 * x);
+
+  /** Desenha a imagem cobrindo o quadro, como `object-fit: cover`. */
+  function cover(c, im, dx = 0) {
+    const s = Math.max(W / im.width, H / im.height);
+    const w = im.width * s;
+    const h = im.height * s;
+    c.drawImage(im, (W - w) / 2 + dx, (H - h) / 2, w, h);
+  }
+
+  /** A cena do combate ao fundo, escurecida. */
+  function sceneBackdrop(c, f, t, darken = 0.45) {
     c.save();
     c.translate(0, (H - ART.H) / 2);
     ART.paintBackground(c, f.art, t, { combat: true });
     c.restore();
-    c.fillStyle = "rgba(0,0,0,.38)";
-    c.fillRect(-200, -200, W + 400, H + 400);
-
-    // Inimigos que não estão em foco ficam ao fundo, menores e escurecidos.
-    f.roster.forEach((foe, i) => {
-      if (i === f.focus || foe.hp <= 0) return;
-      const back = makeBackActor(f, i);
-      drawFoe(c, back, foe, t, 0.72);
-    });
-    const focusFoe = f.focus !== null ? f.roster[f.focus] : null;
-    const heroInFront = f.hero.x.v > f.foe.x.v - 300;
-    if (!heroInFront) drawHero(c, f.hero, t);
-    drawFoe(c, f.foe, focusFoe, t);
-    if (heroInFront) drawHero(c, f.hero, t);
-    drawEffects(c, f, sdt);
-    c.restore();
-
-    if (focusFoe) drawHealthBar(c, focusFoe);
-    if (f.hurt > 0) {
-      const g = c.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, W * 0.65);
-      g.addColorStop(0, "rgba(190,30,20,0)");
-      g.addColorStop(1, `rgba(190,30,20,${0.55 * f.hurt})`);
-      c.fillStyle = g;
-      c.fillRect(0, 0, W, H);
-      f.hurt = Math.max(0, f.hurt - sdt * 2);
-    }
-    if (f.dark > 0) {
-      f.darkLevel = Math.min(0.75, (f.darkLevel || 0) + sdt * 0.8);
-      c.fillStyle = `rgba(0,0,0,${f.darkLevel})`;
-      c.fillRect(0, 0, W, H);
-    }
-    drawBars(c, f);
+    c.fillStyle = `rgba(0,0,0,${darken})`;
+    c.fillRect(0, 0, W, H);
   }
 
-  function makeBackActor(f, i) {
-    const slot = (i * 37) % 3;
-    return {
-      x: { v: FOE_HOME + 120 + slot * 70, vel: 0 },
-      y: { v: -20 - slot * 10 },
-      alpha: { v: 0.55 },
-      flash: 0,
-      ghost: 0,
-      phase: i,
-    };
+  /** Retrato pintado (3:4, com borda suave) de pé num dos lados do quadro. */
+  function standing(c, im, x, height) {
+    const w = (height * im.width) / im.height;
+    c.drawImage(im, x - w / 2, H - height * 0.94, w, height);
+  }
+
+  /** Desenha o conteúdo de um plano: o plano pintado ou a reserva com os retratos. */
+  function drawView(c, f, view, t, dx) {
+    const im = view.plate ? plate(view.plate) : null;
+    if (im) return cover(c, im, dx);
+    const v = view.plate ? view.fallback : view;
+    sceneBackdrop(c, f, t, v.wide ? 0.3 : 0.55);
+    if (v.hero) {
+      const p = heroPortrait(state);
+      if (p) standing(c, p, HERO_SPOT.x + dx, H * 1.5);
+      if (v.pose === "dor") {
+        c.fillStyle = "rgba(150,20,10,.25)";
+        c.fillRect(0, 0, W, H);
+      }
+    } else if (v.foe) {
+      const p = ART.portrait(v.foe.pic);
+      if (p) {
+        c.save();
+        if (v.pose === "queda") {
+          c.translate(FOE_SPOT.x, H);
+          c.rotate(0.35);
+          c.translate(-FOE_SPOT.x, -H);
+        }
+        standing(c, p, FOE_SPOT.x + dx, H * 1.5);
+        c.restore();
+      } else {
+        c.save();
+        c.translate(FOE_SPOT.x + dx, H - 10);
+        c.scale(2.4, 2.4);
+        ART.foeSilhouette(c, v.foe.k, 0, 0, t, "#050608");
+        c.restore();
+      }
+    } else if (v.wide && view.foe) {
+      const p = ART.portrait(view.foe.pic);
+      if (p) standing(c, p, FOE_SPOT.x + 60 + dx, H * 1.05);
+    }
+  }
+
+  function drawCombat(f, dt) {
+    const c = canvasContext();
+    if (!c) return;
+    const t = performance.now() / 1000;
+    const cur = f.current;
+    const p = Math.min(1, f.shotTime / cur.dur);
+    const e = easeInOut(p);
+    c.fillStyle = "#000";
+    c.fillRect(0, 0, W, H);
+
+    c.save();
+    const sx = (Math.random() - 0.5) * f.shake;
+    const sy = (Math.random() - 0.5) * f.shake;
+    f.shake *= Math.pow(0.002, dt);
+    const zoom = cur.z0 + (cur.z1 - cur.z0) * easeOut(p);
+    c.translate(W / 2 + sx, H / 2 + sy);
+    c.scale(zoom, zoom);
+    c.translate(-W / 2, -H / 2);
+    const dx = cur.x0 + (cur.x1 - cur.x0) * e;
+    // Corte rápido: os primeiros instantes do plano chegam borrados, como numa câmera em movimento.
+    const whip = cur.whip ? Math.max(0, 1 - f.shotTime / 0.12) : 0;
+    if (whip > 0) {
+      for (let i = 3; i >= 1; i--) {
+        c.globalAlpha = 0.28 * whip;
+        drawView(c, f, cur.view, t, dx - i * 60 * whip);
+      }
+      c.globalAlpha = 1;
+    }
+    drawView(c, f, cur.view, t, dx);
+    if (cur.tint) {
+      c.fillStyle = `rgba(${cur.tint},${0.18 * Math.sin(p * Math.PI)})`;
+      c.fillRect(0, 0, W, H);
+    }
+    c.restore();
+
+    drawEffects(c, f, dt);
+
+    const focus = cur.view.fallback?.foe || cur.view.foe;
+    const target = focus || f.roster.find((x) => x.hp > 0);
+    if (target) drawHealthBar(c, target);
+    // Vinheta: bordas escuras que puxam o olhar para o centro.
+    const g = c.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.62);
+    g.addColorStop(0, "rgba(0,0,0,0)");
+    g.addColorStop(1, cur.hurt ? `rgba(150,20,10,${0.65 * (1 - p)})` : "rgba(0,0,0,.55)");
+    c.fillStyle = g;
+    c.fillRect(0, 0, W, H);
+    if (cur.flash && f.shotTime < 0.12) {
+      c.fillStyle = `rgba(255,248,235,${cur.flash * (1 - f.shotTime / 0.12)})`;
+      c.fillRect(0, 0, W, H);
+    }
+    if (cur.dark) {
+      c.fillStyle = `rgba(0,0,0,${0.7 * p})`;
+      c.fillRect(0, 0, W, H);
+    }
+    drawBars(c, f.bars, cur.sub, cur.dice);
   }
 
   function drawHealthBar(c, foe) {
@@ -970,18 +1096,19 @@ const CINEMA = (() => {
     c.fillText(foe.n, x + w, y - 8);
   }
 
-  function drawBars(c, f) {
-    const h = BAR_HEIGHT * easeOut(f.bars);
+  function drawBars(c, bars, subtitle, dice) {
+    const h = BAR_HEIGHT * easeOut(bars);
     c.fillStyle = "#000";
     c.fillRect(0, 0, W, h);
     c.fillRect(0, H - h, W, h);
-    if (f.subtitle && f.bars > 0.9) {
+    if (bars < 0.9) return;
+    if (subtitle) {
       c.font = 'italic 22px "Alegreya", Georgia, serif';
       c.textAlign = "center";
       c.fillStyle = "#e3e9ea";
-      c.fillText(f.subtitle, W / 2, H - 16);
+      c.fillText(subtitle, W / 2, H - 16);
     }
-    if (f.dice && f.bars > 0.9) drawDice(c, f.dice);
+    if (dice) drawDice(c, dice);
   }
 
   function drawDice(c, roll) {
@@ -1001,8 +1128,6 @@ const CINEMA = (() => {
     c.fillStyle = roll.sum <= roll.target ? "#9fd08a" : "#e07a6a";
     c.fillText(`${roll.sum} ≤ ${roll.target}?`, 24 + 3 * (size + 6) + 4, H - BAR_HEIGHT + 28);
   }
-
-  const easeOut = (x) => 1 - Math.pow(1 - x, 3);
 
   // ---------------------------------------------------------------- cartela de capítulo
 
@@ -1043,8 +1168,7 @@ const CINEMA = (() => {
     c.font = `${48 + p * 6}px "Uncial Antiqua", Georgia, serif`;
     c.fillText(f.name, W / 2, H / 2 + 22);
     c.globalAlpha = 1;
-    f.bars = 1;
-    drawBars(c, { ...f, subtitle: "", dice: null, bars: 1 });
+    drawBars(c, 1, "", null);
   }
 
   // ---------------------------------------------------------------- controles
@@ -1068,6 +1192,7 @@ const CINEMA = (() => {
     begin,
     shot,
     end,
+    preload,
     titleCard,
     stop,
     setMode,

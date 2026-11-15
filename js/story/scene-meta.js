@@ -234,3 +234,48 @@ const meta = (id) => {
   return META[id] || ["titulo", "tema"];
 };
 const artBox = '<div class="art"><canvas id="art" aria-hidden="true"></canvas></div>';
+
+/** Ilustrações de lugares assombrados: o suspense nelas usa a faixa mais sombria. */
+const EERIE_ART = new Set([
+  "pantano",
+  "caes",
+  "boca",
+  "musgo",
+  "tumulo",
+  "aranha",
+  "drip",
+  "camara",
+  "lobos",
+  "betulas",
+  "floresta_1305",
+  "torre_dentro",
+  "sluagh_ceu",
+  "guardiao",
+  "inverno",
+]);
+/** Ilustrações de vida comum: aldeia, fogueira, forja e acampamentos. */
+const HOME_ART = new Set([
+  "aldeia",
+  "fogueira",
+  "forja",
+  "acampamento",
+  "carpinteiro",
+  "frades",
+  "treino",
+  "eremita",
+]);
+/** Ilustrações dos finais. */
+const ENDING_ART = new Set(["epilogo", "fim_inverno", "fim_primavera", "fim_selo"]);
+
+/** A faixa da trilha sonora de uma cena, pelo clima e pela ilustração dela. */
+function trackFor(id) {
+  const [art, mood] = meta(id);
+  if (ENDING_ART.has(art)) return "final";
+  if (art === "taverna") return "taverna";
+  if (mood === "lamento") return "lamento";
+  if (mood === "mistico") return "mistico";
+  if (mood === "bravura") return "vitoria";
+  if (mood === "suspense") return EERIE_ART.has(art) ? "sombrio" : "suspense";
+  if (/^c\d_inicio$/.test(id)) return "tema";
+  return HOME_ART.has(art) ? "aldeia" : "estrada";
+}

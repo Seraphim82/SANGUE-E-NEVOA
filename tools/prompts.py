@@ -178,3 +178,56 @@ HEROIS_ROUPA = {
 }
 
 HEROIS = {f"{a}_{r}": (a, r) for a in HEROIS_APARENCIA for r in HEROIS_ROUPA}
+
+# Planos de ação do cinema de combate (21:9). Cada golpe é montado cortando entre
+# estes planos fechados, como num filme. Saem em img/action/<chave>.jpg.
+ESTILO_ACAO = ("Cinematic painterly film still for a dark historical-fantasy role-playing game set in Scotland in 1296, "
+               "oil-painting texture like the other paintings of the game, ultra-wide 21:9 frame, shallow depth of field, "
+               "dramatic warm rim light, dark smoky battlefield background that falls into deep shadow, motion and tension "
+               "of a fight frozen in a single frame. No text, no frame, no logos. Shot: ")
+
+ACAO_HEROI = {
+ "furia": "Tight close-up from the chest up of this exact same person, same face, hair and clothing as in the reference "
+          "image, mid-battle: fierce battle cry, teeth bared, sweat and mud on the face, body turning into a powerful strike "
+          "toward the right of the frame, hands out of frame. Subject on the left third of the frame.",
+ "dor": "Tight close-up from the chest up of this exact same person, same face, hair and clothing as in the reference image, "
+        "just struck by an enemy blow: grimace of pain, head snapping back, blood on the lip, staggering, hands out of frame. "
+        "Subject on the left third of the frame.",
+}
+
+ACAO_ARMA = {
+ "punhos": "a bare fist wrapped in cloth smashing forward",
+ "faca": "a small iron knife thrusting forward",
+ "martelo": "a heavy blacksmith's hammer swinging down",
+ "bordao": "a long wooden quarterstaff swinging in a wide arc",
+ "funda": "a leather sling whirling and releasing a stone",
+ "espada": "a straight double-edged iron arming sword with a simple cross guard, slashing in a bright arc",
+ "lanca": "a spear with an iron head thrusting forward",
+ "espada_guerra": "a huge straight two-handed Scottish greatsword with a long cross guard, cleaving down",
+ "arco_longo": "a longbow at full draw releasing an arrow",
+ "arco": "a short hunting bow releasing an arrow",
+ "machado": "a bearded battle axe chopping down",
+ "pique": "a long pike thrusting forward",
+}
+ESTILO_ARMA_GOLPE = ("Extreme close-up action shot of {arma}, gripped by the hands of an unseen Scottish fighter in worn "
+                     "13th-century sleeves, frozen at the moment of the strike, strong motion blur along the swing, dust "
+                     "and sparks in the air, moving from left to right of the frame.")
+ESTILO_ARMA_APARO = ("Extreme close-up action shot of {arma}, gripped by the hands of an unseen Scottish fighter, meeting an "
+                     "enemy English sword in a parry: a burst of bright orange sparks at the point of contact, both blades "
+                     "straining, motion blur.")
+
+ACAO_GERAIS = {
+ "escudo": "Extreme close-up of a round wooden Scottish shield with an iron boss taking the full impact of an English "
+           "sword: splinters flying, sparks, the shield pushed back, motion blur.",
+}
+
+ACAO_INIMIGO = {
+ "ataque": "This exact same character as in the reference image, same face, clothing and equipment, lunging forward toward "
+           "the left of the frame in a furious attack, weapon raised high, mouth open in a shout. Medium close-up, subject "
+           "on the right third of the frame, motion blur.",
+ "atingido": "This exact same character as in the reference image, same face, clothing and equipment, at the instant of being "
+             "struck hard: body twisting away to the right, face contorted in pain, spray of blood and dust, staggering. "
+             "Medium close-up, subject on the right third of the frame.",
+ "queda": "This exact same character as in the reference image, same clothing and equipment, collapsing to the muddy ground, "
+          "defeated, weapon falling from the hand, seen from a low angle in dim light. Subject on the right half of the frame.",
+}

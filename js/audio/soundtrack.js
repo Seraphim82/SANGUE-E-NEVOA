@@ -1,8 +1,10 @@
 /**
  * Trilha sonora e efeitos.
  *
- * Música medieval gerada em tempo real com a Web Audio API (zumbido de gaita de fole,
- * flauta, harpa e bodhrán) em cinco climas, mais vinhetas e efeitos sonoros.
+ * Doze faixas gravadas (audio/<faixa>.mp3, compostas com o modelo Lyria), uma para cada
+ * tipo de cena, que se fundem umas nas outras ao trocar de cena. Se uma faixa não carregar,
+ * toca a música gerada em tempo real com a Web Audio API (zumbido de gaita de fole, flauta,
+ * harpa e bodhrán) no clima mais próximo. Mais vinhetas e efeitos sonoros.
  */
 "use strict";
 
@@ -465,8 +467,89 @@ const AUD = (() => {
       },
     },
   };
-  function startLoop(name) {
-    const L = LOOPS[name];
+  /** As faixas gravadas e o clima da música gerada que substitui cada uma se faltar. */
+  const TRACKS = {
+    tema: "tema",
+    aldeia: "tema",
+    estrada: "tema",
+    taverna: "tema",
+    suspense: "suspense",
+    sombrio: "suspense",
+    mistico: "mistico",
+    combate: "bravura",
+    combate_feerico: "bravura",
+    lamento: "lamento",
+    vitoria: "bravura",
+    final: "tema",
+  };
+  const FADE_S = 1.6;
+  /** Em páginas abertas do disco, o navegador não deixa a Web Audio ler o arquivo de áudio. */
+  const fromDisk = location.protocol === "file:";
+
+  function startTrack(name) {
+    const el = new Audio();
+    el.loop = true;
+    el.preload = "auto";
+    const st = { name, el, file: true };
+    if (fromDisk) {
+      // Sem Web Audio: o volume do elemento faz a fusão (funciona nos navegadores de computador).
+      el.volume = 0;
+      st.fade = setInterval(() => {
+        if (cur !== st) return clearInterval(st.fade);
+        el.volume = Math.min(0.5 * (pref.music ? 1 : 0), el.volume + 0.03);
+      }, 60);
+    } else {
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(1, ctx.currentTime + FADE_S);
+      ctx.createMediaElementSource(el).connect(g);
+      g.connect(music);
+      st.g = g;
+    }
+    el.addEventListener("error", () => {
+      // Faixa fora do ar: troca pela música gerada no mesmo clima.
+      if (cur !== st) return;
+      stopLoop();
+      startLoop(name, true);
+    });
+    el.src = `audio/${name}.mp3`;
+    el.play().catch(() => {
+      // O navegador ainda não liberou o som; o próximo toque na página libera.
+    });
+    cur = st;
+  }
+
+  function stopTrack(st) {
+    clearInterval(st.fade);
+    if (st.g) {
+      const now = ctx.currentTime;
+      st.g.gain.cancelScheduledValues(now);
+      st.g.gain.setValueAtTime(Math.max(0.0001, st.g.gain.value), now);
+      st.g.gain.exponentialRampToValueAtTime(0.0001, now + FADE_S);
+    } else {
+      st.fade = setInterval(() => {
+        st.el.volume = Math.max(0, st.el.volume - 0.03);
+        if (!st.el.volume) clearInterval(st.fade);
+      }, 60);
+    }
+    setTimeout(
+      () => {
+        st.el.pause();
+        st.el.removeAttribute("src");
+        st.el.load();
+        try {
+          st.g?.disconnect();
+        } catch {
+          // O nó já pode estar desconectado.
+        }
+      },
+      FADE_S * 1000 + 300,
+    );
+  }
+
+  function startLoop(name, synthOnly) {
+    if (!synthOnly && Object.hasOwn(TRACKS, name)) return startTrack(name);
+    const L = LOOPS[name] || LOOPS[TRACKS[name]];
     if (!L) return;
     const now = ctx.currentTime,
       g = ctx.createGain();
@@ -493,6 +576,7 @@ const AUD = (() => {
     if (!cur) return;
     const st = cur;
     cur = null;
+    if (st.file) return stopTrack(st);
     clearInterval(st.timer);
     const now = ctx.currentTime;
     st.g.gain.cancelScheduledValues(now);
@@ -647,5 +731,17 @@ const AUD = (() => {
     noise(sfx, t, strong ? 1.7 : 1.3, strong ? 0.32 : 0.15, 320, "bandpass", 0.9, strong ? 1500 : 950);
     noise(sfx, t + 0.1, strong ? 1.4 : 1, strong ? 0.12 : 0.06, 2500, "highpass", 0.5);
   }
-  return { unlock, mood, sting, hold, release, setMusic, setSfx, pref, gust };
+  return {
+    unlock,
+    mood,
+    sting,
+    hold,
+    release,
+    setMusic,
+    setSfx,
+    pref,
+    gust,
+    /** Faixa tocando agora e se é a gravada (para os testes). */
+    playing: () => (cur ? { name: cur.name, file: !!cur.file, time: cur.el ? cur.el.currentTime : 0 } : null),
+  };
 })();

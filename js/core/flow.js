@@ -7,7 +7,7 @@ function go(id, keepBanner) {
   if (!keepBanner) state.banner = null;
   state.scene = id;
   const sc = SC[id];
-  AUD.mood(meta(id)[1]);
+  AUD.mood(trackFor(id));
   const opening = /^c(\d)_inicio$/.exec(id);
   if (opening && !state.visited[id]) {
     recordJourney(state, Number(opening[1]));

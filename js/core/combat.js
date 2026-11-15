@@ -25,7 +25,7 @@ function startCombat(spec) {
     seer: false,
     feroz: false,
   };
-  AUD.mood("bravura");
+  AUD.mood(C.foes.some((f) => f.fey) ? "combate_feerico" : "combate");
   ART.FX.hit = {};
   const cnt = {};
   C.foes.forEach((f) => {
@@ -49,6 +49,8 @@ function startCombat(spec) {
   }
   if (spec.pen) clog(`<span class="r">Surpresa: −${-spec.pen} no seu primeiro ataque.</span>`);
   clog(`<div class="round">RODADA 1</div>`);
+  // Começa a baixar os planos de ação antes do primeiro golpe.
+  CINEMA.preload(state.combat);
 }
 function clog(h) {
   state.combat.log.push(h);

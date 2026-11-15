@@ -241,6 +241,33 @@ const casos = [
       await context.close();
     },
   ],
+  [
+    "toda cena tem uma faixa da trilha sonora gravada",
+    async (browser) => {
+      const { page, context } = await abrirJogo(browser);
+      const r = await page.evaluate(() => {
+        const faixas = new Set([
+          "tema",
+          "aldeia",
+          "estrada",
+          "taverna",
+          "suspense",
+          "sombrio",
+          "mistico",
+          "lamento",
+          "vitoria",
+          "final",
+        ]);
+        const sem = Object.keys(SC).filter((id) => !faixas.has(trackFor(id)));
+        const usadas = new Set(Object.keys(SC).map(trackFor));
+        return { sem, usadas: [...usadas].sort() };
+      });
+      verificar(!r.sem.length, `cenas sem faixa: ${r.sem.join(", ")}`);
+      verificar(r.usadas.length >= 9, `só ${r.usadas.length} faixas usadas: ${r.usadas.join(", ")}`);
+      await context.close();
+      return `${r.usadas.length} faixas usadas nas cenas`;
+    },
+  ],
 ];
 
 const falhas = await executar("Testes do cinema e do retrato do herói", casos);

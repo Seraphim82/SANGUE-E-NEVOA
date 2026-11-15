@@ -24,7 +24,14 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parent))
 from prompts import (  # noqa: E402
+    ACAO_ARMA,
+    ACAO_GERAIS,
+    ACAO_HEROI,
+    ACAO_INIMIGO,
     CENAS,
+    ESTILO_ACAO,
+    ESTILO_ARMA_APARO,
+    ESTILO_ARMA_GOLPE,
     ESTILO,
     ESTILO_HEROI,
     ESTILO_RETRATO,
@@ -51,6 +58,8 @@ def chave_api():
 
 
 def destino(chave):
+    if chave.startswith("acao:"):
+        return RAIZ / "img" / "action" / f"{chave[5:]}.jpg"
     if chave.startswith("heroi:"):
         return RAIZ / "img" / "heroes" / f"{chave[6:]}.jpg"
     if chave.startswith("retrato:"):
@@ -72,20 +81,31 @@ def partes_heroi(nome):
     ]
 
 
-def gerar(chave):
-    heroi = chave.startswith("heroi:")
-    retrato = chave.startswith("retrato:") or heroi
-    if heroi:
-        partes = partes_heroi(chave[6:])
-    else:
-        nome = chave[8:] if retrato else chave
-        partes = [{"text": ESTILO_RETRATO + RETRATOS[nome] if retrato else ESTILO + CENAS[nome]}]
+def referencia(caminho, texto):
+    """Partes do pedido com uma pintura do jogo como referência de rosto, roupa e equipamento."""
+    dados = base64.b64encode(caminho.read_bytes()).decode()
+    return [{"inlineData": {"mimeType": "image/jpeg", "data": dados}}, {"text": texto}]
+
+
+def partes_acao(nome):
+    """Planos de ação do cinema: heroi_<pose>_<aparência>_<roupa>, arma_<golpe|aparo>_<arma>,
+    escudo, ou inimigo_<pose>_<retrato>."""
+    tipo, pose, resto = (nome.split("_", 2) + ["", ""])[:3]
+    if tipo == "heroi":
+        return referencia(destino(f"heroi:{resto}"), ESTILO_ACAO + ACAO_HEROI[pose])
+    if tipo == "arma":
+        modelo = ESTILO_ARMA_GOLPE if pose == "golpe" else ESTILO_ARMA_APARO
+        return [{"text": ESTILO_ACAO + modelo.format(arma=ACAO_ARMA[resto])}]
+    if tipo == "inimigo":
+        return referencia(destino(f"retrato:{resto}"), ESTILO_ACAO + ACAO_INIMIGO[pose])
+    return [{"text": ESTILO_ACAO + ACAO_GERAIS[nome]}]
+
+
+def pedir(partes, proporcao):
+    """Envia o pedido ao modelo de imagem e devolve a imagem gerada (Pillow)."""
     corpo = {
         "contents": [{"role": "user", "parts": partes}],
-        "generationConfig": {
-            "responseModalities": ["IMAGE"],
-            "imageConfig": {"aspectRatio": "3:4" if retrato else "21:9"},
-        },
+        "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": proporcao}},
     }
     req = urllib.request.Request(
         URL,
@@ -105,13 +125,25 @@ def gerar(chave):
                         dados = parte["inlineData"]["data"]
     if not dados:
         raise RuntimeError("a resposta não trouxe imagem")
-    img = Image.open(io.BytesIO(base64.b64decode(dados))).convert("RGB")
-    largura = 720 if retrato else 1600
+    return Image.open(io.BytesIO(base64.b64decode(dados))).convert("RGB")
+
+
+def salvar(chave, img, largura):
     img = img.resize((largura, round(img.height * largura / img.width)), Image.LANCZOS)
     saida = destino(chave)
     saida.parent.mkdir(parents=True, exist_ok=True)
     img.save(saida, "JPEG", quality=82, optimize=True, progressive=True)
     return saida
+
+
+def gerar(chave):
+    if chave.startswith("acao:"):
+        return salvar(chave, pedir(partes_acao(chave[5:]), "21:9"), 1600)
+    if chave.startswith("heroi:"):
+        return salvar(chave, pedir(partes_heroi(chave[6:]), "3:4"), 720)
+    if chave.startswith("retrato:"):
+        return salvar(chave, pedir([{"text": ESTILO_RETRATO + RETRATOS[chave[8:]]}], "3:4"), 720)
+    return salvar(chave, pedir([{"text": ESTILO + CENAS[chave]}], "21:9"), 1600)
 
 
 def main():
