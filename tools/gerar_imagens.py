@@ -34,10 +34,12 @@ from prompts import (  # noqa: E402
     ESTILO_ARMA_GOLPE,
     ESTILO,
     ESTILO_HEROI,
+    ESTILO_ITEM,
     ESTILO_RETRATO,
     HEROIS,
     HEROIS_APARENCIA,
     HEROIS_ROUPA,
+    ITENS,
     RETRATOS,
 )
 
@@ -58,6 +60,8 @@ def chave_api():
 
 
 def destino(chave):
+    if chave.startswith("item:"):
+        return RAIZ / "img" / "items" / f"{chave[5:]}.jpg"
     if chave.startswith("acao:"):
         return RAIZ / "img" / "action" / f"{chave[5:]}.jpg"
     if chave.startswith("heroi:"):
@@ -137,6 +141,8 @@ def salvar(chave, img, largura):
 
 
 def gerar(chave):
+    if chave.startswith("item:"):
+        return salvar(chave, pedir([{"text": ESTILO_ITEM + ITENS[chave[5:]]}], "21:9"), 1600)
     if chave.startswith("acao:"):
         return salvar(chave, pedir(partes_acao(chave[5:]), "21:9"), 1600)
     if chave.startswith("heroi:"):

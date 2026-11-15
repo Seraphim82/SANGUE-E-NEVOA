@@ -44,7 +44,7 @@ function renderScene() {
    ${sc.eyebrow ? `<div class="eyebrow">${sc.eyebrow}</div>` : ""}
    <h1 class="scene-title">${sc.title}</h1>
    <div class="prose">${md(toParagraphs(sc.text()))}</div>
-   <div class="wind-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/></svg><span class="mouse">O vento das Terras Altas mostra o caminho: passe o cursor sobre uma escolha</span><span class="touch">O vento mostra o caminho: toque uma vez para ver, duas para seguir</span></div>
+   <div class="wind-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/></svg><span class="mouse">O vento das Terras Altas mostra o caminho: passe o cursor sobre uma escolha</span><span class="touch">O vento das Terras Altas leva você pelo caminho que escolher</span></div>
    <div class="choices" id="choices">${ch
      .map((c, i) => {
        const h = testHint(c);

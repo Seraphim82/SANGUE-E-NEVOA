@@ -1416,3 +1416,46 @@ img {
 [hidden] {
   display: none !important;
 }
+
+/* Botões e escolhas respondem ao primeiro toque, sem esperar o gesto de zoom duplo do celular */
+button,
+.choice,
+.tile,
+.dash-tab {
+  touch-action: manipulation;
+}
+
+/* Pintura da arma ou do amuleto na tela do personagem; a moldura acompanha o nível da forja */
+.item-art {
+  margin: 0 0 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  aspect-ratio: 21 / 9;
+  background: #0b0d10;
+}
+.item-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.item-art.lv1 {
+  border-color: rgba(190, 200, 210, 0.55);
+}
+.item-art.lv2 {
+  border-color: rgba(120, 170, 230, 0.75);
+  box-shadow: 0 0 14px rgba(120, 170, 230, 0.25);
+}
+.item-art.lv3 {
+  border-color: rgba(224, 168, 80, 0.9);
+  box-shadow: 0 0 22px rgba(224, 168, 80, 0.35);
+}
+.tile .thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 30%;
+  border-radius: 6px;
+  display: block;
+}

@@ -4,7 +4,7 @@
  *
  * Uso: npm run test:cinema
  */
-import { abrirJogo, comecarJogo, executar, verificar, SAVE_KEY } from "./lib/harness.mjs";
+import { abrirJogo, comecarJogo, executar, verificar, SAVE_KEY, URL_JOGO } from "./lib/harness.mjs";
 
 /** Entra num combate de teste contra um inimigo comum. */
 async function entrarEmCombate(page) {
@@ -266,6 +266,44 @@ const casos = [
       verificar(r.usadas.length >= 9, `só ${r.usadas.length} faixas usadas: ${r.usadas.join(", ")}`);
       await context.close();
       return `${r.usadas.length} faixas usadas nas cenas`;
+    },
+  ],
+  [
+    "no celular, um toque basta para seguir uma escolha (loja do intendente)",
+    async (browser) => {
+      const context = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        hasTouch: true,
+        isMobile: true,
+      });
+      await context.addInitScript(() =>
+        localStorage.setItem("sen-cinema", JSON.stringify({ mode: "desligado" })),
+      );
+      const page = await context.newPage();
+      const erros = [];
+      page.on("pageerror", (e) => erros.push(e.message));
+      await page.goto(URL_JOGO);
+      await page.evaluate(() => {
+        state = newChar("Rowan", "ferreiro");
+        state.mode = "playing";
+        migrate(state);
+        state.coins = 30;
+        go("c3_intendente");
+      });
+      const tocar = async (texto) => {
+        const botao = page.locator(".choice", { hasText: texto }).first();
+        await botao.scrollIntoViewIfNeeded();
+        await botao.tap();
+        await page.waitForTimeout(700);
+      };
+      await tocar("barras de ferro");
+      const ferro = await page.evaluate(() => [state.scene, state.mat.ferro]);
+      verificar(ferro[0] === "c3_intendente" && ferro[1] >= 2, `a compra não aconteceu num toque: ${ferro}`);
+      await tocar("Partir em missão");
+      const cena = await page.evaluate(() => state.scene);
+      verificar(cena === "c3_missao", `um toque em "Partir em missão" deixou o jogo em ${cena}`);
+      verificar(!erros.length, `erros: ${erros.join("; ")}`);
+      await context.close();
     },
   ],
 ];

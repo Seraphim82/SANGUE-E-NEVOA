@@ -1,5 +1,16 @@
 # Histórico de versões
 
+## 1.3.1 · Correções do celular e tela do personagem pintada
+
+### Correções
+- No celular, as escolhas não travam mais. Antes era preciso tocar duas vezes, e o iPhone tratava o segundo toque como zoom; agora um toque basta. Isso resolve o "Partir em missão" preso na loja do intendente, no Capítulo III.
+- Comprar na loja não faz mais a página voltar ao topo.
+
+### Novidades
+- A tela do personagem mostra o retrato pintado do herói em todas as abas.
+- Cada arma aparece numa pintura própria (o close dela em ação), e os quatro amuletos ganharam pinturas novas. A moldura brilha mais a cada nível de melhoria na forja.
+- Os quadradinhos de roupas, armas e amuletos mostram miniaturas pintadas no lugar dos ícones.
+
 ## 1.3.0 · Trilha sonora gravada e lutas em planos de cinema
 
 ### Novidades

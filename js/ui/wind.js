@@ -177,18 +177,14 @@ function bindChoices(el) {
     });
     btn.addEventListener("pointerdown", (e) => {
       btn._touch = e.pointerType !== "mouse";
-      btn._was = btn.classList.contains("wind-on");
     });
     btn.addEventListener("focus", () => {
       if (!btn._touch) focusChoice(btn);
     });
     btn.addEventListener("blur", () => unfocusChoice(btn));
+    // Um toque basta: o vento aparece na animação de saída. Dois toques seguidos viravam
+    // zoom no iPhone e o segundo se perdia, deixando a escolha "travada".
     btn.addEventListener("click", () => {
-      if (btn._touch && !btn._was) {
-        btn._touch = false;
-        focusChoice(btn);
-        return;
-      }
       btn._touch = false;
       commitChoice(btn, i);
     });

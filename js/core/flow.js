@@ -5,6 +5,8 @@
 
 function go(id, keepBanner) {
   if (!keepBanner) state.banner = null;
+  // Voltar à mesma cena (uma compra na loja, por exemplo) não leva a página de volta ao topo.
+  const sameScene = state.scene === id;
   state.scene = id;
   const sc = SC[id];
   AUD.mood(trackFor(id));
@@ -21,7 +23,7 @@ function go(id, keepBanner) {
   CHECK = JSON.stringify({ ...state, banner: null });
   save();
   render();
-  scrollTo({ top: 0, behavior: "smooth" });
+  if (!sameScene) scrollTo({ top: 0, behavior: "smooth" });
 }
 function runOutcome(o) {
   if (typeof o === "function") o = o();

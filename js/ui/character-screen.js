@@ -197,12 +197,12 @@ function startFig() {
     const c = cv.getContext("2d");
     c.setTransform(w / FIG.W, 0, 0, h / FIG.H, 0, 0);
     const st = figState();
-    // Na aba de roupas, o retrato pintado toma o lugar da figura desenhada. Nas de arma e
-    // amuleto fica a figura, que mostra a arma e o amuleto escolhidos e o nível deles.
-    const painted =
-      DASH.tab === "roupa"
-        ? heroPortrait(state, owned("roupa", DASH.sel.roupa) ? DASH.sel.roupa : null)
-        : null;
+    // O retrato pintado toma o lugar da figura desenhada. Na aba de roupas, mostra a roupa
+    // escolhida; nas outras, a que o herói veste. A arma e o amuleto têm pintura própria ao lado.
+    const painted = heroPortrait(
+      state,
+      DASH.tab === "roupa" && owned("roupa", DASH.sel.roupa) ? DASH.sel.roupa : null,
+    );
     if (painted) {
       const breath = reduce ? 1 : 1 + 0.008 * Math.sin(now / 900);
       c.fillStyle = "#0b0d10";
@@ -246,6 +246,27 @@ function statsHTML(slot, k) {
   }
   return `<dl class="kv"><dt>Passivo</dt><dd>${AMULETS[k].perk}</dd><dt>Ativo em combate</dt><dd>${AMU_ACT[k].n}: ${AMU_ACT[k].desc}</dd></dl>`;
 }
+/** Amuletos com pintura própria em img/items/. */
+const ITEM_PAINTINGS = new Set(["sorveira", "crina", "fragmento", "pedra"]);
+/**
+ * A pintura da arma (o close dela em ação) ou do amuleto escolhido. A moldura brilha mais
+ * a cada nível de melhoria na forja.
+ */
+function itemArtHTML(slot, k, level) {
+  let src = null;
+  if (slot === "arma" && ACTION_SHOTS.has(`arma_golpe_${k}`)) src = `img/action/arma_golpe_${k}.jpg`;
+  if (slot === "amuleto" && ITEM_PAINTINGS.has(k)) src = `img/items/${k}.jpg`;
+  if (!src) return "";
+  return `<figure class="item-art lv${level || 0}"><img src="${src}" alt="" loading="lazy"></figure>`;
+}
+/** Miniatura pintada de um item: a roupa vestida pelo herói, o close da arma ou o amuleto. */
+function thumbSrc(slot, k) {
+  if (slot === "roupa" && HERO_PORTRAITS.has(`${state.look || DEFAULT_LOOK}_${k}`))
+    return `img/heroes/${state.look || DEFAULT_LOOK}_${k}.jpg`;
+  if (slot === "arma" && ACTION_SHOTS.has(`arma_golpe_${k}`)) return `img/action/arma_golpe_${k}.jpg`;
+  if (slot === "amuleto" && ITEM_PAINTINGS.has(k)) return `img/items/${k}.jpg`;
+  return null;
+}
 function renderDash() {
   const ov = document.getElementById("overlay");
   ov.hidden = false;
@@ -262,7 +283,7 @@ function renderDash() {
       const o = owned(slot, k),
         lv = upLevel(slot, k);
       return `<button class="tile ${k === sel ? "sel" : ""} ${o ? "" : "locked"}" data-k="${k}" aria-pressed="${k === sel}">
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">${ICON[slot]}</svg>
+   ${o && thumbSrc(slot, k) ? `<img class="thumb" src="${thumbSrc(slot, k)}" alt="" loading="lazy">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">${ICON[slot]}</svg>`}
    <span class="tn">${o ? itemName(slot, k) : "???"}</span>
    ${o && matFor(slot, k) ? `<span class="pips">${[1, 2, 3].map((i) => `<i class="pip ${lv >= i ? "on" : ""}"></i>`).join("")}</span>` : ""}
    ${equipped(slot, k) ? '<span class="eq" title="Equipado"></span>' : ""}</button>`;
@@ -298,7 +319,7 @@ function renderDash() {
    <div class="dash-panel"><div class="tiles">${tiles}</div>
     <div class="detail">${
       own
-        ? `<div class="lvl">${m ? LV[L] : "Amuleto"}${equipped(slot, sel) ? " · em uso" : ""}</div><h3>${itemName(slot, sel)}</h3>
+        ? `${itemArtHTML(slot, sel, L)}<div class="lvl">${m ? LV[L] : "Amuleto"}${equipped(slot, sel) ? " · em uso" : ""}</div><h3>${itemName(slot, sel)}</h3>
      <blockquote>${slot === "roupa" ? ARMOR[sel].desc : slot === "arma" ? WEAPONS[sel].desc || "" : ITEMS[sel].desc}</blockquote>${statsHTML(slot, sel)}
      <div class="detail-actions"><button class="btn ${equipped(slot, sel) ? "" : "primary"}" id="dEq" ${equipped(slot, sel) ? "disabled" : ""}>${equipped(slot, sel) ? "Em uso" : slot === "roupa" ? "Vestir" : slot === "arma" ? "Empunhar" : "Usar"}</button></div>${up}`
         : `<div class="lvl">Ainda não encontrado</div><h3>???</h3><blockquote>${HINT[sel] || "Continue a jornada."}</blockquote>`

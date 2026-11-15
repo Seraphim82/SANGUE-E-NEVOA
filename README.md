@@ -29,7 +29,7 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 - **Sistema inspirado em GURPS:** atributos (ST, DX, IQ, HT), perícias com dificuldade, combate com defesa ativa, armadura (RD), tipos de dano, choque e testes de HT.
 - **Progressão:** pontos de personagem, técnicas de combate, magia druídica em quatro círculos (Sangue Antigo), vestimentas, armas e amuletos que evoluem na forja até o nível Lendário.
 - **Combate por turnos** com aliados, amuletos de uso ativo, frio, sede e regeneração dos inimigos.
-- **295 pinturas:** 97 cenas, 20 retratos de inimigos, 32 retratos do herói (4 aparências em 8 roupas) e 146 planos de ação para as lutas, com animações por cima: névoa, brasas, neve e vento.
+- **299 pinturas:** 97 cenas, 20 retratos de inimigos, 32 retratos do herói (4 aparências em 8 roupas) 146 planos de ação para as lutas e 4 amuletos, com animações por cima: névoa, brasas, neve e vento.
 - **Modo cinema:** depois de cada ação no combate, a luta é montada como num filme, cortando entre planos pintados: o rosto do seu herói em fúria, o close da arma que ele usa, o inimigo atingido ou caindo, a espada aparando com faíscas, o escudo segurando o golpe. Câmera que aproxima, borrão nos cortes rápidos, clarão no impacto e câmera lenta no acerto crítico. Cada capítulo abre com uma cartela de título, e as pinturas das cenas se fundem umas nas outras. Dá para pular com um toque, deixar mais rápido ou desligar no menu.
 - **Aparência do herói** escolhida na criação, e uma **galeria da jornada** na tela do personagem que mostra como ele estava no começo de cada capítulo.
 - **Trilha sonora com 12 músicas** de instrumentos de época (harpa celta, gaita de foles, flauta, rabeca, bodhrán), uma para cada tipo de cena: tema, aldeia, estrada, taverna, suspense, lugares assombrados, magia, combate, combate contra criaturas, lamento, vitória e final. As músicas se fundem ao trocar de cena. Sem as faixas, toca a música gerada em tempo real.
@@ -55,6 +55,7 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 ├── img/portraits/          Retratos dos inimigos (3:4)
 ├── img/heroes/             Retratos pintados do herói, por aparência e roupa
 ├── img/action/             Planos de ação do cinema de combate (21:9)
+├── img/items/              Pinturas dos amuletos
 ├── audio/                  Trilha sonora (12 faixas em MP3)
 ├── docs/
 │   ├── livro-do-jogador.md     Regras completas, capítulos e bestiário

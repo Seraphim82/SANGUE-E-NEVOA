@@ -233,3 +233,19 @@ ACAO_INIMIGO = {
           "the muddy ground, defeated (a supernatural being dissolving into mist), seen from a low angle in dim light. Subject on "
           "the right half of the frame.",
 }
+
+# Pinturas dos amuletos para a tela do personagem (21:9), em img/items/<chave>.jpg.
+ESTILO_ITEM = ("Painterly still life for a dark historical-fantasy role-playing game set in Scotland in 1296, oil-painting "
+               "texture like the other paintings of the game, ultra-wide 21:9 frame, the object in sharp focus at the centre "
+               "on weathered wood or stone, dramatic warm candle light, deep shadowy background with soft mist. No text, no "
+               "frame, no logos. Object: ")
+ITENS = {
+ "sorveira": "a small amulet made of a sprig of rowan wood with bright red berries, bound with red thread into an equal-armed "
+             "cross, hanging from a leather cord; faint red glow around it.",
+ "crina": "a braided cord made of black horsehair and dark green river weed that never dries, glistening with water droplets, "
+          "coiled on a wet stone at the edge of a dark river; faint cold green glow.",
+ "fragmento": "a small shard of black stone the size of a fingernail, set in a simple iron pendant, warm to the touch, a faint "
+              "blue light breathing inside its cracks.",
+ "pedra": "an adder stone: a smooth grey river pebble with a natural hole through the middle, on a leather thong; through the "
+          "hole a faint vision of misty hills glows.",
+}
