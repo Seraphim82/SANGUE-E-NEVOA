@@ -54,6 +54,7 @@ async function abrirCelular({ cinema = false, rapido = false, antes } = {}) {
       try {
         localStorage.setItem("sen-cinema", JSON.stringify({ mode: modo }));
         localStorage.setItem("sen-audio", JSON.stringify({ music: false, sfx: false }));
+        localStorage.setItem("sen-narracao", JSON.stringify({ on: false }));
       } catch {
         // Sem armazenamento: segue com os padrões.
       }

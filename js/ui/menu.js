@@ -14,8 +14,10 @@ function openMenu() {
    <div class="choices">
      ${state && state.mode === "playing" ? `<button class="choice" id="mRestart"><span>Reiniciar a cena atual</span><span class="arrow">→</span></button>` : ""}
      <button class="choice" id="mTitle"><span>Tela inicial</span><span class="arrow">→</span></button>
+     <button class="choice" id="mAch"><span>Conquistas e estatísticas</span><span class="arrow">→</span></button>
      <button class="choice" id="mRules"><span>Resumo das regras</span><span class="arrow">→</span></button>
      <div class="toggle-row"><span>Música</span><button class="mini ${AUD.pref.music ? "on" : ""}" id="tMusic">${AUD.pref.music ? "Ligada" : "Desligada"}</button></div>
+     <div class="toggle-row"><span>Narração</span><button class="mini ${NARRATOR.on ? "on" : ""}" id="tNarr">${NARRATOR.on ? "Ligada" : "Desligada"}</button></div>
      <div class="toggle-row"><span>Cenas de luta</span><button class="mini ${CINEMA.mode !== "desligado" ? "on" : ""}" id="tCinema">${CINEMA_LABELS[CINEMA.mode]}</button></div>
      <div class="toggle-row"><span>Efeitos sonoros</span><button class="mini ${AUD.pref.sfx ? "on" : ""}" id="tSfx">${AUD.pref.sfx ? "Ligados" : "Desligados"}</button></div>
    </div>
@@ -35,6 +37,10 @@ function openMenu() {
     syncSound();
     openMenu();
   };
+  q("tNarr").onclick = () => {
+    NARRATOR.setOn(!NARRATOR.on);
+    openMenu();
+  };
   q("tCinema").onclick = () => {
     const order = Object.keys(CINEMA_LABELS);
     CINEMA.setMode(order[(order.indexOf(CINEMA.mode) + 1) % order.length]);
@@ -49,6 +55,7 @@ function openMenu() {
     save();
     showTitle();
   };
+  q("mAch").onclick = openAchievements;
   q("mRules").onclick = () => {
     q("rules").hidden = !q("rules").hidden;
   };

@@ -34,12 +34,13 @@ export default [
   },
   {
     files: ["tools/**/*.mjs", "eslint.config.js"],
+    ignores: ["tools/coletar_narracao.mjs"],
     languageOptions: { ecmaVersion: 2022, sourceType: "module", globals: { ...globals.node } },
   },
   {
     // Os testes rodam no Node, mas o código passado a page.evaluate() roda dentro do
     // navegador, onde as variáveis do jogo existem.
-    files: ["tests/**/*.mjs"],
+    files: ["tests/**/*.mjs", "tools/coletar_narracao.mjs"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "module",

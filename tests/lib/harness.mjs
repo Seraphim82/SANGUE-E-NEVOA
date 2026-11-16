@@ -38,6 +38,7 @@ export async function abrirJogo(browser, { antes, rotas, viewport, cinema = fals
     await page.addInitScript((key) => {
       try {
         localStorage.setItem(key, JSON.stringify({ mode: "desligado" }));
+        localStorage.setItem("sen-narracao", JSON.stringify({ on: false }));
       } catch {
         // Sem armazenamento, o teste segue com o padrão.
       }

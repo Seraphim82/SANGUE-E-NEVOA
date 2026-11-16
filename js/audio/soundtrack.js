@@ -611,7 +611,17 @@ const AUD = (() => {
     music.gain.cancelScheduledValues(now);
     music.gain.setValueAtTime(music.gain.value, now);
     music.gain.linearRampToValueAtTime(0.2, now + 0.05);
-    music.gain.linearRampToValueAtTime(0.5, now + 1.8);
+    music.gain.linearRampToValueAtTime(narratingNow ? 0.26 : 0.5, now + 1.8);
+  }
+  /** A trilha continua por baixo da narração, só mais baixa, e volta ao normal quando ele termina. */
+  let narratingNow = false;
+  function narrating(v) {
+    narratingNow = !!v;
+    if (!ctx || !pref.music) return;
+    const now = ctx.currentTime;
+    music.gain.cancelScheduledValues(now);
+    music.gain.setValueAtTime(music.gain.value, now);
+    music.gain.linearRampToValueAtTime(narratingNow ? 0.26 : 0.5, now + 0.6);
   }
   let lastSting = 0;
   /** Sons guardados enquanto o cinema grava uma ação; ele os toca na hora do golpe. */
@@ -741,6 +751,7 @@ const AUD = (() => {
     setSfx,
     pref,
     gust,
+    narrating,
     /** Faixa tocando agora e se é a gravada (para os testes). */
     playing: () => (cur ? { name: cur.name, file: !!cur.file, time: cur.el ? cur.el.currentTime : 0 } : null),
   };

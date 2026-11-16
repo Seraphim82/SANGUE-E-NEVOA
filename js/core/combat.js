@@ -26,6 +26,7 @@ function startCombat(spec) {
     feroz: false,
   };
   AUD.mood(C.foes.some((f) => f.fey) ? "combate_feerico" : "combate");
+  NARRATOR.stop();
   ART.FX.hit = {};
   const cnt = {};
   C.foes.forEach((f) => {
@@ -529,6 +530,9 @@ function endCombat(res) {
   state.combat = null;
   state.banner = null;
   CINEMA.shot({ type: "end", result: res });
+  const caidos = C.foes.filter((f) => f.hp <= 0);
+  ACH.count("inimigos", caidos.length);
+  ACH.count("feericos", caidos.filter((f) => f.fey).length);
   if (res === "win") {
     AUD.sting("vitoria");
     const xp = C.foes.reduce((a, f) => a + f.xp, 0);
@@ -547,6 +551,8 @@ function endCombat(res) {
   } else if (res === "flee") go(spec.flee || spec.win, true);
   else {
     AUD.sting("derrota");
+    state.flags.caiu = 1;
+    ACH.count("quedas");
     state.lastFoe = spec.e[0];
     state.hp = Math.max(state.hp, 1);
     go(spec.lose, true);
@@ -557,6 +563,8 @@ function die() {
   AUD.sting("derrota");
   state.dead = true;
   state.combat = null;
+  ACH.count("mortes");
+  ACH.check();
   save();
   render();
 }

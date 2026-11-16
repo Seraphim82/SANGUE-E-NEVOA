@@ -7,6 +7,7 @@ let draftOrigin = "pastor";
 let draftLook = DEFAULT_LOOK;
 function showTitle(fresh) {
   const saved = loadSave();
+  NARRATOR.reset();
   state = null;
   document.getElementById("btnEvolve").hidden = true;
   document.getElementById("btnSheet").hidden = true;
@@ -16,12 +17,23 @@ function showTitle(fresh) {
    <h1>Sangue e Névoa</h1>
    <p class="lede">1296. O rei Eduardo levou a Pedra do Destino para Londres. Os padres dizem que foi um insulto. Os velhos sussurram que a Pedra era um selo, e que desde que ela partiu, as coisas antigas voltaram a andar pela Escócia.</p>
    <p>Você não é cavaleiro nem lorde. É gente comum de uma aldeia às margens do Clyde. Comece com quase nada e ganhe experiência, atributos e o poder que dorme no seu sangue.</p>
-   <div class="cta"><button class="btn primary" id="bNew">Nova jornada</button>${saved && !fresh ? `<button class="btn" id="bCont">Continuar: ${esc(saved.name)}, ${title(saved)}</button>` : saved ? `<button class="btn" id="bCont">Continuar jornada salva</button>` : ""}</div>
+   <div class="cta"><button class="btn primary" id="bNew">Nova jornada</button><button class="btn" id="bSlots">Jornadas salvas</button><button class="btn" id="bAch">Conquistas</button>${saved && !fresh ? `<button class="btn" id="bCont">Continuar: ${esc(saved.name)}, ${title(saved)}</button>` : saved ? `<button class="btn" id="bCont">Continuar jornada salva</button>` : ""}</div>
    <p class="note">Sistema de 3d6: role igual ou abaixo do seu nível para ter sucesso. O progresso fica salvo neste navegador.</p>
   </section>`;
   ART.show("titulo");
   AUD.mood("tema");
-  document.getElementById("bNew").onclick = renderOriginPick;
+  // A jornada nova vai para um espaço vazio; se não houver, a pessoa escolhe qual substituir.
+  document.getElementById("bNew").onclick = () => {
+    if (!loadSave()) return renderOriginPick();
+    const livre = emptySlot();
+    if (livre) {
+      setSlot(livre);
+      return renderOriginPick();
+    }
+    openSlots(true, "Os três espaços estão ocupados. Escolha qual jornada substituir.");
+  };
+  document.getElementById("bSlots").onclick = () => openSlots();
+  document.getElementById("bAch").onclick = openAchievements;
   const bc = document.getElementById("bCont");
   if (bc)
     bc.onclick = () => {
@@ -81,6 +93,7 @@ function renderOriginPick() {
   document.getElementById("bNext").onclick = () => {
     const nm = (document.getElementById("inName").value || "").trim() || "Rowan";
     state = newChar(nm, draftOrigin);
+    ACH.count("partidas");
     state.look = draftLook;
     openEvolve();
   };

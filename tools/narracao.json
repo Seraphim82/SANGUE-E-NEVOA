@@ -1,0 +1,4592 @@
+[
+  {
+    "chave": "fa1c9f1fa0a7ecb5",
+    "texto": "O acampamento rebelde.",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "abf4466547f023e7",
+    "texto": "Numa caverna escondida pela cachoeira, trinta homens e mulheres comem papa de aveia em volta de uma fogueira sem fumaça. Gente de Lanark, de Carluke, de aldeias que já não existem.",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "5603a37a20b2280c",
+    "texto": "Tam se agacha ao seu lado. “Blackwood se abrigou na torre velha sobre a cachoeira de Corra Linn, com os prisioneiros. Vai levá-los para o xerife Heselrig, em Lanark, ao amanhecer. Para a forca.”",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "4e1076732edb26b1",
+    "texto": "Ailsa cospe no fogo. “Ninguém dorme naquela torre há cem anos. Dizem que é amaldiçoada.”",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "befea42b5ace1fe5",
+    "texto": "“Dizem muita coisa”, responde Tam. “Também dizem que um tal de Wallace anda juntando homens nas florestas de Selkirk. Talvez um dia a gente lute com ele. Esta noite, lutamos sozinhos.”",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "4f5e4348bf9e6c92",
+    "texto": "Antes de você dormir, Tam joga sobre seus ombros um manto de tartan verde e azul. “Agora pareces um dos nossos.”",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "863e3360f57488c2",
+    "texto": "Abra a tela de Personagem para vestir o manto, melhorar seus itens na forja do acampamento e gastar seus pontos.",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "09a0a9300383549e",
+    "texto": "Tam se agacha ao seu lado. “Blackwood se abrigou na torre velha sobre a cachoeira de Corra Linn, com os prisioneiros. Entre eles há um menino ruivo que não para de morder os guardas.” Ele sorri. “Teu irmão, imagino.”",
+    "cena": "c1_acampamento"
+  },
+  {
+    "chave": "645f256b628016f5",
+    "texto": "A verdade dita.",
+    "cena": "c1_aceito"
+  },
+  {
+    "chave": "d0aae12a3dd80dbc",
+    "texto": "Você conta tudo: a fogueira, Duncan na lama, o fogo. Quando você termina, Tam está pálido.",
+    "cena": "c1_aceito"
+  },
+  {
+    "chave": "677b0d0c7275d636",
+    "texto": "“Iain está aqui, conosco. Ele vai querer ouvir isso de ti.” Ele faz sinal para Ailsa baixar o arco.",
+    "cena": "c1_aceito"
+  },
+  {
+    "chave": "0a076168c22d66c6",
+    "texto": "Você conta tudo: a fogueira, Duncan na lama, o fogo, o nome de Blackwood e o de Iain, filho do ferreiro. Quando você termina, Tam está pálido.",
+    "cena": "c1_aceito"
+  },
+  {
+    "chave": "7464843015f6c862",
+    "texto": "Velhas dívidas.",
+    "cena": "c1_aceito_mairi"
+  },
+  {
+    "chave": "3ae66fce84e54cf0",
+    "texto": "Tam baixa o bordão no instante em que vê o rosto da velha. “Mairi de Kilbride? Foste tu que costuraste minha barriga quando eu era moleque!” Ele se ajoelha e beija a mão dela. Não há mais perguntas.",
+    "cena": "c1_aceito_mairi"
+  },
+  {
+    "chave": "b2274290aa056ece",
+    "texto": "Margem do outro lado.",
+    "cena": "c1_afogado"
+  },
+  {
+    "chave": "759980aa7f5dfed4",
+    "texto": "Água. Escuridão. Frio.",
+    "cena": "c1_afogado"
+  },
+  {
+    "chave": "07d7f59a6c79194c",
+    "texto": "Você acorda tossindo na margem norte do rio, sem saber como chegou ali. Na lama há marcas de pés descalços e pequenos, como de mulher, que entram na água e não voltam.",
+    "cena": "c1_afogado"
+  },
+  {
+    "chave": "5e55f492cddbbeb0",
+    "texto": "Uma noite amarrado.",
+    "cena": "c1_amarrado"
+  },
+  {
+    "chave": "fcd4b417cdff33fd",
+    "texto": "Tam não acredita em uma palavra. Você passa a noite amarrado a um carvalho, com fome e frio.",
+    "cena": "c1_amarrado"
+  },
+  {
+    "chave": "dfb06c44d35e8506",
+    "texto": "De madrugada, Ailsa corta as cordas. “Um batedor voltou de Kilbride. Está tudo queimado, como disseste. Tam pede desculpas… do jeito dele.” Do jeito dele é uma tigela de sopa jogada no seu colo.",
+    "cena": "c1_amarrado"
+  },
+  {
+    "chave": "71c3f3a79601b581",
+    "texto": "O sargento.",
+    "cena": "c1_blackwood"
+  },
+  {
+    "chave": "bac9ec78f3455e72",
+    "texto": "Blackwood olha para você sem medo. A espada dele está no chão, longe da mão.",
+    "cena": "c1_blackwood"
+  },
+  {
+    "chave": "691bd3e2be5137dc",
+    "texto": "“Faz o que tens de fazer, escocês. Mas fica sabendo: não queimei aquela aldeia por gosto. Foram ordens do xerife Heselrig. E quem matou o ferreiro… está ali.” Ele aponta com o queixo para um dos cadáveres no salão.",
+    "cena": "c1_blackwood"
+  },
+  {
+    "chave": "134e0385e9cd1b9f",
+    "texto": "Aço inglês.",
+    "cena": "c1_bw_vencido"
+  },
+  {
+    "chave": "d3b1c39d8a93d45b",
+    "texto": "Blackwood cai de joelhos e depois de lado. Antes de fechar os olhos, murmura: “Os monges… riam…” e não diz mais nada.",
+    "cena": "c1_bw_vencido"
+  },
+  {
+    "chave": "ee44076015e71b6e",
+    "texto": "Na porta, Tam e Ailsa viram tudo. Ailsa desvia o olhar. Tam não diz nada, mas não sorri.",
+    "cena": "c1_bw_vencido"
+  },
+  {
+    "chave": "44da34ba9665ef88",
+    "texto": "A espada larga e a cota de malha dele são de bom aço. Agora são suas.",
+    "cena": "c1_bw_vencido"
+  },
+  {
+    "chave": "6ae24b595061b43b",
+    "texto": "Como sombra.",
+    "cena": "c1_callum_furtivo"
+  },
+  {
+    "chave": "b2b062b1c839da73",
+    "texto": "Você conhece cada cerca e cada chiqueiro de Kilbride. Passa pela fumaça como um gato, e quando o recruta se vira para gritar ordens, Callum já não está na mão dele.",
+    "cena": "c1_callum_furtivo"
+  },
+  {
+    "chave": "8c43626db8e3fa93",
+    "texto": "Na fuga, você olha para trás uma vez e vê o telhado da cabana de Mairi desabar numa chuva de faíscas.",
+    "cena": "c1_callum_furtivo"
+  },
+  {
+    "chave": "cf0b371c0ce9e6e6",
+    "texto": "Entre as chamas.",
+    "cena": "c1_callum_salvo"
+  },
+  {
+    "chave": "b0e99dacbbe8917a",
+    "texto": "O recruta cai, e Callum se agarra à sua cintura, tremendo. Vocês correm por trás das casas enquanto as vigas estalam.",
+    "cena": "c1_callum_salvo"
+  },
+  {
+    "chave": "ad628fa7783495a5",
+    "texto": "Você olha para trás uma vez e vê o telhado da cabana de Mairi desabar numa chuva de faíscas. Ninguém sai de lá.",
+    "cena": "c1_callum_salvo"
+  },
+  {
+    "chave": "81246272dbc44de0",
+    "texto": "Os Rochedos de Cartland.",
+    "cena": "c1_cartland"
+  },
+  {
+    "chave": "809d97ad5850476b",
+    "texto": "O dia nasce cinzento sobre um desfiladeiro de pedra e carvalhos tortos. Uma flecha se crava na terra a um palmo do seu pé.",
+    "cena": "c1_cartland"
+  },
+  {
+    "chave": "b7a8e1829ada18b4",
+    "texto": "“Mais um passo e a Ailsa te costura no chão.” De trás de uma pedra sai um homem de barba ruiva com um bordão de freixo. Na rocha acima, uma moça mantém o arco esticado.",
+    "cena": "c1_cartland"
+  },
+  {
+    "chave": "98096af98293a3eb",
+    "texto": "“Sou Tam. Os ingleses usam gente da terra como guia agora. Então me diz: quem és tu, e quem te mandou?”",
+    "cena": "c1_cartland"
+  },
+  {
+    "chave": "bdede70f0c593051",
+    "texto": "Cascos na escuridão.",
+    "cena": "c1_chegada"
+  },
+  {
+    "chave": "1e90d71a1251b460",
+    "texto": "A fogueira mal começou a estalar quando a terra treme. Cavalos. Muitos.",
+    "cena": "c1_chegada"
+  },
+  {
+    "chave": "dfc43c9223bcb784",
+    "texto": "Doze soldados de túnicas vermelhas entram na aldeia com tochas. À frente, um homem de cota de malha e barba grisalha desmonta sem pressa. “Sou o sargento Roger Blackwood, a serviço de Sua Majestade o rei Eduardo. Quero o rebelde Iain, filho do ferreiro. E quero o tributo.”",
+    "cena": "c1_chegada"
+  },
+  {
+    "chave": "e30ca464f61d1b1a",
+    "texto": "Duncan dá um passo à frente. “Meu filho não está aqui. E o tributo vocês já levaram em agosto.”",
+    "cena": "c1_chegada"
+  },
+  {
+    "chave": "561fa795c36b54a3",
+    "texto": "O golpe vem de lado, de um soldado que nem estava olhando para ele. Duncan cai na lama e não se levanta. Alguém grita. As tochas voam para os telhados de palha, e em segundos Kilbride é uma fornalha.",
+    "cena": "c1_chegada"
+  },
+  {
+    "chave": "dccb8b510b100097",
+    "texto": "Pela fumaça você vê duas coisas ao mesmo tempo: um recruta inglês arrastando Callum pelo braço em direção aos cavalos (\"o garoto sabe onde o rebelde se esconde!\"), e a cabana de Mairi pegando fogo, com a velha lá dentro.",
+    "cena": "c1_chegada"
+  },
+  {
+    "chave": "22cffd47f7d086a9",
+    "texto": "Mãos amigas.",
+    "cena": "c1_derrota_final"
+  },
+  {
+    "chave": "f70934785436e086",
+    "texto": "Você cai. O último som que ouve é o pique raspando na pedra…",
+    "cena": "c1_derrota_final"
+  },
+  {
+    "chave": "dfc601447d320976",
+    "texto": "…e depois gritos escoceses, o zunido das flechas de Ailsa e o rugido de Tam. Quando você acorda, a criatura está morta e o sargento sumiu. Tam sorri, com sangue na barba. “Quase. Quase.”",
+    "cena": "c1_derrota_final"
+  },
+  {
+    "chave": "9a6753cb7ecb3ebd",
+    "texto": "…e depois gritos escoceses, o zunido das flechas de Ailsa e o rugido de Tam. Quando você acorda, o sargento fugiu, mancando, e deixou um rastro de sangue na escada. Tam sorri, com sangue na barba. “Quase. Quase.”",
+    "cena": "c1_derrota_final"
+  },
+  {
+    "chave": "ae4e0a192219b8a3",
+    "texto": "Cinzas.",
+    "cena": "c1_desmaio"
+  },
+  {
+    "chave": "2d458082313d7608",
+    "texto": "O mundo fica preto.",
+    "cena": "c1_desmaio"
+  },
+  {
+    "chave": "f6c05f79f4d59e87",
+    "texto": "Quando você abre os olhos, o rosto está na lama e a aldeia é só brasa e fumaça. Os cavalos se foram, e Callum foi com eles. A cabana de Mairi é um monte de cinzas.",
+    "cena": "c1_desmaio"
+  },
+  {
+    "chave": "a58815fca1a9d30e",
+    "texto": "Um uivo que não é de cão.",
+    "cena": "c1_desmaio_caes"
+  },
+  {
+    "chave": "a29a26ca9d74d888",
+    "texto": "Os dentes estão no seu braço quando um uivo atravessa a noite. Não é de lobo e não é de cão. É algo mais velho.",
+    "cena": "c1_desmaio_caes"
+  },
+  {
+    "chave": "896e32e393d8c1a5",
+    "texto": "Os mastins soltam você e fogem ganindo, com o rabo entre as pernas. Na beira da mata, por um instante, você vê dois olhos verdes do tamanho de punhos. Depois, nada.",
+    "cena": "c1_desmaio_caes"
+  },
+  {
+    "chave": "c503f26d6176fcb3",
+    "texto": "Coragem não falta.",
+    "cena": "c1_duelo_mal"
+  },
+  {
+    "chave": "5a25638699655f78",
+    "texto": "Você está de costas no chão, com a ponta do bordão de Tam no peito. Mas ele sorri. “Perdeste, mas não fugiste. Os ingleses não mandam espiões com coragem. Levanta.”",
+    "cena": "c1_duelo_mal"
+  },
+  {
+    "chave": "2664b5d3865b4401",
+    "texto": "Respeito ganho no chão.",
+    "cena": "c1_duelo_ok"
+  },
+  {
+    "chave": "5c169bae0c7b3ee4",
+    "texto": "Tam está sentado na lama, rindo com o nariz sangrando. “Por todos os santos! Um espião inglês não bate assim.” Ele estende a mão para você o ajudar a levantar. “Qualquer um que me derrube merece um prato de sopa. E leva também este gibão de couro. Em mim já não fecha.”",
+    "cena": "c1_duelo_ok"
+  },
+  {
+    "chave": "d118917becd8ff99",
+    "texto": "Pedra molhada.",
+    "cena": "c1_escalada_ok"
+  },
+  {
+    "chave": "74fdf561ffcab99f",
+    "texto": "A pedra é escorregadia e a cachoeira ruge a seu lado, mas seus dedos acham cada fenda. Você passa pela seteira mais alta da torre sem fazer barulho.",
+    "cena": "c1_escalada_ok"
+  },
+  {
+    "chave": "e5646126229c7dac",
+    "texto": "O preço de esperar.",
+    "cena": "c1_espera"
+  },
+  {
+    "chave": "8855d144135f7f46",
+    "texto": "Você fica parado nas sombras. O pique do Barrete Vermelho sobe e desce. Blackwood não grita.",
+    "cena": "c1_espera"
+  },
+  {
+    "chave": "083d2d6817369422",
+    "texto": "A criatura molha o gorro de novo no sangue fresco, e as feridas que o sargento tinha feito nela se fecham na hora. Então ela fareja o ar, sorri e olha direto para você.",
+    "cena": "c1_espera"
+  },
+  {
+    "chave": "544ad21291577b08",
+    "texto": "O Martelo e a Pedra.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "516a7b0942e03c5f",
+    "texto": "Seu título agora é Camponês.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "87e52d68392c3406",
+    "texto": "Mairi morreu no fogo de Kilbride.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "9dba9712e33f5c88",
+    "texto": "Callum nunca saiu do seu lado.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "819ea8ab285665ad",
+    "texto": "Em maio de 1297, em Lanark, um homem chamado William Wallace vai matar o xerife Heselrig, e a Escócia inteira vai pegar em armas. Mas a sua guerra é outra: encontrar a verdadeira Pedra do Destino antes da Cailleach.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "4a49e6e9de18332b",
+    "texto": "Capítulo II: O Martelo e a Pedra começa agora.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "c0724b7d301b5993",
+    "texto": "Seu título agora é Rebelde.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "3247542b2dc0b621",
+    "texto": "Você carrega a espada larga de Blackwood.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "e06d851cb8e606b2",
+    "texto": "O sargento Blackwood deve a vida a você e contou o segredo dos monges de Scone.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "531ced1bdb8410dd",
+    "texto": "Seu título agora é Fugitivo.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "8072bbc7ae4ae1c1",
+    "texto": "Você carrega o pique do Barrete Vermelho.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "282cb269b521141b",
+    "texto": "Mairi está viva e caminha com os rebeldes.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "6744e311651150a7",
+    "texto": "Callum foi resgatado da torre de Corra Linn.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "85f73066b749f6ec",
+    "texto": "Um kelpie deve um favor a você: Abhainn Dubh.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "ab6cac8b3a0631d9",
+    "texto": "Os rebeldes viram você matar um homem ferido e desarmado. Tam não esqueceu.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "8484cf0941255c87",
+    "texto": "Ferro quente.",
+    "cena": "c1_forja_fail"
+  },
+  {
+    "chave": "3a50ac4070f0aaee",
+    "texto": "Você segura a tenaz pelo lado errado e o ferro em brasa lambe sua mão. Duncan xinga, enfia sua mão no balde d'água e depois, ainda resmungando, lhe entrega uma faca de ferro.",
+    "cena": "c1_forja_fail"
+  },
+  {
+    "chave": "b91ad84c9a589226",
+    "texto": "“Leva. Pelo menos esta não queima. Esta noite não se anda sem ferro.”",
+    "cena": "c1_forja_fail"
+  },
+  {
+    "chave": "58ed6de738e73005",
+    "texto": "Ferro frio.",
+    "cena": "c1_forja_ok"
+  },
+  {
+    "chave": "58f6c485ee221aef",
+    "texto": "Você ajuda Duncan a abafar o fogo sem desperdiçar o carvão. O gigante sorri, enfia a mão no avental e põe uma faca curta de ferro na sua mão.",
+    "cena": "c1_forja_ok"
+  },
+  {
+    "chave": "d1a9f00de65db557",
+    "texto": "“Leva. Esta noite não é noite de andar sem ferro. Ferro guarda a gente de coisas piores que ingleses. E se um cavalo bonito demais te esperar na beira do rio, encosta o ferro nele antes de pensar em montar.”",
+    "cena": "c1_forja_ok"
+  },
+  {
+    "chave": "b02a7dab7bf06d95",
+    "texto": "Ele olha para a estrada escura. “E se alguém perguntar pelo meu Iain, tu nunca ouviste falar dele.”",
+    "cena": "c1_forja_ok"
+  },
+  {
+    "chave": "7da6508a6a124100",
+    "texto": "Os cães de Blackwood.",
+    "cena": "c1_fuga"
+  },
+  {
+    "chave": "f08c430aaaca8a70",
+    "texto": "Atrás de vocês, latidos. Blackwood soltou os cães para caçar quem sobrou.",
+    "cena": "c1_fuga"
+  },
+  {
+    "chave": "729114f480230d7e",
+    "texto": "Você sabe para onde ir. Todo mundo em Kilbride sabe: os Rochedos de Cartland, do outro lado do rio, onde os fora-da-lei se escondem.",
+    "cena": "c1_fuga"
+  },
+  {
+    "chave": "07a71d1dbbf4499b",
+    "texto": "Os latidos estão cada vez mais perto.",
+    "cena": "c1_fuga"
+  },
+  {
+    "chave": "5cbe2f49be21f6eb",
+    "texto": "Mairi se apoia no seu ombro, mancando, mas aponta para o norte com firmeza. “Os Rochedos de Cartland. Do outro lado do rio. Lá os fora-da-lei se escondem, e lá os ingleses não entram.”",
+    "cena": "c1_fuga"
+  },
+  {
+    "chave": "0f6ceca5c60e59db",
+    "texto": "Véspera de Samhain.",
+    "cena": "c1_inicio"
+  },
+  {
+    "chave": "c74a1180b19873de",
+    "texto": "31 de outubro de 1296. Kilbride do Vale, às margens do rio Clyde, a meio dia de caminhada de Lanark.",
+    "cena": "c1_inicio"
+  },
+  {
+    "chave": "ca2d0f888ade8f96",
+    "texto": "O sol se põe vermelho atrás das colinas e a aldeia se prepara para a noite mais perigosa do ano. Na véspera de Samhain os mortos caminham e o Povo Encantado sai das colinas ocas. As crianças esculpem rostos em nabos e põem brasas dentro. Seu irmão mais novo, Callum, já fez três, cada um mais feio que o outro.",
+    "cena": "c1_inicio"
+  },
+  {
+    "chave": "c706cd89bbb8ca37",
+    "texto": "Faz seis meses que os ingleses venceram em Dunbar. O rei John Balliol teve as insígnias arrancadas do manto e foi mandado para Londres. Dizem que o rei Eduardo levou também a Pedra do Destino, de Scone. Por aqui, a guerra ainda parece distante.",
+    "cena": "c1_inicio"
+  },
+  {
+    "chave": "d15bf1b3a759f279",
+    "texto": "Ainda há tempo para uma coisa, antes de acenderem a fogueira.",
+    "cena": "c1_inicio"
+  },
+  {
+    "chave": "9005ec355a03dd47",
+    "texto": "Abhainn Dubh.",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "4064606040940126",
+    "texto": "O kelpie solta um grito agudo e fica imóvel, tremendo, preso pela sua mão e pela sua vontade. Agora é ele quem obedece.",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "85625ecdb1cb0453",
+    "texto": "Ele carrega você e Callum até a outra margem sem molhar um fio de cabelo. Quando você o solta, ele vira o pescoço e fala com voz de homem afogado:",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "7f3b635713548865",
+    "texto": "“Um favor, filho dos homens. Chama o nome da água negra, Abhainn Dubh, quando precisares, e eu virei. Uma vez só.”",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "19ff4f46405a4cc0",
+    "texto": "Ele afunda no rio. Na sua mão fica um punhado de crina que nunca seca.",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "48a4e8958c7da617",
+    "texto": "Ele carrega você e Mairi até a outra margem sem molhar um fio de cabelo. Quando você o solta, ele vira o pescoço e fala com voz de homem afogado:",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "935f4598fb93b2b6",
+    "texto": "Ele carrega você até a outra margem sem molhar um fio de cabelo. Quando você o solta, ele vira o pescoço e fala com voz de homem afogado:",
+    "cena": "c1_kelpie_domado"
+  },
+  {
+    "chave": "667c4f4ff537c889",
+    "texto": "Pele que gruda.",
+    "cena": "c1_kelpie_montar"
+  },
+  {
+    "chave": "bd7f62abc05a022d",
+    "texto": "No instante em que você toca as costas do animal, sua pele gruda na dele como em resina. O cavalo ri, um som de água em pedra, e dispara para dentro do rio.",
+    "cena": "c1_kelpie_montar"
+  },
+  {
+    "chave": "4d07d4403b273e66",
+    "texto": "A água gelada sobe até a cintura, até o peito, até o queixo…",
+    "cena": "c1_kelpie_montar"
+  },
+  {
+    "chave": "3fa433aceaade5aa",
+    "texto": "Água e algas.",
+    "cena": "c1_kelpie_morto"
+  },
+  {
+    "chave": "8c63c11f22271775",
+    "texto": "O kelpie desaba e se desfaz como uma onda que quebra na margem. Fica só água, lodo e um punhado de crina que nunca seca.",
+    "cena": "c1_kelpie_morto"
+  },
+  {
+    "chave": "9518a3f780098491",
+    "texto": "Com a criatura morta, o vau fica calmo, e vocês atravessam com água pela cintura.",
+    "cena": "c1_kelpie_morto"
+  },
+  {
+    "chave": "feb1ae7f878978dd",
+    "texto": "A névoa da cachoeira.",
+    "cena": "c1_libertacao"
+  },
+  {
+    "chave": "00183709ccb55b47",
+    "texto": "As correntes caem. Os prisioneiros choram e abraçam você, um por um.",
+    "cena": "c1_libertacao"
+  },
+  {
+    "chave": "4c19b67f745961b9",
+    "texto": "Você sai para a beira da cachoeira. A névoa de Corra Linn sobe em colunas brancas e, dentro dela, toma forma a mulher de cabelos de neve.",
+    "cena": "c1_libertacao"
+  },
+  {
+    "chave": "cdaf7ea5d699340f",
+    "texto": "“Fizeste bem, criança do sangue antigo. Agora escuta. O Martelo do Sul levou uma pedra para Londres. Mas a Pedra que eles levaram…” Ela sorri pela primeira vez. “…não é a verdadeira. E a Velha do Inverno também a procura.”",
+    "cena": "c1_libertacao"
+  },
+  {
+    "chave": "960eec104b268426",
+    "texto": "Ela tira dos ombros um manto feito da própria névoa e o põe nos seus. Depois sopra sobre você, e o seu sangue arde como fogo e gelo ao mesmo tempo. O Sangue Antigo despertou. Escolha a primeira magia que vai aprender.",
+    "cena": "c1_libertacao"
+  },
+  {
+    "chave": "317a5d1bafc3d331",
+    "texto": "As correntes caem. Callum se joga no seu pescoço e não solta mais.",
+    "cena": "c1_libertacao"
+  },
+  {
+    "chave": "3060334ff0afe7a5",
+    "texto": "Sal fora de ordem.",
+    "cena": "c1_mairi_fail"
+  },
+  {
+    "chave": "24ac724c41db0efa",
+    "texto": "Você derruba o sal antes da hora e Mairi solta uma gargalhada rouca. “Assim os mortos vão entrar rindo, criança.” Ela refaz tudo sozinha, mas aperta seu ombro com carinho quando você vai embora.",
+    "cena": "c1_mairi_fail"
+  },
+  {
+    "chave": "c99a5c8f040627fd",
+    "texto": "Sorveira e linha vermelha.",
+    "cena": "c1_mairi_ok"
+  },
+  {
+    "chave": "692488a31a986541",
+    "texto": "Você sabe a ordem certa: primeiro o sal, depois a água do poço, depois o fogo. Mairi aprova com a cabeça e amarra um galhinho de sorveira com linha vermelha no seu pulso.",
+    "cena": "c1_mairi_ok"
+  },
+  {
+    "chave": "710e7bb4a0e06226",
+    "texto": "“Sorveira e linha vermelha prendem bruxa e fada velha. Não tires isto esta noite, ouviste? E nunca montes num cavalo que te espera à beira d’água.”",
+    "cena": "c1_mairi_ok"
+  },
+  {
+    "chave": "a3b868e4ac0ef49e",
+    "texto": "Ela segura seu queixo e olha nos seus olhos por tempo demais. “Tens os olhos da tua avó. Ela também via coisas.”",
+    "cena": "c1_mairi_ok"
+  },
+  {
+    "chave": "5721d8c6bf0d3a38",
+    "texto": "A curandeira.",
+    "cena": "c1_mairi_salva"
+  },
+  {
+    "chave": "0c21d410cbed7ffa",
+    "texto": "Você chuta a porta em brasa e arrasta Mairi para fora pelos braços. Ela tosse, viva.",
+    "cena": "c1_mairi_salva"
+  },
+  {
+    "chave": "94cadcc129043f6b",
+    "texto": "Mas quando você se vira, os cavalos já estão saindo da aldeia. Na garupa de um deles, um menino de cabelo ruivo grita seu nome. Callum.",
+    "cena": "c1_mairi_salva"
+  },
+  {
+    "chave": "d3a07e539cbd9231",
+    "texto": "A viga em chamas cai no seu ombro, mas você não solta Mairi. Arrasta a velha para a lama, viva.",
+    "cena": "c1_mairi_salva_ferido"
+  },
+  {
+    "chave": "919fbbd6d81d1fc4",
+    "texto": "Quando você se vira, os cavalos já estão saindo da aldeia. Na garupa de um deles, um menino de cabelo ruivo grita seu nome. Callum.",
+    "cena": "c1_mairi_salva_ferido"
+  },
+  {
+    "chave": "a1b7a4346bcb86ca",
+    "texto": "A correnteza joga você contra as pedras duas vezes antes de você chegar à outra margem, sangrando e batendo os dentes. Atrás de você, o kelpie ri.",
+    "cena": "c1_nado_mal"
+  },
+  {
+    "chave": "570ce3e0d5b6bcfe",
+    "texto": "Contra a correnteza.",
+    "cena": "c1_nado_ok"
+  },
+  {
+    "chave": "2bae8255a27e5b03",
+    "texto": "Você entra no rio sem olhar para o cavalo. A água gelada tira seu fôlego, mas você atravessa. Atrás de você, o kelpie solta um grito de raiva e afunda.",
+    "cena": "c1_nado_ok"
+  },
+  {
+    "chave": "4fa2907171d5485f",
+    "texto": "Turfa e água parada.",
+    "cena": "c1_pantano_ok"
+  },
+  {
+    "chave": "8cca10df69fb868d",
+    "texto": "Você esfrega lama de turfa na pele e nas roupas e se enfia entre os juncos até a água bater no peito. Os cães passam a dez passos, farejam, ganem e seguem na direção errada.",
+    "cena": "c1_pantano_ok"
+  },
+  {
+    "chave": "96c17dfb418e6575",
+    "texto": "Quando você sai da água, sua mão encontra na lama uma pedra lisa com um furo no meio. Uma pedra de víbora: os velhos dizem que, olhando pelo furo, se vê o que está escondido.",
+    "cena": "c1_pantano_ok"
+  },
+  {
+    "chave": "f711a15b2ca33151",
+    "texto": "O portão.",
+    "cena": "c1_portao"
+  },
+  {
+    "chave": "03fd4482a34c19e4",
+    "texto": "Os rebeldes gritam e atiram flechas contra as muralhas, do outro lado da torre. Um único sentinela ficou no portão, olhando na direção do barulho.",
+    "cena": "c1_portao"
+  },
+  {
+    "chave": "5008ca497fe59edb",
+    "texto": "Uma flecha no escuro.",
+    "cena": "c1_portao_mal"
+  },
+  {
+    "chave": "524c5383073576a1",
+    "texto": "O sentinela ergue a espada para o golpe final, e uma flecha de Ailsa atravessa a garganta dele. Ele cai em cima de você. Lá do escuro vem a voz dela: “Levanta! Não tenho flechas para desperdiçar contigo.”",
+    "cena": "c1_portao_mal"
+  },
+  {
+    "chave": "c7479c76a6dc0214",
+    "texto": "Misericórdia.",
+    "cena": "c1_poupar"
+  },
+  {
+    "chave": "8c8a12e40c368672",
+    "texto": "Você chuta a espada para longe e estende a mão. Blackwood a encara por um longo tempo antes de aceitar.",
+    "cena": "c1_poupar"
+  },
+  {
+    "chave": "5005fe828b463e80",
+    "texto": "“Te devo a vida. Um inglês não esquece isso.” Ele joga para você a chave das correntes e uma bolsa de pennies. Depois, baixinho:",
+    "cena": "c1_poupar"
+  },
+  {
+    "chave": "a049bc7bf7c0e0ed",
+    "texto": "“Ouve. Eu estava em Scone quando entregaram a pedra ao rei Eduardo. Os monges riam quando a carregamos para a carroça. Riam. Pensa nisso.”",
+    "cena": "c1_poupar"
+  },
+  {
+    "chave": "92c563a1f7df0283",
+    "texto": "Ele manca até a porta e some na noite.",
+    "cena": "c1_poupar"
+  },
+  {
+    "chave": "f10455c5c33ae687",
+    "texto": "No meio da subida, uma pedra se solta. Você escorrega, bate contra a rocha e só para numa saliência, mas consegue entrar pela seteira, ofegante e sangrando.",
+    "cena": "c1_queda"
+  },
+  {
+    "chave": "e5159da1137327d3",
+    "texto": "O gorro no chão.",
+    "cena": "c1_redcap_bw"
+  },
+  {
+    "chave": "a9fa61a8ef081d6e",
+    "texto": "A criatura cai, e o gorro vermelho rola pelo chão. O sangue nele escurece e vira pó. Blackwood escorrega pela parede até sentar, com a mão no flanco ferido.",
+    "cena": "c1_redcap_bw"
+  },
+  {
+    "chave": "8a9ae9fd80771bcb",
+    "texto": "Palavras que queimam.",
+    "cena": "c1_redcap_foge"
+  },
+  {
+    "chave": "137686df54b8a299",
+    "texto": "“…in nomine Patris…”, e depois as palavras que Mairi ensinava baixinho, mais velhas que qualquer igreja.",
+    "cena": "c1_redcap_foge"
+  },
+  {
+    "chave": "3e7397c2b6216038",
+    "texto": "O Barrete Vermelho solta um uivo, cobre as orelhas e se joga pela janela, direto na cachoeira. O pique enferrujado cai aos seus pés.",
+    "cena": "c1_redcap_foge"
+  },
+  {
+    "chave": "8271b7a4b80bc8f2",
+    "texto": "Sozinho na torre.",
+    "cena": "c1_redcap_morto"
+  },
+  {
+    "chave": "44555b68fa87731a",
+    "texto": "A criatura cai, e o gorro vermelho vira pó. Você está de pé, sozinho, num salão cheio de mortos.",
+    "cena": "c1_redcap_morto"
+  },
+  {
+    "chave": "7a756f13649bc4fd",
+    "texto": "Na mão fria de Blackwood ainda está a espada larga dele, de bom aço. Ele não vai mais precisar dela, nem da cota de malha.",
+    "cena": "c1_redcap_morto"
+  },
+  {
+    "chave": "e28ad9b68e79e334",
+    "texto": "Canções de bêbado.",
+    "cena": "c1_taverna_fail"
+  },
+  {
+    "chave": "e72ae47ea3839114",
+    "texto": "O barulho é tanto que você só pega pedaços de conversa: impostos, ingleses, e um nome dito com raiva, Blackwood. Depois disso, só canções desafinadas.",
+    "cena": "c1_taverna_fail"
+  },
+  {
+    "chave": "e3522be95e4d4bb7",
+    "texto": "Notícias de Lanark.",
+    "cena": "c1_taverna_ok"
+  },
+  {
+    "chave": "8d1af042293b1f08",
+    "texto": "A taverna fede a turfa e cerveja azeda. Um tropeiro de Ayr conta, em voz baixa, sobre um homem enorme de Elderslie que quebrou o braço de dois soldados ingleses num mercado. Wallace, é o nome que ele sussurra.",
+    "cena": "c1_taverna_ok"
+  },
+  {
+    "chave": "615fc3a95ec62ee3",
+    "texto": "Outro fala do novo xerife de Lanark, William Heselrig, que cobra o \"tributo do rei\" com corda e fogo. E de um sargento chamado Blackwood, que anda pelas aldeias procurando Iain, o filho de Duncan, que fugiu para as florestas com os fora-da-lei.",
+    "cena": "c1_taverna_ok"
+  },
+  {
+    "chave": "42b091e9003f80f3",
+    "texto": "O que mora na torre.",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "4673df9ce810bb12",
+    "texto": "Lá dentro, o rugido da cachoeira abafa tudo. O salão está cheio de soldados ingleses, e todos estão mortos, com a garganta rasgada.",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "5e1829120d5f9c98",
+    "texto": "Na escada, de costas para você, há um velho atarracado de botas de ferro, segurando um pique enferrujado. Ele mergulha o gorro na poça de sangue de um soldado e o põe de volta na cabeça, pingando. Quando se vira, os dentes são de lobo.",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "13b8ee4689b9d6ec",
+    "texto": "Encurralado contra a parede, ferido e com a espada tremendo na mão, está o sargento Blackwood. Num canto, acorrentados, os prisioneiros olham para você.",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "cabba1e97f656bc7",
+    "texto": "Você reconhece a criatura das histórias que Mairi contava junto ao fogo: um Barrete Vermelho, que tinge o gorro com o sangue dos viajantes e morre de medo de palavras sagradas.",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "268f5636d2869aa0",
+    "texto": "Blackwood vê você. “Escocês… me ajuda, ou essa coisa mata todos nós. Os prisioneiros também.”",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "e98d2e442c15d0e2",
+    "texto": "Encurralado contra a parede, ferido e com a espada tremendo na mão, está o sargento Blackwood. Num canto, acorrentados, os prisioneiros, e entre eles Callum, olham para você.",
+    "cena": "c1_torre"
+  },
+  {
+    "chave": "94663c0038ba685a",
+    "texto": "O vau do Clyde.",
+    "cena": "c1_vau"
+  },
+  {
+    "chave": "942ddb8ba4f1ab6d",
+    "texto": "O rio está cheio das chuvas de outono, negro e gelado. Na margem, como se estivesse esperando, há um cavalo.",
+    "cena": "c1_vau"
+  },
+  {
+    "chave": "d3d92d4fb360c9d9",
+    "texto": "É o animal mais bonito que você já viu. Negro como breu, sem sela nem rédea, a crina molhada caindo até os joelhos. Ele se ajoelha devagar, oferecendo as costas.",
+    "cena": "c1_vau"
+  },
+  {
+    "chave": "b12afd53bacf08c9",
+    "texto": "Mas desde a noite do fogo seus olhos veem outra coisa. Por baixo da pele lustrosa a carne é verde, de afogado. A crina é feita de algas. Na boca brilham dentes de peixe. É um kelpie, o cavalo-d'água que leva os viajantes para o fundo do rio.",
+    "cena": "c1_vau"
+  },
+  {
+    "chave": "50bcc1792f2a263b",
+    "texto": "“Não toques nele”, sussurra Mairi. “Não é cavalo.”",
+    "cena": "c1_vau"
+  },
+  {
+    "chave": "6934a0cac30334c8",
+    "texto": "A Dama Branca.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "b8ea7abe4a14e3a0",
+    "texto": "O som some. As faíscas ficam paradas no ar, como estrelas presas. A fumaça para de subir.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "4570d559da7425bb",
+    "texto": "No meio da rua, onde ninguém estava, há uma mulher alta. O cabelo é branco como neve nova, e os olhos têm a cor do gelo no fundo de um lago. Ela não pisa na lama. Ela não faz sombra.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "ec98b5e90c7ea27b",
+    "texto": "“O sangue antigo corre em ti. Encontra a Pedra… ou tua terra cairá para os homens e para os monstros.”",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "5505dd3a12fc5d58",
+    "texto": "Ela toca sua testa com um dedo frio. Algo se abre atrás dos seus olhos, como uma janela que estava pregada há séculos.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "3d92f22ec6740458",
+    "texto": "Ela olha para Callum, adormecido de cansaço nos seus braços, e depois some.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "47d9d52d0f768747",
+    "texto": "O som volta. As faíscas caem.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "096f1a16b79dfc3c",
+    "texto": "Ela olha para a estrada por onde levaram Callum, e depois some.",
+    "cena": "c1_visao"
+  },
+  {
+    "chave": "b7cbd36628451810",
+    "texto": "A tampa da fossa.",
+    "cena": "c2_aodh"
+  },
+  {
+    "chave": "8ddf8a9bed5a0b39",
+    "texto": "Dentro da cabana, Aodh põe turfa no fogo e conta a história devagar, como quem a ensaiou muitas vezes.",
+    "cena": "c2_aodh"
+  },
+  {
+    "chave": "a1366346fa22a04c",
+    "texto": "“Quando os homens do rei Eduardo chegaram a Scone, o abade os recebeu com toda a cerimônia. Levou-os à capela e mostrou a pedra da coroação. Eles a puseram numa carroça e foram embora felizes.” Aodh sorri. “Era a tampa da fossa do mosteiro. Arenito vermelho, bem lavado.”",
+    "cena": "c2_aodh"
+  },
+  {
+    "chave": "48777e7a393936bc",
+    "texto": "“Por isso os monges riam”, você diz.",
+    "cena": "c2_aodh"
+  },
+  {
+    "chave": "473dcc965f469790",
+    "texto": "“Riamos até chorar.” O sorriso some. “A verdadeira Pedra é negra, entalhada, e caiu do céu no tempo dos pictos. Nós a trouxemos para cá, para debaixo desta colina, onde os mortos que a guardavam ainda guardam. Ela é um selo, criança. Prende a Velha do Inverno. Se a Pedra acordar nas mãos de um rei inglês… ou quebrar nas mãos da Velha… a Escócia não vê outra primavera.”",
+    "cena": "c2_aodh"
+  },
+  {
+    "chave": "6982aa7655442968",
+    "texto": "Palavras antigas.",
+    "cena": "c2_aodh_saber"
+  },
+  {
+    "chave": "dc6f454a1a62ae18",
+    "texto": "Você responde com as palavras que Mairi usava nos ritos, e o velho monge arregala os olhos. Depois ri, um riso de criança.",
+    "cena": "c2_aodh_saber"
+  },
+  {
+    "chave": "360efa6f44c63a99",
+    "texto": "“Faz trinta anos que ninguém fala comigo assim. Entra, entra. A sopa é ruim, mas é quente.”",
+    "cena": "c2_aodh_saber"
+  },
+  {
+    "chave": "4495ff8c2a58bd9e",
+    "texto": "O último sermão.",
+    "cena": "c2_aodh_sacrificio"
+  },
+  {
+    "chave": "12da9f0fda021719",
+    "texto": "Você cai, e o Lobo-Rei avança. Então o irmão Aodh se põe na frente dele, ergue o báculo e reza em voz alta.",
+    "cena": "c2_aodh_sacrificio"
+  },
+  {
+    "chave": "be5f7873eeea37e1",
+    "texto": "A geada sobe pelos pés do velho, pelas pernas, pelo peito. Quando chega à boca, ele ainda reza. O monge vira gelo, e o lobo, como se tivesse recebido o que veio buscar, vira as costas e some na nevasca.",
+    "cena": "c2_aodh_sacrificio"
+  },
+  {
+    "chave": "df638971d50a8197",
+    "texto": "Uma estátua de gelo fica na boca da caverna, de braços abertos. Ela não derrete.",
+    "cena": "c2_aodh_sacrificio"
+  },
+  {
+    "chave": "19e4a7e53f41ad0f",
+    "texto": "Cascos de cervo.",
+    "cena": "c2_baobhan_cascos"
+  },
+  {
+    "chave": "795106344870ca32",
+    "texto": "Quando a mais alta gira, a saia levanta um palmo. No lugar dos pés, ela tem cascos de cervo.",
+    "cena": "c2_baobhan_cascos"
+  },
+  {
+    "chave": "ddf6f611d8d5c427",
+    "texto": "São Baobhan Sìth, as que bebem o sangue de quem dança com elas até o amanhecer. Elas percebem que você viu, e a música para.",
+    "cena": "c2_baobhan_cascos"
+  },
+  {
+    "chave": "7fc7486957485cfb",
+    "texto": "Só uma dança.",
+    "cena": "c2_baobhan_danca"
+  },
+  {
+    "chave": "98baa6e5c6c4deaf",
+    "texto": "Você dança. A música entra pela sua cabeça e expulsa o cansaço, o frio, o medo, o nome do seu irmão.",
+    "cena": "c2_baobhan_danca"
+  },
+  {
+    "chave": "91239258e8278122",
+    "texto": "Você só acorda quando dentes frios encostam no seu pescoço. A sorveira no seu pulso arde, e a criatura solta você com um grito. Você está fraco, sem fôlego, e as três já mostram as presas.",
+    "cena": "c2_baobhan_danca"
+  },
+  {
+    "chave": "6e25d31f345e4d79",
+    "texto": "Você só acorda quando dentes frios encostam no seu pescoço. Uma flecha de Ailsa passa a um dedo da sua orelha e acerta o ombro da criatura. Você está fraco, sem fôlego, e as três já mostram as presas.",
+    "cena": "c2_baobhan_danca"
+  },
+  {
+    "chave": "99f116248c6b3926",
+    "texto": "Madrugada no pântano.",
+    "cena": "c2_baobhan_mal"
+  },
+  {
+    "chave": "ddb6b5797c2fd2bb",
+    "texto": "Você acorda ao amanhecer, sozinho na urze, com duas marcas roxas no pescoço. As dançarinas sumiram com a luz. Você se levanta e segue, mais leve do que devia estar.",
+    "cena": "c2_baobhan_mal"
+  },
+  {
+    "chave": "80231482335a7770",
+    "texto": "Uma recusa bem feita.",
+    "cena": "c2_baobhan_recusa"
+  },
+  {
+    "chave": "6b952ad35a08f9a9",
+    "texto": "Você faz uma reverência como a que Mairi ensinava para as noites de Samhain. “A senhora me honra, mas tenho um caminho a seguir antes do amanhecer.”",
+    "cena": "c2_baobhan_recusa"
+  },
+  {
+    "chave": "bb13fd34987e3282",
+    "texto": "As três param. A mais alta inclina a cabeça, curiosa. “Educado. Raro.” Ela se aproxima e sussurra: “Por isso, um presente: os lobos da Velha esperam em Dunsinane. E o céu do oeste vai escurecer logo. Deita-te quando ouvires asas.”",
+    "cena": "c2_baobhan_recusa"
+  },
+  {
+    "chave": "aff432ecdb4d9286",
+    "texto": "O guardião das bétulas.",
+    "cena": "c2_betulas"
+  },
+  {
+    "chave": "7269f48abc3e25b4",
+    "texto": "O bosque de bétulas é branco e silencioso, e a névoa sobe do chão como fumaça. Aodh para de repente.",
+    "cena": "c2_betulas"
+  },
+  {
+    "chave": "810e8b89ac6fe19f",
+    "texto": "Entre os troncos, alguém observa: uma figura alta feita de folhas, musgo e galhos, com olhos verdes e tímidos. Um Ghillie Dhu, o guardião das bétulas.",
+    "cena": "c2_betulas"
+  },
+  {
+    "chave": "0396e1863ef39a00",
+    "texto": "“Ele conhece um caminho para o túmulo que os mortos não guardam”, sussurra o monge. “Mas só mostra a quem respeita a floresta.”",
+    "cena": "c2_betulas"
+  },
+  {
+    "chave": "3b306a88402d997e",
+    "texto": "Fuga entre as árvores.",
+    "cena": "c2_betulas_ferido"
+  },
+  {
+    "chave": "02268ca7f0abf9d5",
+    "texto": "Você cai, e o monge arrasta você para dentro do bosque com uma força que um velho não devia ter. Atrás de vocês, os ingleses gritam e perdem o rastro na névoa.",
+    "cena": "c2_betulas_ferido"
+  },
+  {
+    "chave": "ee8c96475e33ca71",
+    "texto": "A fúria da Velha.",
+    "cena": "c2_cailleach_furia"
+  },
+  {
+    "chave": "69009c1cb5db5282",
+    "texto": "O olho da Velha se fecha devagar. “Então que os meus cães decidam.”",
+    "cena": "c2_cailleach_furia"
+  },
+  {
+    "chave": "294dfae7f080ddb9",
+    "texto": "Ela bate o cajado no chão, e a geada explode pelas paredes. Lá fora, na boca da caverna, alguma coisa enorme uiva.",
+    "cena": "c2_cailleach_furia"
+  },
+  {
+    "chave": "eb5088d4a457cd9e",
+    "texto": "O inverno também é necessário.",
+    "cena": "c2_cailleach_verdade"
+  },
+  {
+    "chave": "1a0750c6022bf1d8",
+    "texto": "A Velha olha para você com o olho único por muito tempo. Depois, para surpresa de todos, ela responde.",
+    "cena": "c2_cailleach_verdade"
+  },
+  {
+    "chave": "489f8df46725876a",
+    "texto": "“Eu não sou má, criança. Sou o inverno. Os pictos me prenderam nesta pedra porque tinham medo do frio, e desde então o mundo esquenta e esfria quando os homens querem, não quando deve. Quero ser livre. Só isso.”",
+    "cena": "c2_cailleach_verdade"
+  },
+  {
+    "chave": "eb5078947ce7b542",
+    "texto": "Ela se vira para ir embora, e a geada recua. “Mas os meus cães não sabem conversar. Boa sorte com eles.”",
+    "cena": "c2_cailleach_verdade"
+  },
+  {
+    "chave": "72a4a241d9e30a5f",
+    "texto": "A Pedra do Destino.",
+    "cena": "c2_camara"
+  },
+  {
+    "chave": "acd5544200e96660",
+    "texto": "A câmara é redonda e baixa. No centro, sobre um bloco de pedra mais simples, repousa a Pedra: negra, do tamanho de um baú, coberta de entalhes que parecem se mexer quando a tocha treme. Ela brilha de leve, um azul como o do gelo no fundo dos lagos.",
+    "cena": "c2_camara"
+  },
+  {
+    "chave": "74c41773977956b9",
+    "texto": "Então a geada começa a subir pelas paredes. Seu hálito vira fumaça. Da parede congelada sai uma mulher velha, muito velha, de pele azul, um olho só e cabelos brancos que arrastam no chão. Ela segura um cajado de azevinho.",
+    "cena": "c2_camara"
+  },
+  {
+    "chave": "fbc32aaa498e1fd0",
+    "texto": "“Criança do sangue antigo.” A voz dela é o vento de janeiro. “Dá-me a Pedra, e tua terra terá paz. Nem ingleses, nem guerras, nem fome. Só a neve, limpa, para sempre.”",
+    "cena": "c2_camara"
+  },
+  {
+    "chave": "6b93625e4021139c",
+    "texto": "Os três corvos.",
+    "cena": "c2_cerco"
+  },
+  {
+    "chave": "9c017b2dc7095a87",
+    "texto": "Antes que Aodh se levante, uma trompa soa colina abaixo. Pela janela você vê tochas subindo a encosta e um escudo branco com três corvos negros.",
+    "cena": "c2_cerco"
+  },
+  {
+    "chave": "9c231aaf9d6d78c9",
+    "texto": "“Sir Osric Hale”, diz o monge, sem medo na voz. “O rei quer a pedra verdadeira. Ele não sabe o que ela é.” Uma flecha incendiária acerta o telhado de palha.",
+    "cena": "c2_cerco"
+  },
+  {
+    "chave": "76c0c1dae77f3824",
+    "texto": "A colina de Dunsinane.",
+    "cena": "c2_dunsinane"
+  },
+  {
+    "chave": "7edb33adde8feacf",
+    "texto": "No alto da colina ainda se veem os muros de terra de um forte antigo, mais velho que qualquer rei escocês. Perto do topo há uma cabana de pedra, com fumaça saindo do teto.",
+    "cena": "c2_dunsinane"
+  },
+  {
+    "chave": "8023e5d44db55d8a",
+    "texto": "Um velho de hábito marrom e cabeça raspada espera na porta, apoiado num báculo de madeira. Ele não parece surpreso.",
+    "cena": "c2_dunsinane"
+  },
+  {
+    "chave": "49510c07a6414d05",
+    "texto": "“Sou o irmão Aodh, de Scone. Faz um ano que espero alguém. Ou os ingleses, ou… outra coisa.” Ele aperta os olhos. “Qual dos dois és tu?”",
+    "cena": "c2_dunsinane"
+  },
+  {
+    "chave": "56e2126fda17525d",
+    "texto": "Fogo em Lanark.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "a07a511323dbd495",
+    "texto": "Você volta a Cartland no fim de abril. Em maio, a notícia corre os vales como fogo em palha seca: em Lanark, um homem chamado William Wallace matou o xerife Heselrig e queimou o salão dele. A Escócia inteira está pegando em armas.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "6da742b0cda0afc2",
+    "texto": "Tam aparece na boca da caverna, ofegante. “Wallace está juntando um exército. Diz que o inglês vai mandar o dele, e que a luta vai ser numa ponte.” Ele olha para você. “Numa ponte de madeira, perto de Stirling.”",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "607ab01f07ceb465",
+    "texto": "O irmão Aodh ficou em Dunsinane, guardando a Pedra.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "da1ddb9da731ec1f",
+    "texto": "Sir Osric Hale ainda caça o monge de Dunsinane, e agora conhece seu rosto.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "bc6e0b9b8f3d1a91",
+    "texto": "Capítulo III: A Ponte de Stirling começa agora.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "30d273499557faa3",
+    "texto": "Seu título agora é Herói da Escócia.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "a8eff05469423df6",
+    "texto": "Seu título agora é Guerreiro das Highlands.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "da369726f8bf94cc",
+    "texto": "O Ghillie Dhu das bétulas é seu amigo.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "98d6cd5af97a11bc",
+    "texto": "O irmão Aodh virou gelo na boca da caverna, de braços abertos.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "f319feed6bd6c1bb",
+    "texto": "A Cailleach falou com você de verdade. Ela não é só inimiga.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "a441affd7318c55b",
+    "texto": "Sir Osric Hale está morto.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "481b642a9d0d8c1c",
+    "texto": "O kelpie ainda lhe deve um favor.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "a52774cb509a72f9",
+    "texto": "Tam ainda não o perdoou pela torre.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "5b5b9985a692169b",
+    "texto": "O favor do kelpie foi cobrado.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "d880689e8cee1eec",
+    "texto": "Água de degelo.",
+    "cena": "c2_forth_mal"
+  },
+  {
+    "chave": "49c535016947d097",
+    "texto": "A água de degelo é tão fria que seu coração quase para. A correnteza arrasta você por cem passos antes de você agarrar uma raiz na outra margem. Você chega ao norte tremendo e ferido, mas chega.",
+    "cena": "c2_forth_mal"
+  },
+  {
+    "chave": "bf16bb29db9a7703",
+    "texto": "O caminho escondido.",
+    "cena": "c2_ghillie_guia"
+  },
+  {
+    "chave": "6baba171971f07cf",
+    "texto": "O Ghillie Dhu se aproxima devagar, aceita as ervas e cheira cada uma. Depois toca seu rosto com dedos de folha e aponta para um ponto entre duas bétulas tortas.",
+    "cena": "c2_ghillie_guia"
+  },
+  {
+    "chave": "1776496a5075470c",
+    "texto": "Por ali, um túnel de raízes desce colina adentro, até a parte de trás do túmulo. Antes de sumir, ele deixa na sua mão um punhado de folhas de bétula que cheiram a chuva.",
+    "cena": "c2_ghillie_guia"
+  },
+  {
+    "chave": "97763f144ae8d9de",
+    "texto": "Ofensa sem querer.",
+    "cena": "c2_ghillie_some"
+  },
+  {
+    "chave": "454aa1bc67e4e84e",
+    "texto": "Você pisa num broto sem perceber, e o Ghillie Dhu some como se nunca tivesse existido. De repente o bosque está cheio de espinheiros que não estavam ali antes, e vocês levam uma hora para sair dele, arranhados e atrasados.",
+    "cena": "c2_ghillie_some"
+  },
+  {
+    "chave": "e724cc75f34a54f7",
+    "texto": "Os corvos no chão.",
+    "cena": "c2_hale_vencido"
+  },
+  {
+    "chave": "cbf07e75cebe64b3",
+    "texto": "Sir Osric Hale cai de joelhos diante da cabana em chamas. Os soldados que sobraram fogem colina abaixo.",
+    "cena": "c2_hale_vencido"
+  },
+  {
+    "chave": "ec3b1ec095591f6e",
+    "texto": "Você pega o machado dinamarquês da sela do cavaleiro. Aodh faz o sinal da cruz sobre o corpo e depois aponta para as árvores. “Agora, depressa. A fumaça vai chamar coisas piores que ingleses.”",
+    "cena": "c2_hale_vencido"
+  },
+  {
+    "chave": "f01bf067707cb28d",
+    "texto": "Inverno nos Rochedos.",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "7dcf24d31bb7494d",
+    "texto": "Janeiro de 1297. A neve cobre os Rochedos de Cartland até os joelhos, e a cachoeira na frente da caverna virou uma cortina de gelo.",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "e78b2fc874ea3436",
+    "texto": "Callum passou o inverno aprendendo a usar a funda com os rebeldes e já acerta um corvo a vinte passos. Às vezes, à noite, você ainda sente cheiro de fumaça e pensa em Mairi.",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "5ed125c87ea89362",
+    "texto": "Tam senta ao seu lado perto do fogo. “Ailsa vai contigo quando a neve derreter. Ela atira melhor que eu e reclama menos.”",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "0fe7f25a38b74cd8",
+    "texto": "Um pastor que desceu de Perth trouxe notícias: um velho monge de Scone vive escondido na colina de Dunsinane, além do rio Tay, e fala sozinho com as pedras. Você se lembra das palavras da Dama: “A Pedra que eles levaram não é a verdadeira.”",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "34e3d262cde04824",
+    "texto": "Até o degelo, o acampamento é seu lar.",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "d16ecf1ad52b041c",
+    "texto": "A noite cai sobre o acampamento. A neve não para. O que mais você quer fazer antes de dormir?",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "21b988177868f4b1",
+    "texto": "Um pastor que desceu de Perth trouxe notícias: um velho monge de Scone vive escondido na colina de Dunsinane, além do rio Tay, e fala sozinho com as pedras. Você se lembra das palavras de Blackwood: “Os monges riam.”",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "47f069019cce977f",
+    "texto": "A noite cai sobre o acampamento. A neve não para. Você está cansado, mas ainda há tempo para mais uma coisa.",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "2c791a9cdf2d0962",
+    "texto": "Callum passou o inverno aprendendo a usar a funda com os rebeldes e já acerta um corvo a vinte passos. Mairi cuida dos doentes com ervas secas e reza baixinho para santos que a Igreja nunca conheceu.",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "b87314cbd9cdce01",
+    "texto": "Tam mal fala com você desde a torre. Quando fala, é curto: “Tu vais sozinho para o norte. Não mando a Ailsa com quem mata homem ferido.”",
+    "cena": "c2_inicio"
+  },
+  {
+    "chave": "0ab19c41cd56d503",
+    "texto": "O Lobo-Rei do Inverno.",
+    "cena": "c2_lobo_rei"
+  },
+  {
+    "chave": "856d6bdc3edecba6",
+    "texto": "Na boca da caverna, a noite virou nevasca, em março. No meio da neve espera um lobo branco do tamanho de um cavalo, com geada na juba e olhos de gelo azul. Atrás dele, um lobo menor mostra os dentes.",
+    "cena": "c2_lobo_rei"
+  },
+  {
+    "chave": "a49fc89879daefae",
+    "texto": "O Lobo-Rei do Inverno, o cão de caça da própria Cailleach.",
+    "cena": "c2_lobo_rei"
+  },
+  {
+    "chave": "92aea10ad804587c",
+    "texto": "O Lobo-Rei do Inverno, o cão de caça da própria Cailleach. Você se lembra: eles odeiam fogo e sorveira.",
+    "cena": "c2_lobo_rei"
+  },
+  {
+    "chave": "19f002337afd921d",
+    "texto": "Uivos na nevasca.",
+    "cena": "c2_lobos"
+  },
+  {
+    "chave": "2e15ff8db9b6d997",
+    "texto": "No meio da noite, o vento para de uma vez. O silêncio acorda você antes do uivo.",
+    "cena": "c2_lobos"
+  },
+  {
+    "chave": "afbcc98e3ebb76f8",
+    "texto": "Da nevasca saem dois lobos brancos do tamanho de bezerros, com olhos de gelo azul. Onde pisam, a neve não afunda. O fogo do acampamento encolhe como se tivesse medo.",
+    "cena": "c2_lobos"
+  },
+  {
+    "chave": "bfa64f54c310a35e",
+    "texto": "“Lobos da Velha!”, grita Tam, já com o bordão na mão. “Ao fogo! Todos ao fogo!”",
+    "cena": "c2_lobos"
+  },
+  {
+    "chave": "6b386492db0c3fc4",
+    "texto": "O fogo de Tam.",
+    "cena": "c2_lobos_mal"
+  },
+  {
+    "chave": "f186d1c95969fb6b",
+    "texto": "Os dentes de gelo fecham no seu ombro, e o frio entra até os ossos. Então Tam joga um balde de gordura na fogueira, e uma coluna de fogo sobe até o teto da caverna.",
+    "cena": "c2_lobos_mal"
+  },
+  {
+    "chave": "7067165521c6d2ef",
+    "texto": "Os lobos ganem e somem na nevasca. Quando você acorda, alguém pôs pedras quentes nos seus pés. Ninguém morreu. Desta vez.",
+    "cena": "c2_lobos_mal"
+  },
+  {
+    "chave": "639405af408b7d01",
+    "texto": "Neve e silêncio.",
+    "cena": "c2_lobos_ok"
+  },
+  {
+    "chave": "4732a9762eeceb60",
+    "texto": "O último lobo cai e se desfaz num monte de neve fina, como se nunca tivesse sido carne. Só ficam as peles, brancas e frias, que não derretem perto do fogo.",
+    "cena": "c2_lobos_ok"
+  },
+  {
+    "chave": "4f91d962526be89c",
+    "texto": "Tam limpa o suor congelado da testa. “A Velha sabe de ti. Mandou os cães dela para ver do que és feito.” Ele joga uma das peles sobre você. “Agora usa isso contra ela.”",
+    "cena": "c2_lobos_ok"
+  },
+  {
+    "chave": "9565c2508b270ba6",
+    "texto": "A Velha do Inverno.",
+    "cena": "c2_mairi_cailleach"
+  },
+  {
+    "chave": "58f2fa4eff1c3958",
+    "texto": "A velha Morag, avó de um dos rebeldes, fala baixo, olhando para o gelo na entrada da caverna.",
+    "cena": "c2_mairi_cailleach"
+  },
+  {
+    "chave": "006df6fa270a9a0c",
+    "texto": "“Ela tem muitos nomes. Cailleach. Beira. A Velha. Tem a pele azul de frio e um olho só, e onde bate o cajado de azevinho a terra congela. No Samhain ela acorda, e em Beltane volta a ser pedra.”",
+    "cena": "c2_mairi_cailleach"
+  },
+  {
+    "chave": "435907e0b68c5a22",
+    "texto": "“Os lobos dela odeiam fogo e sorveira. E ela odeia a Pedra, porque foi a Pedra que a prendeu, no tempo dos pictos. Enquanto a Pedra dormir em solo escocês, o inverno tem fim. Se a Pedra acordar nas mãos erradas…”",
+    "cena": "c2_mairi_cailleach"
+  },
+  {
+    "chave": "7db0c6fa0fda42d4",
+    "texto": "Ela não termina a frase. Põe ervas secas na sua mão. “Leva. E não confies em nada que dança no pântano.”",
+    "cena": "c2_mairi_cailleach"
+  },
+  {
+    "chave": "1b41d58add3963f8",
+    "texto": "Mairi fala baixo, olhando para o gelo na entrada da caverna.",
+    "cena": "c2_mairi_cailleach"
+  },
+  {
+    "chave": "81c9a202841f9d5c",
+    "texto": "Wat, o mascate.",
+    "cena": "c2_mercador"
+  },
+  {
+    "chave": "73fd64454c0d9acf",
+    "texto": "Wat é magro, desdentado e carrega nas costas uma loja inteira. Ele espalha a mercadoria numa manta perto do fogo.",
+    "cena": "c2_mercador"
+  },
+  {
+    "chave": "7b40b736e5000624",
+    "texto": "“Ervas, linho, ferro bom de Lanark. Pago nada, vendo caro, que a guerra é cara para todo mundo.”",
+    "cena": "c2_mercador"
+  },
+  {
+    "chave": "3ed564d6353e3224",
+    "texto": "As dançarinas do pântano.",
+    "cena": "c2_musgo"
+  },
+  {
+    "chave": "0a8e6b92cc7fbd2c",
+    "texto": "O pântano não tem fim. Durante dois dias você salta de tufo em tufo de urze, com a água negra esperando cada passo errado.",
+    "cena": "c2_musgo"
+  },
+  {
+    "chave": "cb7455125e27d710",
+    "texto": "No segundo entardecer, você ouve música. Numa ilha de urze, três mulheres de vestido verde dançam em roda. São bonitas de doer, pálidas como a lua, e quando veem você sorriem todas ao mesmo tempo.",
+    "cena": "c2_musgo"
+  },
+  {
+    "chave": "dc4d795f28b04009",
+    "texto": "“Viajante cansado”, diz a mais alta. “Dança conosco. Só uma dança, e esqueces o frio.”",
+    "cena": "c2_musgo"
+  },
+  {
+    "chave": "e149357736b8f659",
+    "texto": "Você se lembra do aviso: não confies em nada que dança no pântano.",
+    "cena": "c2_musgo"
+  },
+  {
+    "chave": "8796d999cf1d662f",
+    "texto": "Dois caminhos para o norte.",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "2ba86b8381cc7ddd",
+    "texto": "A neve vira lama, e é hora de partir. Callum fica com os rebeldes, e chora com raiva por não poder ir. Você parte sozinho, com o vento nas costas.",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "7969acc0a568bb06",
+    "texto": "Entre Cartland e o rio Tay há dois caminhos:",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "903266be365dc4f8",
+    "texto": "A estrada de Stirling, mais curta, que atravessa o rio Forth pela ponte de madeira aos pés do castelo. A ponte é guardada pelos ingleses.",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "fb73c9efa4e9c86d",
+    "texto": "O pântano de Flanders Moss, uma imensidão de turfa e água parada onde nem os ingleses entram. Os pastores dizem que lá dançam mulheres que não deviam dançar, e que ao entardecer os mortos sem paz atravessam o céu.",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "23fddf55bd10f25b",
+    "texto": "A neve vira lama, e é hora de partir. Callum fica com os rebeldes, e chora com raiva por não poder ir. Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "59c9ced637cbada8",
+    "texto": "A neve vira lama, e é hora de partir. Callum fica com Mairi e os rebeldes, e chora com raiva por não poder ir. Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "51993fbe422a2c24",
+    "texto": "A neve vira lama, e é hora de partir. Callum fica com Mairi e os rebeldes, e chora com raiva por não poder ir. Você parte sozinho, com o vento nas costas.",
+    "cena": "c2_partida"
+  },
+  {
+    "chave": "04316e0b66d3c581",
+    "texto": "A ponte de Stirling.",
+    "cena": "c2_ponte"
+  },
+  {
+    "chave": "3ddb5589c3f9aa63",
+    "texto": "O castelo de Stirling se ergue sobre a rocha como um punho fechado. Lá embaixo, a ponte de madeira sobre o Forth é estreita, e só passam dois cavalos por vez. Uma fila de camponeses espera, de cabeça baixa, enquanto soldados ingleses revistam carroças.",
+    "cena": "c2_ponte"
+  },
+  {
+    "chave": "7a77cd68b6ca9ed2",
+    "texto": "No comando está um cavaleiro de escudo branco com três corvos negros, Sir Osric Hale, que olha cada rosto como quem procura um em especial.",
+    "cena": "c2_ponte"
+  },
+  {
+    "chave": "54265e5e64db5760",
+    "texto": "Você reconhece a barba grisalha antes de ver o rosto. Blackwood comanda o posto. Ele ainda manca.",
+    "cena": "c2_ponte"
+  },
+  {
+    "chave": "c77bb5bb4795cb61",
+    "texto": "A dívida do sargento.",
+    "cena": "c2_ponte_bw"
+  },
+  {
+    "chave": "cb6221284915db62",
+    "texto": "Blackwood vê você e fica parado por um longo momento. Depois grita para os soldados: “Este eu conheço. É pastor de Lanark. Deixem passar.”",
+    "cena": "c2_ponte_bw"
+  },
+  {
+    "chave": "928f29d60c03bf64",
+    "texto": "Quando você passa por ele, Blackwood fala sem mexer a boca: “Agora estamos quites, escocês. E ouve: um cavaleiro chamado Osric Hale atravessou esta ponte há três dias. Vai para Dunsinane, caçar um monge. Se vais para lá também… chega antes dele.”",
+    "cena": "c2_ponte_bw"
+  },
+  {
+    "chave": "e281b35873662a1e",
+    "texto": "Fuga pela ponte.",
+    "cena": "c2_ponte_luta"
+  },
+  {
+    "chave": "4148b67e833b4d10",
+    "texto": "Os soldados caem, e você corre pela ponte antes que os outros cheguem.",
+    "cena": "c2_ponte_luta"
+  },
+  {
+    "chave": "d9f424ba0fb6fdb8",
+    "texto": "Lá atrás, Sir Osric Hale não corre. Ele só olha para você, como quem guarda um rosto na memória.",
+    "cena": "c2_ponte_luta"
+  },
+  {
+    "chave": "515aa0e37cec2071",
+    "texto": "Os soldados caem, e você corre pela ponte antes que os outros cheguem. As flechas de Ailsa seguram os ingleses do outro lado.",
+    "cena": "c2_ponte_luta"
+  },
+  {
+    "chave": "335f919bbac62d81",
+    "texto": "Do outro lado do Forth.",
+    "cena": "c2_ponte_ok"
+  },
+  {
+    "chave": "0827abb0fac98672",
+    "texto": "Você passa com a cabeça baixa entre os carneiros de um velho pastor. Ninguém olha duas vezes.",
+    "cena": "c2_ponte_ok"
+  },
+  {
+    "chave": "8d308c0eeb0aa44c",
+    "texto": "Do outro lado, ouve dois soldados conversando: “Sir Osric parte amanhã para Dunsinane. Diz que um monge de Scone esconde lá alguma coisa do rei.”",
+    "cena": "c2_ponte_ok"
+  },
+  {
+    "chave": "fd8fd7eb924b12f1",
+    "texto": "Uma cela em Stirling.",
+    "cena": "c2_ponte_preso"
+  },
+  {
+    "chave": "e9177d4016436e2e",
+    "texto": "Você acorda numa cela úmida sob o castelo, com o gosto de sangue na boca.",
+    "cena": "c2_ponte_preso"
+  },
+  {
+    "chave": "9a29ed699b54f53b",
+    "texto": "Na segunda noite, uma névoa branca entra pela grade e se enrola na fechadura. A porta range e se abre sozinha. Você não pergunta nada a ninguém.",
+    "cena": "c2_ponte_preso"
+  },
+  {
+    "chave": "04ff6820e8acf6b6",
+    "texto": "No caminho de fuga, ouve um soldado: “Sir Osric já partiu para Dunsinane.”",
+    "cena": "c2_ponte_preso"
+  },
+  {
+    "chave": "33824d2b4aa1b1d5",
+    "texto": "Na segunda noite, uma corda desce pela grade da janela. Lá em cima, Ailsa sussurra: “Rápido. Matei um guarda, e logo vão sentir falta dele.”",
+    "cena": "c2_ponte_preso"
+  },
+  {
+    "chave": "b9abc2cc07adda82",
+    "texto": "Os três corvos caem.",
+    "cena": "c2_ponte_vitoria"
+  },
+  {
+    "chave": "0d9c0eb50b58db8f",
+    "texto": "Sir Osric cai do cavalo na lama do Forth. Os soldados ingleses recuam para o castelo, gritando por reforços.",
+    "cena": "c2_ponte_vitoria"
+  },
+  {
+    "chave": "e47009653bc69ddb",
+    "texto": "Você pega o machado dinamarquês que estava preso à sela dele, uma arma de duas mãos, de lâmina larga, das que os mercenários das ilhas usam. Na bolsa do cavaleiro, uma carta com o selo do rei: encontrar o monge de Dunsinane e trazer o que ele esconde.",
+    "cena": "c2_ponte_vitoria"
+  },
+  {
+    "chave": "4f6b28cbf78e7701",
+    "texto": "O selo.",
+    "cena": "c2_selo"
+  },
+  {
+    "chave": "135d00ba35685048",
+    "texto": "De volta à câmara, a Pedra brilha mais forte. Você tenta erguê-la, e ela pesa como uma montanha. Ela não quer ir a lugar nenhum.",
+    "cena": "c2_selo"
+  },
+  {
+    "chave": "4f2229fff4b40771",
+    "texto": "A Dama Branca aparece no brilho azul. “A Pedra dorme onde deve, e assim deve ficar, por enquanto. Mas um dia um rei escocês vai precisar dela, e tu saberás o caminho.”",
+    "cena": "c2_selo"
+  },
+  {
+    "chave": "36ef91003724e772",
+    "texto": "Um pedaço do tamanho de uma unha se solta da Pedra e cai na sua mão, morno. A Dama toca sua testa, e o fogo no seu sangue sobe mais um degrau. O Sangue Antigo chegou ao nível 2. Escolha uma nova magia.",
+    "cena": "c2_selo"
+  },
+  {
+    "chave": "158a30a4db06949a",
+    "texto": "Asas no oeste.",
+    "cena": "c2_sluagh"
+  },
+  {
+    "chave": "c93ca1a10c9eba73",
+    "texto": "No terceiro entardecer, o céu do oeste escurece como se viesse tempestade. Mas não é nuvem. É um bando, centenas de vultos cinzentos com rostos de fumaça, voando contra o vento.",
+    "cena": "c2_sluagh"
+  },
+  {
+    "chave": "90cb8d72d0fca44c",
+    "texto": "O Sluagh, a hoste dos mortos sem paz. Eles procuram os vivos ao cair da noite para levar mais um consigo.",
+    "cena": "c2_sluagh"
+  },
+  {
+    "chave": "46a6ced02598038e",
+    "texto": "Frio por dentro.",
+    "cena": "c2_sluagh_mal"
+  },
+  {
+    "chave": "939440c7d8a63e4d",
+    "texto": "Mãos de fumaça atravessam seu peito e levam um pouco de calor que nunca mais volta inteiro. Mas o sol nasce, e os mortos fogem com a noite. Você se arrasta até o rio Tay.",
+    "cena": "c2_sluagh_mal"
+  },
+  {
+    "chave": "bd940ad95081e167",
+    "texto": "O céu passa.",
+    "cena": "c2_sluagh_ok"
+  },
+  {
+    "chave": "068d12948c39f326",
+    "texto": "Você enfia o rosto na turfa fria e não respira. As asas passam tão baixo que o vento delas levanta seu cabelo. Uma voz sussurra seu nome, depois outra. Você não responde.",
+    "cena": "c2_sluagh_ok"
+  },
+  {
+    "chave": "4072a0f2948e4fdc",
+    "texto": "Quando levanta a cabeça, o céu está limpo e as primeiras estrelas aparecem. Ao longe, brilha o rio Tay.",
+    "cena": "c2_sluagh_ok"
+  },
+  {
+    "chave": "ad2af0087ca5197a",
+    "texto": "O rio Tay.",
+    "cena": "c2_tay"
+  },
+  {
+    "chave": "e26b1cd1266bce6b",
+    "texto": "O Tay é o rio mais largo da Escócia, e agora, com o degelo, corre marrom e furioso. Do outro lado ficam Perth e, mais além, a colina de Dunsinane.",
+    "cena": "c2_tay"
+  },
+  {
+    "chave": "ebda1a4b117d671d",
+    "texto": "Um barqueiro velho cochila ao lado de um bote.",
+    "cena": "c2_tay"
+  },
+  {
+    "chave": "166ddafd44efba93",
+    "texto": "E você sente na mão uma umidade que não vem do rio. A trança da crina do kelpie pinga, como se lembrasse de uma promessa.",
+    "cena": "c2_tay"
+  },
+  {
+    "chave": "137eebc2d77be34c",
+    "texto": "O barqueiro.",
+    "cena": "c2_tay_barco"
+  },
+  {
+    "chave": "7a0cb7939fd9a461",
+    "texto": "O barqueiro rema sem dizer uma palavra. No meio do rio, ele finalmente fala: “Muita gente quer ir a Dunsinane este mês. Ontem levei um cavaleiro inglês até a margem de baixo. Ele não pagou.”",
+    "cena": "c2_tay_barco"
+  },
+  {
+    "chave": "11ca221f868d66f9",
+    "texto": "O favor do kelpie.",
+    "cena": "c2_tay_kelpie"
+  },
+  {
+    "chave": "2294cb723cac5288",
+    "texto": "Você diz o nome baixinho, e o rio fica imóvel por um instante. Então um cavalo negro sobe da água, sem molhar a crina.",
+    "cena": "c2_tay_kelpie"
+  },
+  {
+    "chave": "b54230a16613097f",
+    "texto": "“Uma vez só, filho dos homens”, diz o kelpie. Ele carrega você até a outra margem, e no caminho a água fria cura suas feridas.",
+    "cena": "c2_tay_kelpie"
+  },
+  {
+    "chave": "afba9db4ae6df646",
+    "texto": "Antes de afundar, ele fala sem olhar para trás: “O Lobo-Rei da Velha espera na colina. É maior que eu. Não lutes com ele no escuro.”",
+    "cena": "c2_tay_kelpie"
+  },
+  {
+    "chave": "bb3979a354e42755",
+    "texto": "“Uma vez só, filho dos homens”, diz o kelpie. Ele carrega você e Ailsa, que reza a viagem inteira, até a outra margem, e no caminho a água fria cura suas feridas.",
+    "cena": "c2_tay_kelpie"
+  },
+  {
+    "chave": "ef11d3475244ff35",
+    "texto": "Água marrom.",
+    "cena": "c2_tay_mal"
+  },
+  {
+    "chave": "e9d45938f89a860a",
+    "texto": "O Tay arrasta você como uma folha. Você bate em troncos e pedras antes de alcançar a margem norte, mas alcança.",
+    "cena": "c2_tay_mal"
+  },
+  {
+    "chave": "e6281e310c70ac83",
+    "texto": "Teixo e corda de linho.",
+    "cena": "c2_treino_arco"
+  },
+  {
+    "chave": "2ff90b2c8bd19d5a",
+    "texto": "Ailsa põe um arco curto de teixo na sua mão. “Não puxes com o braço. Puxa com as costas, e solta quando o coração bater.”",
+    "cena": "c2_treino_arco"
+  },
+  {
+    "chave": "e7bc8c4b31f3ab49",
+    "texto": "Depois de uma semana atirando em fardos de palha na neve, você acerta três em cada cinco. Ailsa dá de ombros. “Para quem começou ontem, está bom. Fica com o arco. Eu faço outro.”",
+    "cena": "c2_treino_arco"
+  },
+  {
+    "chave": "900b9825589ec34b",
+    "texto": "O sono dos pictos.",
+    "cena": "c2_tumulo"
+  },
+  {
+    "chave": "91984506b8902590",
+    "texto": "A entrada do túmulo é uma boca de pedra na encosta, ladeada por pedras entalhadas com símbolos que ninguém mais sabe ler: um crescente cortado por uma flecha quebrada, uma fera de focinho longo.",
+    "cena": "c2_tumulo"
+  },
+  {
+    "chave": "2056139f8a5bec41",
+    "texto": "Quando vocês se aproximam, a terra treme. Um guerreiro sai do escuro. A pele é cinzenta, coberta de espirais azuis, e os olhos são dois buracos vazios. Na mão, um machado de pedra.",
+    "cena": "c2_tumulo"
+  },
+  {
+    "chave": "e8c4ab44e7bde252",
+    "texto": "Ele fala numa língua que só Aodh entende. O monge traduz, pálido: “Ele pergunta: quem desce ao sono da Pedra?”",
+    "cena": "c2_tumulo"
+  },
+  {
+    "chave": "56b2b39a7bc6bee0",
+    "texto": "Graças ao túnel do Ghillie Dhu, vocês chegam pelos fundos. Mas mesmo ali, algo se mexe na escuridão. Um guerreiro sai do escuro. A pele é cinzenta, coberta de espirais azuis, e os olhos são dois buracos vazios. Na mão, um machado de pedra.",
+    "cena": "c2_tumulo"
+  },
+  {
+    "chave": "8433e87044d67f92",
+    "texto": "A resposta certa.",
+    "cena": "c2_tumulo_certo"
+  },
+  {
+    "chave": "b108efe9717864c7",
+    "texto": "O morto fica imóvel. Depois abaixa o machado e se afasta da porta, devagar, com um som de pedras rolando.",
+    "cena": "c2_tumulo_certo"
+  },
+  {
+    "chave": "e13983c78ca1a94d",
+    "texto": "Aodh solta o ar que estava prendendo. “Os pictos não tinham reis sobre a Pedra. A Pedra é que tinha os reis. Quem a serve passa. Quem quer possuí-la, não.”",
+    "cena": "c2_tumulo_certo"
+  },
+  {
+    "chave": "124eecbe55d19bbc",
+    "texto": "Oração no escuro.",
+    "cena": "c2_tumulo_mal"
+  },
+  {
+    "chave": "988152dd1797b1cf",
+    "texto": "Você cai na terra fria do túmulo. Aodh se põe entre você e o guardião e reza em voz alta, numa mistura de latim e de uma língua muito mais velha. O morto para, hesita, e volta para a escuridão de onde veio.",
+    "cena": "c2_tumulo_mal"
+  },
+  {
+    "chave": "3870c18c33081342",
+    "texto": "“Levanta”, diz o monge. “Não reza por muito tempo, um velho.”",
+    "cena": "c2_tumulo_mal"
+  },
+  {
+    "chave": "1c4f8509999c4f4f",
+    "texto": "A nevasca para.",
+    "cena": "c2_vitoria"
+  },
+  {
+    "chave": "36d6677a29500274",
+    "texto": "O Lobo-Rei cai na neve e se desfaz numa rajada de vento gelado que atravessa a colina e some no céu. A nevasca para de uma vez. No silêncio, você ouve um passarinho cantar, o primeiro da primavera.",
+    "cena": "c2_vitoria"
+  },
+  {
+    "chave": "94dcc984b764b796",
+    "texto": "Aodh se apoia no báculo, rindo e chorando ao mesmo tempo. “Ainda não, Velha. Ainda não.”",
+    "cena": "c2_vitoria"
+  },
+  {
+    "chave": "2fd5be70cd1e60f2",
+    "texto": "Flechas do alto.",
+    "cena": "c3_arqueiros"
+  },
+  {
+    "chave": "245129ed13280b53",
+    "texto": "Do alto do penhasco, a ponte parece um formigueiro. Você e os outros arqueiros atiram sem parar sobre os cavaleiros que tentam voltar e os que tentam passar.",
+    "cena": "c3_arqueiros"
+  },
+  {
+    "chave": "4d765a732797ca59",
+    "texto": "Flechas perdidas.",
+    "cena": "c3_arqueiros_mal"
+  },
+  {
+    "chave": "31e8d50fb4d14945",
+    "texto": "O vento do rio desvia suas flechas. Lá embaixo, a batalha chegou à ponta da ponte, e alguém grita que precisam de todo homem lá. Você desce correndo.",
+    "cena": "c3_arqueiros_mal"
+  },
+  {
+    "chave": "5b8717173dba4ebd",
+    "texto": "Um estandarte cai.",
+    "cena": "c3_arqueiros_ok"
+  },
+  {
+    "chave": "3764ca70a55b48b2",
+    "texto": "Sua flecha acerta o porta-estandarte de um cavaleiro no meio da ponte, e a bandeira cai no rio. Os ingleses que vêm atrás hesitam. É tudo o que os lanceiros de Moray precisavam.",
+    "cena": "c3_arqueiros_ok"
+  },
+  {
+    "chave": "fcd5c1b328a695f5",
+    "texto": "Lá embaixo, a batalha chegou à ponta da ponte. Você larga o arco e desce correndo.",
+    "cena": "c3_arqueiros_ok"
+  },
+  {
+    "chave": "48d73966de4cfb40",
+    "texto": "O rio decide.",
+    "cena": "c3_bw_deixado"
+  },
+  {
+    "chave": "fd80cb977eba068d",
+    "texto": "Você vira as costas. Quando olha de novo, a estaca está vazia.",
+    "cena": "c3_bw_deixado"
+  },
+  {
+    "chave": "2a20f77974891b53",
+    "texto": "Ninguém vai saber. Você vai.",
+    "cena": "c3_bw_deixado"
+  },
+  {
+    "chave": "56447f11fd314d2f",
+    "texto": "Um rosto conhecido na água.",
+    "cena": "c3_bw_ponte"
+  },
+  {
+    "chave": "8133856ef3c62b1c",
+    "texto": "Na beira do rio, agarrado a uma estaca da ponte, um homem de barba grisalha luta para não afundar com a cota de malha. É Blackwood.",
+    "cena": "c3_bw_ponte"
+  },
+  {
+    "chave": "17c544fbfdafe5e9",
+    "texto": "Ele vê você. Não pede nada.",
+    "cena": "c3_bw_ponte"
+  },
+  {
+    "chave": "b755f219742d6ceb",
+    "texto": "Pela terceira vez.",
+    "cena": "c3_bw_salvo"
+  },
+  {
+    "chave": "940f7bf1d29647f3",
+    "texto": "Você o puxa para a margem. Blackwood tosse água e lama por um bom tempo antes de conseguir falar.",
+    "cena": "c3_bw_salvo"
+  },
+  {
+    "chave": "f9b757e965e392bb",
+    "texto": "“Três vezes.” Ele ri, um riso rouco. “Três vezes, escocês. Vou para casa. Juro por Deus, vou para Yorkshire criar ovelhas.” Ele se levanta e some entre os juncos, sem espada e sem bandeira.",
+    "cena": "c3_bw_salvo"
+  },
+  {
+    "chave": "0f31a3abc9c06225",
+    "texto": "A ponta da ponte.",
+    "cena": "c3_cabeca"
+  },
+  {
+    "chave": "ab5177115f2c639f",
+    "texto": "Os lanceiros escoceses fecham a ponta da ponte numa muralha de lanças. Os ingleses que atravessaram estão presos entre o rio e o exército de Wallace. O tesoureiro Cressingham cai do cavalo no meio deles e não se levanta mais.",
+    "cena": "c3_cabeca"
+  },
+  {
+    "chave": "64ea131172381c3b",
+    "texto": "Os que tentam fugir se jogam no rio, e o peso da malha os leva para o fundo.",
+    "cena": "c3_cabeca"
+  },
+  {
+    "chave": "a579a0448cc9af22",
+    "texto": "Uma trompa soa rio acima. Cavaleiros ingleses atravessaram pelo vau e vêm pelo flanco!",
+    "cena": "c3_cabeca"
+  },
+  {
+    "chave": "1a1531ced94ec9cc",
+    "texto": "Então o rio congela. Num instante, o Forth vira uma placa branca, e os cavalos que fogem pela margem escorregam e quebram o gelo. Os gritos são terríveis. Os escoceses comemoram. Você não consegue comemorar.",
+    "cena": "c3_cabeca"
+  },
+  {
+    "chave": "f9d0c936acf49a18",
+    "texto": "Os cavaleiros que caem no rio não sobem de novo. Por um instante, entre a espuma, você vê crinas negras e algas, e cavalos que não são cavalos puxando armaduras para o fundo.",
+    "cena": "c3_cabeca"
+  },
+  {
+    "chave": "5a6aca53480948dd",
+    "texto": "Pisoteado.",
+    "cena": "c3_cabeca_ferido"
+  },
+  {
+    "chave": "c3298d897782a96f",
+    "texto": "Você cai, e a batalha passa por cima de você. Fergus Mór arranca você da lama pelo cinto. “Ainda não! Ainda tem inglês para todo mundo!”",
+    "cena": "c3_cabeca_ferido"
+  },
+  {
+    "chave": "39c35c74f60f144e",
+    "texto": "O campeão do conde.",
+    "cena": "c3_campeao"
+  },
+  {
+    "chave": "886d81520cbfb3dc",
+    "texto": "No meio da confusão, um cavaleiro abre caminho a golpes de espada em direção a Wallace. O escudo é branco, com três corvos negros. Sir Osric Hale, mais uma vez, e desta vez sem nada a perder.",
+    "cena": "c3_campeao"
+  },
+  {
+    "chave": "67cf5701c5ab82cf",
+    "texto": "Ele vê você no caminho dele. Atrás dele, um cavaleiro montado que veio pelo vau baixa a lança.",
+    "cena": "c3_campeao"
+  },
+  {
+    "chave": "fafafe4ad422bd88",
+    "texto": "No meio da confusão, um cavaleiro abre caminho a golpes de espada em direção a Wallace. O escudo é verde, com um galho de espinhos dourado: Sir Gerard Thorne, campeão do conde de Surrey, que dizem nunca ter perdido um duelo.",
+    "cena": "c3_campeao"
+  },
+  {
+    "chave": "270d65ab2db5aa7d",
+    "texto": "Ele vê você no caminho dele.",
+    "cena": "c3_campeao"
+  },
+  {
+    "chave": "532984a2b634f0f8",
+    "texto": "Wallace.",
+    "cena": "c3_campeao_mal"
+  },
+  {
+    "chave": "75aa06f6311d60f0",
+    "texto": "A espada do campeão desce sobre você, e para no meio do caminho. Uma lança enorme atravessa o escudo dele.",
+    "cena": "c3_campeao_mal"
+  },
+  {
+    "chave": "312da964dfd3dc5a",
+    "texto": "Wallace puxa a lança de volta sem dizer nada e segue em frente. Você fica sentado na lama, vivo, olhando as costas do homem mais alto da Escócia.",
+    "cena": "c3_campeao_mal"
+  },
+  {
+    "chave": "6cd1f474f80cf3c6",
+    "texto": "A carga.",
+    "cena": "c3_carga"
+  },
+  {
+    "chave": "71107cd9c9143633",
+    "texto": "Milhares de escoceses descem o Abbey Craig gritando, numa onda de lanças. Você corre no meio deles, com os homens de Moray dos dois lados, direto para a ponta da ponte.",
+    "cena": "c3_carga"
+  },
+  {
+    "chave": "5a9d6c9bcbd5ab99",
+    "texto": "Os ingleses que já atravessaram tentam formar fileira. Tarde demais. Na sua frente, um arqueiro galês e um homem-de-armas levantam as armas.",
+    "cena": "c3_carga"
+  },
+  {
+    "chave": "13d9a3c61fb7c9b4",
+    "texto": "O carpinteiro.",
+    "cena": "c3_carpinteiro"
+  },
+  {
+    "chave": "431c52522d29c5b4",
+    "texto": "O carpinteiro é um homem baixo, de mãos enormes, que se apresenta só como John. Ele fala depressa, olhando para a ponte.",
+    "cena": "c3_carpinteiro"
+  },
+  {
+    "chave": "c6fe3a2edd7ecfec",
+    "texto": "“A trave principal da ponte, a do meio. Se eu serrar quase até o fim e segurar com um pino de carvalho, ela aguenta homem a pé. Mas na hora certa, alguém puxa o pino… e a ponte cai com quem estiver em cima.” Ele cospe. “Preciso de alguém que vigie enquanto eu trabalho. E que tenha coragem de puxar o pino amanhã.”",
+    "cena": "c3_carpinteiro"
+  },
+  {
+    "chave": "3020c3197ecddbe3",
+    "texto": "Os velhos poetas contam essa história. Ninguém sabe se aconteceu mesmo.",
+    "cena": "c3_carpinteiro"
+  },
+  {
+    "chave": "e10bf9ce4c5a3ebc",
+    "texto": "O conselho de guerra.",
+    "cena": "c3_conselho"
+  },
+  {
+    "chave": "46bd0f7cecb988c6",
+    "texto": "Você se agacha atrás da lona e escuta.",
+    "cena": "c3_conselho"
+  },
+  {
+    "chave": "0c08e257381b47c9",
+    "texto": "Um cavaleiro de sotaque escocês fala alto: Sir Richard Lundie, que já lutou do lado dos escoceses e trocou de lado. “Pela ponte é loucura, milorde. Passam dois de cada vez. Deem-me quinhentos cavaleiros e eu atravesso pelo vau, rio acima, e caio nas costas deles.”",
+    "cena": "c3_conselho"
+  },
+  {
+    "chave": "2b73ab69431c6817",
+    "texto": "Outra voz, gorda e impaciente: o tesoureiro Hugh de Cressingham. “E gastar o dinheiro do rei mandando cavalaria passear? Não. Atravessamos pela ponte, como homens, e acabamos com isso.”",
+    "cena": "c3_conselho"
+  },
+  {
+    "chave": "fb3ef846fe5334c0",
+    "texto": "O velho conde de Surrey boceja e concorda com o tesoureiro. Você sai dali sabendo duas coisas: o ataque será pela ponte, e existe um vau rio acima que alguém ainda pode tentar usar.",
+    "cena": "c3_conselho"
+  },
+  {
+    "chave": "6b4e9957aa555725",
+    "texto": "A Dama na névoa.",
+    "cena": "c3_dama"
+  },
+  {
+    "chave": "e4648fdfca64af7d",
+    "texto": "À noite, quando o acampamento finalmente dorme, a névoa sobe do Forth, e a Dama Branca está ali, ao lado da ponte destruída.",
+    "cena": "c3_dama"
+  },
+  {
+    "chave": "5086d8d6628efb58",
+    "texto": "Ela sorri. “Lutaste com as tuas mãos e com o teu povo. A Velha vai lembrar disso. Eu também.”",
+    "cena": "c3_dama"
+  },
+  {
+    "chave": "89d6e126fd6cbdd0",
+    "texto": "Ela toca seu peito, onde bate o coração, e o Sangue Antigo sobe como uma maré. O Sangue Antigo chegou ao nível 3: Druida. Escolha uma magia do terceiro círculo.",
+    "cena": "c3_dama"
+  },
+  {
+    "chave": "f763463ed46e8d08",
+    "texto": "Ela não sorri. “Fizeste um pacto com a minha irmã de inverno. Ganhaste uma batalha e perdeste um pedaço de ti. Um dia ela vai cobrar, e eu não poderei impedir.”",
+    "cena": "c3_dama"
+  },
+  {
+    "chave": "96f3169160704853",
+    "texto": "O vau rio acima.",
+    "cena": "c3_drip"
+  },
+  {
+    "chave": "e779badb967e0e11",
+    "texto": "O vau é um trecho raso do Forth, entre juncos e salgueiros, a algumas milhas da ponte. A água bate no joelho. Um exército de cavalaria passaria por aqui em uma hora.",
+    "cena": "c3_drip"
+  },
+  {
+    "chave": "dbd604c5d24193ff",
+    "texto": "Mesmo sem saber o que os ingleses planejam, um vau desses perto de uma batalha é perigoso.",
+    "cena": "c3_drip"
+  },
+  {
+    "chave": "e75e780183f6775f",
+    "texto": "Se Lundie convencer o conde, é por aqui que os cavaleiros vão cair nas costas de Wallace.",
+    "cena": "c3_drip"
+  },
+  {
+    "chave": "a6b05858029c73fe",
+    "texto": "Guardiões da Escócia.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "7cad3c5db0941f73",
+    "texto": "A vitória de Stirling corre a Escócia inteira. Pela primeira vez, um exército de lavradores e pastores derrotou a cavalaria do rei da Inglaterra.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "699c6d40a0a253ca",
+    "texto": "Wallace e Moray passam a assinar cartas como comandantes do exército do reino da Escócia. Wallace manda chamar você e agradece em poucas palavras. O intendente entrega a todos os que lutaram na ponta da ponte um gibão acolchoado azul com a cruz de Santo André costurada no peito.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "51cd60b4c78acf26",
+    "texto": "Mas Moray não melhora. Em novembro, morre das feridas da ponte. E no sul, o rei Eduardo volta da guerra na Flandres, furioso, juntando o maior exército da sua vida.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "e85e4dc8b0cd7312",
+    "texto": "A ponte de Stirling foi destruída depois da batalha.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "17afb1983081ceea",
+    "texto": "Os cavaleiros ingleses vieram pelo vau, e muitos escoceses morreram no flanco.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "f441e005696d5f3b",
+    "texto": "Capítulo IV: Falkirk começa agora.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "ddc99ab861c77a0a",
+    "texto": "Wallace e Moray passam a assinar cartas como comandantes do exército do reino da Escócia. Wallace manda chamar você e põe na sua mão uma espada de guerra, de bom aço escocês. “Ganhaste isto na ponte.” O intendente entrega a todos os que lutaram na ponta da ponte um gibão acolchoado azul com a cruz de Santo André costurada no peito.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "43df44a46dd8969e",
+    "texto": "Seu título agora é Lenda.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "57119f374819c825",
+    "texto": "O vau rio acima estava bloqueado, e o flanco escocês ficou seguro.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "3b90a715afc41ce3",
+    "texto": "Você deixou Blackwood se afogar no Forth.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "733643e7f2bc6fc9",
+    "texto": "Callum levou recados durante toda a batalha e voltou sem um arranhão.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "9499f7689fff00c6",
+    "texto": "Você salvou Blackwood pela terceira vez. Ele foi criar ovelhas em Yorkshire.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "0aebe7bdc1360203",
+    "texto": "Você estancou o sangue de Andrew Moray.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "a5caef40a1e5d792",
+    "texto": "Você puxou o pino, e a ponte de Stirling caiu no Forth.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "2f0e35543f2c5e1e",
+    "texto": "Você fez um pacto com a Cailleach. Ela vai cobrar.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "0b7e31a5c8d92177",
+    "texto": "Os cavalos-d'água do Forth lutaram por você. O favor do kelpie está pago.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "e1a04396ec61c3b0",
+    "texto": "O acampamento de Wallace.",
+    "cena": "c3_floresta"
+  },
+  {
+    "chave": "b831655ed2bebe98",
+    "texto": "Callum ficou na boca da caverna, chorando de raiva, até vocês sumirem no vale.",
+    "cena": "c3_floresta"
+  },
+  {
+    "chave": "e2bf88b2253ebac8",
+    "texto": "A floresta de Selkirk está cheia de gente: centenas de homens entre os carvalhos, fumaça de cem fogueiras, ferreiros improvisados batendo pontas de lança. Chegam notícias do norte: Andrew Moray também se levantou e expulsou os ingleses de quase todos os castelos além do Forth.",
+    "cena": "c3_floresta"
+  },
+  {
+    "chave": "8fe349c74db96c95",
+    "texto": "E então você o vê. William Wallace é mais alto que qualquer homem que você já conheceu, mas fala baixo, quase com cansaço. Ele olha cada recém-chegado como quem pesa um saco de grãos.",
+    "cena": "c3_floresta"
+  },
+  {
+    "chave": "2d4b5948935cc38e",
+    "texto": "“Cada um que chega me mostra uma coisa”, diz ele. “O que sabe fazer. Mostra a tua.”",
+    "cena": "c3_floresta"
+  },
+  {
+    "chave": "6f85554aa8641020",
+    "texto": "Callum anda ao seu lado o caminho todo, orgulhoso como um cavaleiro.",
+    "cena": "c3_floresta"
+  },
+  {
+    "chave": "0f5aaecfedde2025",
+    "texto": "Sangue na relva.",
+    "cena": "c3_fuga_ferida"
+  },
+  {
+    "chave": "4c5f1c727b0538dc",
+    "texto": "Você escapa por pouco, sangrando, deitado na lama de uma vala enquanto os ingleses passam com tochas. Não descobriu o plano deles, mas ouviu falar de um vau rio acima.",
+    "cena": "c3_fuga_ferida"
+  },
+  {
+    "chave": "41608be631e6c270",
+    "texto": "O último corvo.",
+    "cena": "c3_hale_fim"
+  },
+  {
+    "chave": "f3d2d60ece1b0294",
+    "texto": "Sir Osric Hale cai entre as tendas, e desta vez não se levanta. Antes que o acampamento acorde, você pega o escudo branco dele e corre.",
+    "cena": "c3_hale_fim"
+  },
+  {
+    "chave": "16ad224f7d20d735",
+    "texto": "Na bolsa do cavaleiro há um bilhete de Sir Richard Lundie: quinhentos cavaleiros pelo vau, se o tesoureiro deixar.",
+    "cena": "c3_hale_fim"
+  },
+  {
+    "chave": "2df904de00b0778c",
+    "texto": "Para a floresta de Selkirk.",
+    "cena": "c3_inicio"
+  },
+  {
+    "chave": "2aa9b6cd434593d7",
+    "texto": "Junho de 1297. Depois de Lanark, a Escócia acorda. Lavradores largam o arado, pastores trocam o cajado pela lança, e todos os caminhos parecem levar à floresta de Selkirk, onde William Wallace junta o seu exército.",
+    "cena": "c3_inicio"
+  },
+  {
+    "chave": "7eee0bcc4df7fd86",
+    "texto": "Tam reúne o bando dos Rochedos de Cartland. Ele dá um tapa nas suas costas. “Acabou o tempo de se esconder em cavernas.”",
+    "cena": "c3_inicio"
+  },
+  {
+    "chave": "a8a9fcb173357e2b",
+    "texto": "Callum, que já tem doze anos e acerta corvos com a funda, planta-se na sua frente com os braços cruzados. “Eu vou também. Não sou mais criança.”",
+    "cena": "c3_inicio"
+  },
+  {
+    "chave": "188f6c45e6cab22b",
+    "texto": "Tam reúne o bando dos Rochedos de Cartland. Ele ainda não olha nos seus olhos, mas diz: “Wallace precisa de todo braço que segure uma lança. Até o teu.”",
+    "cena": "c3_inicio"
+  },
+  {
+    "chave": "c4f74f6a5a75bc74",
+    "texto": "O intendente.",
+    "cena": "c3_intendente"
+  },
+  {
+    "chave": "cde8251a885019cc",
+    "texto": "O intendente é um padre de Glasgow que trocou o breviário por uma lista de suprimentos. Ele conta cada penny duas vezes.",
+    "cena": "c3_intendente"
+  },
+  {
+    "chave": "560c988f90b508bd",
+    "texto": "“O exército não tem dinheiro, então não dou nada. Mas vendo barato.”",
+    "cena": "c3_intendente"
+  },
+  {
+    "chave": "a691f9f200364ce0",
+    "texto": "Um soldado assustado.",
+    "cena": "c3_interrogatorio"
+  },
+  {
+    "chave": "d53eda17662fcd11",
+    "texto": "O soldado é um rapaz de Cumberland que só quer voltar para casa. Ele fala tudo de uma vez: “Vamos atravessar pela ponte. Mas Sir Richard Lundie quer mandar cavalaria por um vau, rio acima. Eu não sei qual. Juro!”",
+    "cena": "c3_interrogatorio"
+  },
+  {
+    "chave": "739988a33197c0e9",
+    "texto": "Você o deixa amarrado a uma árvore, com a boca tapada e a vida inteira pela frente.",
+    "cena": "c3_interrogatorio"
+  },
+  {
+    "chave": "3fdbf387ed934ffd",
+    "texto": "A água negra responde.",
+    "cena": "c3_kelpie_forth"
+  },
+  {
+    "chave": "421c5599eee894af",
+    "texto": "“Não quero o teu gelo, Velha.” Você se ajoelha e diz para a água: Abhainn Dubh.",
+    "cena": "c3_kelpie_forth"
+  },
+  {
+    "chave": "fc51f3d6d95b7274",
+    "texto": "A Cailleach franze a testa e some na névoa. O Forth volta a correr. Do fundo sobe uma cabeça de cavalo negro, com algas na crina.",
+    "cena": "c3_kelpie_forth"
+  },
+  {
+    "chave": "a62b0d18cf0a0056",
+    "texto": "“Este rio não é meu, filho dos homens. Mas os cavalos-d'água do Forth são meus primos.” Ele sorri com dentes de peixe. “Amanhã, os ingleses que caírem na água não vão subir de novo. E aí estaremos quites.”",
+    "cena": "c3_kelpie_forth"
+  },
+  {
+    "chave": "85564d34557ccdde",
+    "texto": "De manhã, dois frades dominicanos atravessam a ponte com uma bandeira branca. Trazem a oferta do conde: rendição e perdão.",
+    "cena": "c3_manha"
+  },
+  {
+    "chave": "49c84bb8cbc88f42",
+    "texto": "Wallace responde em voz alta, para que o exército inteiro ouça: “Digam ao vosso senhor que não estamos aqui para fazer a paz, mas para lutar, defender-nos e libertar o nosso reino. Que venham, e vão ver.”",
+    "cena": "c3_manha"
+  },
+  {
+    "chave": "63da1169f747e0c7",
+    "texto": "Os frades voltam. E os ingleses começam a atravessar. Dois cavaleiros lado a lado, depois mais dois, depois mais dois. As lanças brilham ao sol. Wallace não se mexe. Moray morde os lábios. Meia manhã passa assim.",
+    "cena": "c3_manha"
+  },
+  {
+    "chave": "a45a1779483f96d3",
+    "texto": "Quando metade do exército inglês está do lado de cá, Wallace levanta a lança.",
+    "cena": "c3_manha"
+  },
+  {
+    "chave": "287abc1c3557850a",
+    "texto": "O exército do sul.",
+    "cena": "c3_missao"
+  },
+  {
+    "chave": "733bc9942e328632",
+    "texto": "Vocês cavalgam três dias para o norte e encontram o exército inglês acampado na planície ao sul de Stirling. É uma cidade de tendas: estandartes vermelhos e dourados, fumaça de mil fogueiras, cavalos de guerra cobertos de malha.",
+    "cena": "c3_missao"
+  },
+  {
+    "chave": "b896fd5c24cc055a",
+    "texto": "Do outro lado do rio, no alto, o castelo de Stirling. Entre os dois, a ponte de madeira, tão estreita que só passam dois cavaleiros lado a lado.",
+    "cena": "c3_missao"
+  },
+  {
+    "chave": "a483b577b494c6f9",
+    "texto": "À noite, a maior tenda do acampamento brilha por dentro. Lá os senhores ingleses discutem como vão atravessar.",
+    "cena": "c3_missao"
+  },
+  {
+    "chave": "7754b7fa92711bf8",
+    "texto": "Andrew Moray.",
+    "cena": "c3_moray"
+  },
+  {
+    "chave": "f3e7f6d69f21bd18",
+    "texto": "No fim da tarde, a batalha acabou. O exército inglês fugiu para o sul, e a ponte está queimando.",
+    "cena": "c3_moray"
+  },
+  {
+    "chave": "d24b6b5085f8677e",
+    "texto": "Você encontra Andrew Moray sentado contra uma pedra, pálido, com a mão apertando o lado do corpo. O sangue escorre entre os dedos. Ele sorri para você. “Ganhamos, não ganhamos?”",
+    "cena": "c3_moray"
+  },
+  {
+    "chave": "879b009bd090367d",
+    "texto": "No fim da tarde, a batalha acabou. O exército inglês fugiu para o sul, e a ponte está no fundo do rio.",
+    "cena": "c3_moray"
+  },
+  {
+    "chave": "e4558fb233afdd24",
+    "texto": "Mãos vermelhas.",
+    "cena": "c3_moray_mal"
+  },
+  {
+    "chave": "4f2e7b639f49e7b5",
+    "texto": "O sangue não para. Os curandeiros chegam e o levam numa padiola, e você fica com as mãos vermelhas e o coração apertado.",
+    "cena": "c3_moray_mal"
+  },
+  {
+    "chave": "8a78f41b510f5f4d",
+    "texto": "Moray ainda acena antes de sumir entre os homens. “Ganhamos”, diz ele. “Ganhamos.”",
+    "cena": "c3_moray_mal"
+  },
+  {
+    "chave": "97809ac773418149",
+    "texto": "O sangue para.",
+    "cena": "c3_moray_ok"
+  },
+  {
+    "chave": "72736aad15f7bb67",
+    "texto": "Você limpa a ferida, aperta, costura com linha de linho como Mairi ensinava. O sangue para.",
+    "cena": "c3_moray_ok"
+  },
+  {
+    "chave": "18b78271244597ab",
+    "texto": "Moray segura seu pulso com força. “Obrigado. Se eu viver para ver a Escócia livre, vou lembrar de ti.” Os curandeiros chegam e o levam numa padiola. Os olhos dele já estão fechando de cansaço.",
+    "cena": "c3_moray_ok"
+  },
+  {
+    "chave": "2ad69f74bf128a7a",
+    "texto": "Um aperto de mão gelado.",
+    "cena": "c3_pacto"
+  },
+  {
+    "chave": "b1b1271503389b67",
+    "texto": "Você aperta a mão da Velha. O frio sobe pelo braço até o coração e fica lá, como uma pedra.",
+    "cena": "c3_pacto"
+  },
+  {
+    "chave": "9735371666e9f1f0",
+    "texto": "“Amanhã, quando a ponte estiver cheia, olha para o rio”, diz ela, e some.",
+    "cena": "c3_pacto"
+  },
+  {
+    "chave": "a09f5aaf2cb97905",
+    "texto": "Na pele do seu pulso surgem três marcas brancas, como queimaduras de gelo. Os três Sinais. Seus descansos nunca mais serão completos. A Dama Branca, você sente, está chorando em algum lugar.",
+    "cena": "c3_pacto"
+  },
+  {
+    "chave": "2b88bc322e6d9a58",
+    "texto": "Mãos no seu ombro.",
+    "cena": "c3_pego"
+  },
+  {
+    "chave": "b618dfb48aceb2a2",
+    "texto": "Uma mão agarra seu ombro por trás.",
+    "cena": "c3_pego"
+  },
+  {
+    "chave": "a6bd29323b403164",
+    "texto": "Você se vira e encontra um escudo branco com três corvos. Sir Osric Hale sorri devagar. “O rosto da ponte de Stirling. E do monge. Hoje não foges.”",
+    "cena": "c3_pego"
+  },
+  {
+    "chave": "8192b9c0163858c2",
+    "texto": "É Blackwood. Ele arrasta você para trás de uma carroça antes que alguém veja e fala entre os dentes: “Tu de novo. A dívida estava paga, escocês.” Ele olha em volta. “Atravessamos pela ponte daqui a dois dias. Lundie quer usar o vau de cima, e o tesoureiro é avarento demais para deixar. Agora some. E se nos virmos naquela ponte, não te conheço.”",
+    "cena": "c3_pego"
+  },
+  {
+    "chave": "985e28361c5a7204",
+    "texto": "Dois soldados ingleses gritam e puxam as espadas.",
+    "cena": "c3_pego"
+  },
+  {
+    "chave": "8bc1a8813eeebfff",
+    "texto": "A corda nos juncos.",
+    "cena": "c3_pino"
+  },
+  {
+    "chave": "3c1f47b961f5a40b",
+    "texto": "Você corre pela margem, abaixado entre os juncos, enquanto a batalha explode acima. A corda está onde John deixou. A ponte está cheia: cavaleiros, cavalos, homens a pé, todos se empurrando.",
+    "cena": "c3_pino"
+  },
+  {
+    "chave": "ec02e1b539124697",
+    "texto": "A ponte cai.",
+    "cena": "c3_ponte_cai"
+  },
+  {
+    "chave": "3d5ab5d4b3b094c6",
+    "texto": "O pino sai com um estalo que você sente nos dentes. Por um instante, nada acontece.",
+    "cena": "c3_ponte_cai"
+  },
+  {
+    "chave": "6a60a79cde989d9e",
+    "texto": "Então a trave do meio geme, se curva e se parte. A ponte de Stirling cai no Forth com tudo o que estava em cima: cavaleiros, cavalos, estandartes, gritos. O exército inglês fica cortado ao meio.",
+    "cena": "c3_ponte_cai"
+  },
+  {
+    "chave": "472c359f2aad1315",
+    "texto": "Cem passos.",
+    "cena": "c3_prova_arco"
+  },
+  {
+    "chave": "65c4dd537a273a39",
+    "texto": "A flecha acerta o alvo de palha um palmo abaixo do centro. Alguns homens assobiam.",
+    "cena": "c3_prova_arco"
+  },
+  {
+    "chave": "a360fd4923a9ab7b",
+    "texto": "Wallace concorda com a cabeça. “Arqueiros eu tenho poucos. Ficas comigo.”",
+    "cena": "c3_prova_arco"
+  },
+  {
+    "chave": "8bb7ba535d314955",
+    "texto": "A flecha acerta o alvo de palha um palmo abaixo do centro. Ailsa assobia, o que é o maior elogio que ela sabe fazer.",
+    "cena": "c3_prova_arco"
+  },
+  {
+    "chave": "3f1cdd3c33bf814e",
+    "texto": "Ninguém nasce soldado.",
+    "cena": "c3_prova_falha"
+  },
+  {
+    "chave": "2b2a6c8ef671615c",
+    "texto": "Não dá certo, e alguns homens riem. Wallace levanta a mão, e o riso para.",
+    "cena": "c3_prova_falha"
+  },
+  {
+    "chave": "4fc4d544e09e4d86",
+    "texto": "“Não importa. Ninguém aqui nasceu soldado. Eu também não.” Ele aponta para a fogueira. “Come, dorme, e amanhã aprende. Ficas.”",
+    "cena": "c3_prova_falha"
+  },
+  {
+    "chave": "ed65cae3fca93da1",
+    "texto": "Fergus no chão.",
+    "cena": "c3_prova_luta"
+  },
+  {
+    "chave": "a07dcaecbacfab56",
+    "texto": "Fergus Mór cai de costas na grama, e o acampamento inteiro ri. Ele ri mais alto que todos. “Por São Columba! Ninguém me derrubava desde a Páscoa.”",
+    "cena": "c3_prova_luta"
+  },
+  {
+    "chave": "6c252e45d63eebef",
+    "texto": "Wallace estende a mão para ajudar Fergus a levantar e olha para você. “Ficas comigo.”",
+    "cena": "c3_prova_luta"
+  },
+  {
+    "chave": "5b001cb66aff4ce4",
+    "texto": "A Pedra e o povo.",
+    "cena": "c3_prova_palavra"
+  },
+  {
+    "chave": "67db2afd592d267f",
+    "texto": "Você conta sobre a tampa da fossa, a câmara sob a colina, a Velha do Inverno. Os homens em volta fazem o sinal da cruz. Wallace não ri.",
+    "cena": "c3_prova_palavra"
+  },
+  {
+    "chave": "0aa4cc624904f648",
+    "texto": "“Minha mãe acreditava nessas coisas”, diz ele, por fim. “Guarda o segredo da Pedra. Um dia um rei vai precisar dela.” Ele olha para os homens ao redor, lavradores com lanças feitas em casa. “Mas o reino não é uma pedra. É essa gente. Ficas comigo.”",
+    "cena": "c3_prova_palavra"
+  },
+  {
+    "chave": "7fecff8175ad2c4b",
+    "texto": "Sozinhos, como os homens gostam.",
+    "cena": "c3_recusa"
+  },
+  {
+    "chave": "8311cc75dd4a60c3",
+    "texto": "“Não. Amanhã a Escócia luta com as próprias mãos.”",
+    "cena": "c3_recusa"
+  },
+  {
+    "chave": "26060ed99403c13b",
+    "texto": "“Então lutem sozinhos, como os homens gostam”, diz a Velha, e a névoa engole a voz dela.",
+    "cena": "c3_recusa"
+  },
+  {
+    "chave": "55527bd98bfaafdb",
+    "texto": "Quando ela some, a água volta a correr. Na margem, entre os juncos, uma luz branca pisca uma vez, como se alguém agradecesse.",
+    "cena": "c3_recusa"
+  },
+  {
+    "chave": "654c04cce982962e",
+    "texto": "A Velha sorri, e pela primeira vez o sorriso parece verdadeiro. “Esperava isso de ti. Talvez sejas mesmo digna da Pedra.”",
+    "cena": "c3_recusa"
+  },
+  {
+    "chave": "d47caaf5f251533f",
+    "texto": "O relatório.",
+    "cena": "c3_relatorio"
+  },
+  {
+    "chave": "fbe578aac1d1c760",
+    "texto": "Wallace escuta tudo sem interromper. Moray assobia baixinho quando você fala do vau.",
+    "cena": "c3_relatorio"
+  },
+  {
+    "chave": "c20ca73f822d4c7d",
+    "texto": "“Então eles vêm pela ponte, de dois em dois”, diz Wallace, devagar. “Deixamos atravessar. Não todos. Só o suficiente.” Ele olha para Moray. “Quando metade estiver do nosso lado, descemos e tomamos a ponta da ponte. Quem atravessou não volta. Quem ficou não chega.”",
+    "cena": "c3_relatorio"
+  },
+  {
+    "chave": "ff1548761fb9cf28",
+    "texto": "Moray sorri. “E o rio faz o resto.”",
+    "cena": "c3_relatorio"
+  },
+  {
+    "chave": "532a1a11be812e13",
+    "texto": "Wallace escuta tudo sem interromper. Moray assobia baixinho quando você fala do vau e ri alto quando você conta das estacas.",
+    "cena": "c3_relatorio"
+  },
+  {
+    "chave": "bad861c188b5ac7f",
+    "texto": "A Velha no rio.",
+    "cena": "c3_rio"
+  },
+  {
+    "chave": "4c38ffa122a30437",
+    "texto": "A névoa sobre o Forth é fria demais para setembro. Quando você chega à margem, a água para de correr.",
+    "cena": "c3_rio"
+  },
+  {
+    "chave": "5697f63cd33c849e",
+    "texto": "A Cailleach está de pé sobre o rio, e onde ela pisa a água vira gelo. O olho único dela brilha como uma estrela de inverno.",
+    "cena": "c3_rio"
+  },
+  {
+    "chave": "de5f356345b983e9",
+    "texto": "“Amanhã muitos dos teus vão morrer nesta ponte. Eu posso evitar. Congelo o rio sob os ingleses, e os cavalos deles caem no gelo como pedras.” Ela sorri. “Em troca, quando a guerra acabar, tu me levas até a Pedra e a quebras com as tuas mãos.”",
+    "cena": "c3_rio"
+  },
+  {
+    "chave": "9a2ee9536463e5dd",
+    "texto": "A Cailleach está de pé sobre o rio, e onde ela pisa a água vira gelo. Ela inclina a cabeça, quase com carinho. “A criança que me perguntou o que eu queria.”",
+    "cena": "c3_rio"
+  },
+  {
+    "chave": "40c74782cbd42988",
+    "texto": "Um pino de carvalho.",
+    "cena": "c3_serrada"
+  },
+  {
+    "chave": "96dff1a4d976c2e6",
+    "texto": "Vocês trabalham até a madrugada debaixo da ponte, num bote, com a serra enrolada em panos para abafar o som. Quando terminam, a trave do meio está presa só por um pino de carvalho do tamanho do seu braço.",
+    "cena": "c3_serrada"
+  },
+  {
+    "chave": "141de30eaacbeff0",
+    "texto": "John amarra uma corda ao pino e esconde a ponta entre os juncos. “Amanhã, quando a ponte estiver cheia, tu puxas. Eu já serrei. Minha parte acabou.”",
+    "cena": "c3_serrada"
+  },
+  {
+    "chave": "f786ed31d0d9201f",
+    "texto": "Trabalho perdido.",
+    "cena": "c3_serrada_falha"
+  },
+  {
+    "chave": "6415ca4ef6fe31dc",
+    "texto": "O sentinela dá o alarme, e vocês fogem pelo rio antes de terminar. A ponte fica inteira. John some na noite, xingando.",
+    "cena": "c3_serrada_falha"
+  },
+  {
+    "chave": "bcde189cd1181cfa",
+    "texto": "Batedores que não voltam.",
+    "cena": "c3_vau_emboscada"
+  },
+  {
+    "chave": "762adb8683230598",
+    "texto": "Os batedores ingleses não voltam para contar que o vau é raso. Sem notícia, Lundie não vai ter como convencer ninguém.",
+    "cena": "c3_vau_emboscada"
+  },
+  {
+    "chave": "fede1a8f9a035d91",
+    "texto": "Água fria.",
+    "cena": "c3_vau_falha"
+  },
+  {
+    "chave": "703a02e5272eec57",
+    "texto": "O trabalho não dá certo. A correnteza leva as estacas, e você corta as mãos nas pedras. O vau continua aberto.",
+    "cena": "c3_vau_falha"
+  },
+  {
+    "chave": "5c0e1733e8dfd379",
+    "texto": "Dentes sob a água.",
+    "cena": "c3_vau_ok"
+  },
+  {
+    "chave": "2db6128363bce915",
+    "texto": "Vocês passam a noite com água pela cintura, fincando estacas de salgueiro afiadas no leito do rio, inclinadas para o sul. De cima, ninguém vê nada. Um cavalo que tentar atravessar vai quebrar as pernas.",
+    "cena": "c3_vau_ok"
+  },
+  {
+    "chave": "09668128bd9653ee",
+    "texto": "A véspera, no Abbey Craig.",
+    "cena": "c3_vespera"
+  },
+  {
+    "chave": "93919dab45854741",
+    "texto": "O exército escocês está no alto do Abbey Craig, um penhasco coberto de árvores. Lá embaixo, o Forth faz uma curva larga, e a ponte de madeira atravessa o rio como uma linha de costura. Do outro lado, as fogueiras inglesas cobrem a planície até onde a vista alcança.",
+    "cena": "c3_vespera"
+  },
+  {
+    "chave": "1437daf8ba072596",
+    "texto": "Andrew Moray chegou do norte com os homens dele. É jovem, de sorriso fácil, e Wallace o trata como irmão. Os dois dividem o comando.",
+    "cena": "c3_vespera"
+  },
+  {
+    "chave": "2af04967aebd2d85",
+    "texto": "Ninguém dorme muito esta noite.",
+    "cena": "c3_vespera"
+  },
+  {
+    "chave": "8ce61646229b92e4",
+    "texto": "Callum corre de um lado para o outro levando recados entre os capitães, feliz como nunca. Ninguém dorme muito esta noite.",
+    "cena": "c3_vespera"
+  },
+  {
+    "chave": "650ee103f720e8ed",
+    "texto": "O campeão cai.",
+    "cena": "c3_vitoria"
+  },
+  {
+    "chave": "d40f20a76d19846d",
+    "texto": "O campeão cai de joelhos na lama da ponte. Os escoceses ao redor gritam o seu nome, e por um momento a batalha parece parar para ouvir.",
+    "cena": "c3_vitoria"
+  },
+  {
+    "chave": "a931d83a92eadf08",
+    "texto": "Wallace passa a cavalo, olha para você e levanta a lança em saudação. Não diz nada. Não precisa.",
+    "cena": "c3_vitoria"
+  },
+  {
+    "chave": "6a5d315e36e09254",
+    "texto": "Batedores.",
+    "cena": "c3_wallace"
+  },
+  {
+    "chave": "c565492206b789c0",
+    "texto": "À noite, Wallace chama você e mais dois batedores para perto do fogo dele.",
+    "cena": "c3_wallace"
+  },
+  {
+    "chave": "a43a148b4d837d91",
+    "texto": "“O conde de Surrey e o tesoureiro Cressingham vêm do sul com o maior exército que a Escócia já viu. Cavaleiros, arqueiros galeses, milhares de homens. Vão marchar até Stirling, porque quem tem a ponte de Stirling tem a Escócia.”",
+    "cena": "c3_wallace"
+  },
+  {
+    "chave": "e92687e7e67094b5",
+    "texto": "“Preciso de olhos. Quero saber quando chegam, e se existe outro jeito de atravessar o Forth além da ponte.”",
+    "cena": "c3_wallace"
+  },
+  {
+    "chave": "855f8484d045ad32",
+    "texto": "À noite, Wallace chama você e Ailsa para perto do fogo dele.",
+    "cena": "c3_wallace"
+  },
+  {
+    "chave": "1d3fd6509d8f4c5e",
+    "texto": "“Preciso de olhos. Quero saber quando chegam, e se existe outro jeito de atravessar o Forth além da ponte.” Ele joga uma bolsa de pennies para você. “Para o caminho.”",
+    "cena": "c3_wallace"
+  },
+  {
+    "chave": "3c51a622a4117b40",
+    "texto": "Um acordo é um acordo.",
+    "cena": "c4_adiou"
+  },
+  {
+    "chave": "ccff1a4b914385a1",
+    "texto": "A Velha olha para você por muito tempo. “Depois da guerra, então. Mas lembra: as guerras dos homens nunca acabam. Eu tenho paciência. Eu sou o inverno. Volto todo ano.”",
+    "cena": "c4_adiou"
+  },
+  {
+    "chave": "9ad24c48540f14a2",
+    "texto": "A neve para.",
+    "cena": "c4_adiou"
+  },
+  {
+    "chave": "9505b83c038bbc66",
+    "texto": "Para os arqueiros.",
+    "cena": "c4_arqueiros_carga"
+  },
+  {
+    "chave": "ee4d2227430ff96d",
+    "texto": "Você chega aos arqueiros de Selkirk no momento em que a cavalaria inglesa os atropela. Sir John Stewart já está caído.",
+    "cena": "c4_arqueiros_carga"
+  },
+  {
+    "chave": "1908a9988d629d9e",
+    "texto": "Você chega aos arqueiros de Selkirk no momento em que a cavalaria inglesa os atropela. Sir John Stewart já está caído. Ailsa atira sem parar, de pé no meio dos mortos.",
+    "cena": "c4_arqueiros_carga"
+  },
+  {
+    "chave": "bce881a0632cd18e",
+    "texto": "Os arqueiros de Selkirk.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "985f0ed6054e3c24",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk. Vocês estão no meio do campo aberto, entre os schiltrons.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "fa39fd368919d718",
+    "texto": "A cavalaria inglesa cai sobre os arqueiros como uma onda. Sir John Stewart cai do cavalo e morre lutando a pé. Um cavaleiro vem direto para você.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "3b947860119db56e",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Graças ao aviso, Wallace pôs vocês perto do bosque.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "2931bd2ffcd0af49",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Vocês estão no meio do campo aberto, entre os schiltrons.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "46c4a0bb24880679",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Callum está duas fileiras atrás, com as mãos tremendo no arco. Graças ao aviso, Wallace pôs vocês perto do bosque.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "4ca5339ca9b39eee",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Callum está duas fileiras atrás, com as mãos tremendo no arco. Vocês estão no meio do campo aberto, entre os schiltrons.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "d5584d3c4ea62476",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk. Callum está duas fileiras atrás, com as mãos tremendo no arco. Graças ao aviso, Wallace pôs vocês perto do bosque.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "3361d3ab7b50ce81",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk. Callum está duas fileiras atrás, com as mãos tremendo no arco. Vocês estão no meio do campo aberto, entre os schiltrons.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "1a7d74910129ed53",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk. Graças ao aviso, Wallace pôs vocês perto do bosque.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
+    "chave": "e63a28d7294c72f9",
+    "texto": "O campo dos arqueiros.",
+    "cena": "c4_arqueiros_perdidos"
+  },
+  {
+    "chave": "633f5464faa11a96",
+    "texto": "Você cai, e quando consegue se levantar a carga já passou. O campo dos arqueiros é só silêncio.",
+    "cena": "c4_arqueiros_perdidos"
+  },
+  {
+    "chave": "bde5acdb590e648d",
+    "texto": "Você encontra Ailsa caída com o arco ainda na mão, e uma flecha ainda na corda. Ela nunca desperdiçou uma flecha.",
+    "cena": "c4_arqueiros_perdidos"
+  },
+  {
+    "chave": "98b96b7c4493cdfe",
+    "texto": "Você encontra Ailsa caída com o arco ainda na mão, e uma flecha ainda na corda. Ela nunca desperdiçou uma flecha. Callum está vivo, ferido na perna, escondido embaixo do corpo de um cavalo. Ele não chora. Não consegue.",
+    "cena": "c4_arqueiros_perdidos"
+  },
+  {
+    "chave": "e33236d8a665dac6",
+    "texto": "Callum está vivo, ferido na perna, escondido embaixo do corpo de um cavalo. Ele não chora. Não consegue.",
+    "cena": "c4_arqueiros_perdidos"
+  },
+  {
+    "chave": "4856d8e37db62c45",
+    "texto": "Para o bosque.",
+    "cena": "c4_arqueiros_salvos"
+  },
+  {
+    "chave": "901fa838885b8576",
+    "texto": "Os cavaleiros recuam por um instante, e é o bastante. Você grita, e os arqueiros que sobraram correm para o bosque.",
+    "cena": "c4_arqueiros_salvos"
+  },
+  {
+    "chave": "6d46f4708f79538e",
+    "texto": "Dos arqueiros de Selkirk, sobraram poucos. Mas sobraram.",
+    "cena": "c4_arqueiros_salvos"
+  },
+  {
+    "chave": "ff966d8f4aeab525",
+    "texto": "O lodo de Callendar.",
+    "cena": "c4_bosque"
+  },
+  {
+    "chave": "3c1b4f036b71ede5",
+    "texto": "O cavalo do Templário afunda no lodo do bosque, e ele cai. Não se levanta mais.",
+    "cena": "c4_bosque"
+  },
+  {
+    "chave": "24e879e0f269463e",
+    "texto": "Wallace passa por você, olha o corpo e diz apenas: “Ele lutou bem.” Depois some entre as árvores com os últimos homens. No chão, perto de um arqueiro galês caído, há um arco longo de olmo, mais alto que você.",
+    "cena": "c4_bosque"
+  },
+  {
+    "chave": "3f54ed1de56f9293",
+    "texto": "Entre as raízes.",
+    "cena": "c4_bosque_ferido"
+  },
+  {
+    "chave": "87bc6b771b8809d1",
+    "texto": "O Templário derruba você entre as raízes e ergue a espada. Então o cavalo dele afunda no lodo, e ele cai junto. Antes que se levante, homens de Wallace o cercam.",
+    "cena": "c4_bosque_ferido"
+  },
+  {
+    "chave": "cc1fd44669bfd1cc",
+    "texto": "Você se arrasta para longe e, no caminho, pega um arco longo galês abandonado na lama.",
+    "cena": "c4_bosque_ferido"
+  },
+  {
+    "chave": "641fb16d8be9f2df",
+    "texto": "A carta dos condes.",
+    "cena": "c4_carta"
+  },
+  {
+    "chave": "a4a1ea3093db897a",
+    "texto": "Na bolsa do mensageiro há uma carta selada para os condes, que vão levá-la ao rei Eduardo. Ela diz onde Wallace está acampado: na floresta perto de Falkirk. E diz que os escoceses pretendem atacar o exército inglês de surpresa quando ele recuar.",
+    "cena": "c4_carta"
+  },
+  {
+    "chave": "27fb852f4a31918d",
+    "texto": "Você leva a carta a Wallace. Ele lê duas vezes e fecha os olhos. “Então ele sabe. Não vai recuar. Vai vir direto para cá.” Ele se levanta. “Pelo menos agora sabemos. Vou pôr os arqueiros de Selkirk perto do bosque, onde os cavalos não chegam tão fácil.”",
+    "cena": "c4_carta"
+  },
+  {
+    "chave": "5b7bcf06bdc39440",
+    "texto": "Tarde demais.",
+    "cena": "c4_carta_perdida"
+  },
+  {
+    "chave": "cbfc363429cef19e",
+    "texto": "O mensageiro escapa na escuridão. Quando você chega ao acampamento, sangrando, já é tarde: ninguém sabe o que a carta dizia, mas todos imaginam.",
+    "cena": "c4_carta_perdida"
+  },
+  {
+    "chave": "9a39316893d50cb2",
+    "texto": "Os nobres.",
+    "cena": "c4_cavalaria"
+  },
+  {
+    "chave": "904d7efe44cce928",
+    "texto": "A cavalaria inglesa contorna o pântano e avança. Você está entre os cavaleiros dos nobres escoceses, de malha brilhante e cavalos caros.",
+    "cena": "c4_cavalaria"
+  },
+  {
+    "chave": "b66f97b982e8588b",
+    "texto": "E eles viram as rédeas. Sem lutar. Um a um, os senhores da Escócia fogem do campo, deixando os lanceiros e os arqueiros sozinhos.",
+    "cena": "c4_cavalaria"
+  },
+  {
+    "chave": "7607c3e98fd7f5cf",
+    "texto": "Ninguém fica.",
+    "cena": "c4_cavalaria_mal"
+  },
+  {
+    "chave": "d76f510bfdf98aa9",
+    "texto": "Ninguém ouve você. Em poucos minutos, a cavalaria escocesa some do campo. Lá embaixo, os arqueiros de Selkirk estão sozinhos diante dos cavaleiros ingleses.",
+    "cena": "c4_cavalaria_mal"
+  },
+  {
+    "chave": "2c31e43715e66a15",
+    "texto": "Alguns ficam.",
+    "cena": "c4_cavalaria_ok"
+  },
+  {
+    "chave": "7e50c0440082cd52",
+    "texto": "“Covardes! Lá estão os vossos homens!” Sua voz corta o barulho da batalha. A maioria foge assim mesmo. Mas um punhado de cavaleiros mais jovens para, olha para trás, e dá a volta.",
+    "cena": "c4_cavalaria_ok"
+  },
+  {
+    "chave": "f179c149df1a0e73",
+    "texto": "“Para os arqueiros!”, grita um deles. Vocês galopam juntos.",
+    "cena": "c4_cavalaria_ok"
+  },
+  {
+    "chave": "013b74c7627fef59",
+    "texto": "O preço do calor.",
+    "cena": "c4_cobrou"
+  },
+  {
+    "chave": "f4eb84b15aeb39bf",
+    "texto": "“Não.” A Velha toca seu peito com um dedo de gelo. “Então pego um pedaço agora, como garantia.”",
+    "cena": "c4_cobrou"
+  },
+  {
+    "chave": "90058dd04ffe311e",
+    "texto": "O frio entra e fica. Você vai sentir aquele frio pelo resto da vida, nas noites de inverno e nas de verão. Você perdeu 2 PF máximos para sempre.",
+    "cena": "c4_cobrou"
+  },
+  {
+    "chave": "4aa39a115ef3b0d7",
+    "texto": "“Depois da guerra”, diz ela, e some.",
+    "cena": "c4_cobrou"
+  },
+  {
+    "chave": "c9b4a23cc69a7bc6",
+    "texto": "O ferreiro do exército.",
+    "cena": "c4_ferreiro"
+  },
+  {
+    "chave": "d53e8f523fe93fec",
+    "texto": "O ferreiro do exército trabalha dia e noite, transformando foices em pontas de lança. Ele vende o que sobra.",
+    "cena": "c4_ferreiro"
+  },
+  {
+    "chave": "cbe5fb483b406242",
+    "texto": "O céu escurece.",
+    "cena": "c4_flechas"
+  },
+  {
+    "chave": "661d61dd6bf78c63",
+    "texto": "Então o rei Eduardo faz o que ninguém esperava. Para a cavalaria e manda avançar os arqueiros e os besteiros.",
+    "cena": "c4_flechas"
+  },
+  {
+    "chave": "63c10e9049ca44a6",
+    "texto": "O céu escurece. Milhares de flechas caem sobre os schiltrons, que não podem se mover nem se abrigar. Os homens caem um a um, e os anéis de lanças começam a ter buracos.",
+    "cena": "c4_flechas"
+  },
+  {
+    "chave": "e1018ed1023b0f33",
+    "texto": "Flechas.",
+    "cena": "c4_flechas_mal"
+  },
+  {
+    "chave": "61e59f0db86a178b",
+    "texto": "Uma flecha atravessa seu ombro, outra a sua coxa. Você cai de joelhos, mas continua segurando a lança.",
+    "cena": "c4_flechas_mal"
+  },
+  {
+    "chave": "ad1e55293b822f03",
+    "texto": "Debaixo da chuva.",
+    "cena": "c4_flechas_ok"
+  },
+  {
+    "chave": "7ae46e2331625571",
+    "texto": "Você se encolhe embaixo do escudo, e as flechas batem como granizo. Quando a chuva para, você ainda está de pé. Muitos outros não estão.",
+    "cena": "c4_flechas_ok"
+  },
+  {
+    "chave": "bc96eb979f5d55d1",
+    "texto": "Você se encolhe embaixo do corpo de um cavalo morto, e as flechas batem como granizo. Quando a chuva para, você ainda está de pé. Muitos outros não estão.",
+    "cena": "c4_flechas_ok"
+  },
+  {
+    "chave": "6c54ea782f81ac52",
+    "texto": "Sir William, Guardião.",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "bdda64d41741c37a",
+    "texto": "Março de 1298. Numa pequena igreja de pedra na floresta de Selkirk, diante de bispos e de alguns poucos nobres, William Wallace se ajoelha e se levanta como Sir William Wallace, Guardião do Reino da Escócia. É a primeira vez que um homem sem título governa o reino em nome de um rei preso.",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "b7c8a34f383cdcf1",
+    "texto": "Andrew Moray não está ali para ver. Morreu em novembro, das feridas da ponte.",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "72a414d8d75070e6",
+    "texto": "O inverno trouxe outras notícias: o rei Eduardo voltou da Flandres e jurou esmagar a Escócia pessoalmente. No verão, ele vem.",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "1210cc28711eb8ae",
+    "texto": "Callum, que já tem treze anos e quase a sua altura, quer lutar de verdade desta vez. Tam passa os dias ensinando lavradores a formar o schiltron, o anel de lanças que nenhum cavalo atravessa.",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "da1e9040afcaf4ce",
+    "texto": "Callum, que já tem treze anos e quase a sua altura, pede para treinar arco com Ailsa. Tam passa os dias ensinando lavradores a formar o schiltron, o anel de lanças que nenhum cavalo atravessa.",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "7e1981a8b2ef4686",
+    "texto": "O acampamento na floresta de Selkirk se prepara para o verão. O que mais você quer fazer antes de partir?",
+    "cena": "c4_inicio"
+  },
+  {
+    "chave": "564e66bfa856b835",
+    "texto": "Falkirk.",
+    "cena": "c4_manha"
+  },
+  {
+    "chave": "5e6675cb381718c9",
+    "texto": "De manhã, o exército escocês está formado numa encosta, atrás de um pântano. Quatro grandes schiltrons, anéis de lanças com mil homens cada. Entre eles, os arqueiros de Selkirk, sob o comando de Sir John Stewart. Atrás, a cavalaria dos nobres.",
+    "cena": "c4_manha"
+  },
+  {
+    "chave": "1aae3d06b10f3034",
+    "texto": "Do outro lado do campo chega o exército inglês, o maior que você já viu. No meio dele, montado apesar das costelas quebradas, o rei Eduardo.",
+    "cena": "c4_manha"
+  },
+  {
+    "chave": "b02b775936d4dfef",
+    "texto": "Wallace passa a cavalo na frente dos schiltrons e grita: “Eu vos trouxe ao baile. Agora dançai, se puderdes!”",
+    "cena": "c4_manha"
+  },
+  {
+    "chave": "4e180666feb4100c",
+    "texto": "Onde você vai lutar?",
+    "cena": "c4_manha"
+  },
+  {
+    "chave": "90240627cb00db99",
+    "texto": "Um cavaleiro na noite.",
+    "cena": "c4_mensageiro"
+  },
+  {
+    "chave": "7f37b605a378c16b",
+    "texto": "O exército inglês está quase recuando de fome. Wallace sorri pela primeira vez em semanas.",
+    "cena": "c4_mensageiro"
+  },
+  {
+    "chave": "22748fd0e5b193f2",
+    "texto": "Mas numa noite, perto de Falkirk, você vê um cavaleiro sair do acampamento de um nobre escocês e galopar para o sul, levando notícias para os condes de Dunbar e de Angus, escoceses que lutam do lado do rei inglês.",
+    "cena": "c4_mensageiro"
+  },
+  {
+    "chave": "e3f248bd879c7bf7",
+    "texto": "Mas numa noite, perto de Falkirk, você vê um cavaleiro sair do acampamento de um nobre escocês e galopar para o sul, levando notícias para os condes de Dunbar e de Angus, escoceses que lutam do lado do rei inglês. É o mesmo cavaleiro de que Hob falou.",
+    "cena": "c4_mensageiro"
+  },
+  {
+    "chave": "bc1c0ddbe08744b9",
+    "texto": "Neve em julho.",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "96343979b5dbc24b",
+    "texto": "Na noite antes da batalha, a névoa sobe do pântano na frente do acampamento, e a Dama Branca aparece ao lado da sua fogueira.",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "5a9d6f3beda5fc75",
+    "texto": "“Amanhã o rei vence”, diz ela, sem rodeios. “Isso já está escrito, e não podes apagar. Mas podes escolher quem salvar.” Ela olha para os arqueiros de Selkirk e depois para Tam, que ronca perto do fogo. “Escolhe bem.”",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "ed8f25d2669f9238",
+    "texto": "“Amanhã o rei vence”, diz ela, sem rodeios. “Isso já está escrito, e não podes apagar. Mas podes escolher quem salvar.” Ela olha para Ailsa, que dorme abraçada ao arco, e depois para Tam, que ronca perto do fogo. “Escolhe bem.”",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "ad2156395d0acd9f",
+    "texto": "Na noite antes da batalha começa a nevar. Em julho.",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "473dad32cfc272f4",
+    "texto": "Os soldados olham para o céu e fazem o sinal da cruz. Você sabe quem veio. A Cailleach sai entre as tendas, e a neve não toca nela.",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "17691e105456dd16",
+    "texto": "“Amanhã os teus perdem, criança. Eu sei, porque o inverno vê longe. Por isso venho cobrar antes que morras: leva-me à Pedra. Agora.”",
+    "cena": "c4_noite"
+  },
+  {
+    "chave": "1ba6a61b57989ac1",
+    "texto": "Grão debaixo da terra.",
+    "cena": "c4_poupou"
+  },
+  {
+    "chave": "1ffc7968cf0ff5a2",
+    "texto": "Você ajuda Hob a cavar um buraco no bosque e esconder os sacos de grão. Depois queima só a palha, para que a fumaça engane quem olhar de longe.",
+    "cena": "c4_poupou"
+  },
+  {
+    "chave": "693ee6337b20b441",
+    "texto": "Hob segura suas mãos. “Que Deus te pague. Eu pago como posso.” Ele lhe dá ervas secas da mulher dele e uma informação: “Ontem passou por aqui um cavaleiro com as cores do conde de Dunbar. Ia para o sul, para o lado dos ingleses.”",
+    "cena": "c4_poupou"
+  },
+  {
+    "chave": "9dd8815666faa464",
+    "texto": "Fumaça preta.",
+    "cena": "c4_queimou"
+  },
+  {
+    "chave": "ada9d7c74eefb3e5",
+    "texto": "Você ateia fogo ao trigo. Hob não diz nada. Só fica olhando a fumaça subir, com os filhos agarrados à sua perna.",
+    "cena": "c4_queimou"
+  },
+  {
+    "chave": "63b1318a693882f4",
+    "texto": "Nas semanas seguintes, o exército inglês avança por uma terra sem comida. Os soldados de Eduardo começam a passar fome. A ordem de Wallace está funcionando, e você nunca vai esquecer o rosto de Hob.",
+    "cena": "c4_queimou"
+  },
+  {
+    "chave": "12576d7c272e1fbe",
+    "texto": "Um sargento de Wallace vê você hesitar e ateia fogo ao campo ele mesmo. “Ordens são ordens.” Hob grita. Você fica olhando o trigo queimar, sem poder fazer nada.",
+    "cena": "c4_queimou_mal"
+  },
+  {
+    "chave": "c2634096228d5208",
+    "texto": "O rei e o cavalo.",
+    "cena": "c4_rei"
+  },
+  {
+    "chave": "ad83e2fe29d41378",
+    "texto": "Você segue o cavaleiro até o acampamento inglês, perto de Linlithgow, e vê a carta passar de mão em mão até a grande tenda dos leões dourados.",
+    "cena": "c4_rei"
+  },
+  {
+    "chave": "322d66eaaab7ebbc",
+    "texto": "Uma hora depois, o acampamento inteiro se agita. O rei Eduardo, um velho alto de sessenta anos, monta a cavalo para marchar à noite contra Falkirk. O cavalo se assusta, empina e acerta o rei com um coice nas costelas. O rei cai, se levanta sozinho, sobe de novo no cavalo e dá a ordem de marcha mesmo assim.",
+    "cena": "c4_rei"
+  },
+  {
+    "chave": "40eb5fa202ea7270",
+    "texto": "Você volta correndo para avisar Wallace. Ele ouve tudo em silêncio. “Um velho de costelas quebradas que não desiste.” Ele balança a cabeça. “Vou pôr os arqueiros perto do bosque.”",
+    "cena": "c4_rei"
+  },
+  {
+    "chave": "392234ef3e59ad9d",
+    "texto": "A espada no altar.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "c937047cbda85ce2",
+    "texto": "Falkirk foi uma matança. Milhares de escoceses morreram na encosta e no pântano. Wallace escapou, mas a vitória de Stirling parece ter acontecido há cem anos.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "82f25847eaf1ff81",
+    "texto": "Em dezembro, numa igreja fria, Wallace deposita a espada no altar e renuncia ao título de Guardião. Dois nobres assumem no lugar dele: Robert Bruce, conde de Carrick, e John Comyn, que se odeiam.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "171d60c6ad6b9ae0",
+    "texto": "“Vou para a França”, diz Wallace, depois. “Pedir ajuda ao rei francês e ao papa. Se a Escócia não se salva com lanças, talvez se salve com cartas.” Ele olha para você. “Cuida do teu irmão.”",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "47446cb6abd6a018",
+    "texto": "Tam morreu em Falkirk, girando o bordão até o fim.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "88113e31a3d14ad3",
+    "texto": "Callum saiu de Falkirk sem ferimentos graves.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "8e1979565e0dfd1c",
+    "texto": "O campo de Hob virou cinza.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "6328774c45bec8a6",
+    "texto": "Ailsa morreu em Falkirk, entre os arqueiros de Selkirk.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "f11eb094c165370a",
+    "texto": "Fergus Mór salvou Tam, ferido.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "37c98525decf53a7",
+    "texto": "Você salvou Tam no meio dos schiltrons.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "301224fca27b9f06",
+    "texto": "Callum foi ferido na perna e vai mancar pelo resto da vida.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "319200c46c1eb8f6",
+    "texto": "Hob e os filhos passaram o inverno com o grão que você ajudou a esconder.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "74d67a0eb0a04f5c",
+    "texto": "Ailsa sobreviveu a Falkirk.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "e41f814fa9f058c5",
+    "texto": "A Cailleach levou um pedaço do seu calor como garantia.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "dca7ea9c25f321d2",
+    "texto": "A Cailleach aceitou esperar até o fim da guerra.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "aec38c45e08d9e23",
+    "texto": "Você rompeu o pacto com a Cailleach. Os lobos dela caçam você.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "2161e575e602c75f",
+    "texto": "O anel se rompe.",
+    "cena": "c4_rompe"
+  },
+  {
+    "chave": "4b278b667f723744",
+    "texto": "Com os anéis cheios de buracos, a cavalaria inglesa volta, e desta vez entra. Os schiltrons se desmancham. É o fim da batalha.",
+    "cena": "c4_rompe"
+  },
+  {
+    "chave": "6cc9ae5f4911d021",
+    "texto": "No meio da confusão, você vê duas coisas: Tam cercado por três cavaleiros, ainda girando o bordão, e Wallace recuando para o bosque de Callendar com os últimos homens, perseguido por um cavaleiro de manto branco com uma cruz vermelha.",
+    "cena": "c4_rompe"
+  },
+  {
+    "chave": "20ad8228c2bd5c1e",
+    "texto": "Um pacto rompido.",
+    "cena": "c4_rompeu"
+  },
+  {
+    "chave": "522029d118f51aa7",
+    "texto": "“Nunca vou quebrar a Pedra.” As palavras saem antes que você pense.",
+    "cena": "c4_rompeu"
+  },
+  {
+    "chave": "8eda57a3db4a2f31",
+    "texto": "A Velha não grita. Ela sorri, e é pior. “Então amanhã meus cães caçam ao lado dos ingleses. E depois de amanhã também. E todos os dias, até a Pedra quebrar ou tu morreres.”",
+    "cena": "c4_rompeu"
+  },
+  {
+    "chave": "f5f6214cc829d1ee",
+    "texto": "Ela some na neve. Ao longe, lobos uivam.",
+    "cena": "c4_rompeu"
+  },
+  {
+    "chave": "d66a3df1029e2bd7",
+    "texto": "O anel de lanças.",
+    "cena": "c4_schiltron"
+  },
+  {
+    "chave": "54dc1e484d248c2e",
+    "texto": "Durante semanas, você treina com Tam no campo lamacento: quinhentos homens fecham um anel, ajoelham, cravam a ponta da lança no chão e apontam para fora, como um ouriço de ferro.",
+    "cena": "c4_schiltron"
+  },
+  {
+    "chave": "1d8d83b8b1fa48ea",
+    "texto": "“O cavalo não é burro”, grita Tam. “Ele não corre para cima de mil lanças. Só os cavaleiros é que são burros.” Os homens riem. Você aprende a segurar a linha.",
+    "cena": "c4_schiltron"
+  },
+  {
+    "chave": "f2140b0b9789a7e5",
+    "texto": "Ferido no anel.",
+    "cena": "c4_schiltron_ferido"
+  },
+  {
+    "chave": "ecc60827ca0bfe5d",
+    "texto": "Uma lança inglesa atravessa sua guarda, e você cai dentro do anel. Tam fecha o buraco com o próprio corpo e arrasta você para o centro. O schiltron aguenta, por enquanto.",
+    "cena": "c4_schiltron_ferido"
+  },
+  {
+    "chave": "e148fa09592893b3",
+    "texto": "A muralha aguenta.",
+    "cena": "c4_schiltron_firme"
+  },
+  {
+    "chave": "88937cecf42a1452",
+    "texto": "O schiltron aguenta. Os cavaleiros ingleses recuam, deixando os mortos na frente das lanças.",
+    "cena": "c4_schiltron_firme"
+  },
+  {
+    "chave": "b49d53c7e1b21c95",
+    "texto": "Mas lá longe, no campo dos arqueiros, você vê a carga atropelar os homens de Selkirk.",
+    "cena": "c4_schiltron_firme"
+  },
+  {
+    "chave": "2eb83b4925bdc56b",
+    "texto": "Mas lá longe, no campo dos arqueiros, você vê a carga atropelar os homens de Selkirk. Graças ao aviso, eles estavam perto do bosque, e você vê Ailsa e alguns outros correrem para as árvores.",
+    "cena": "c4_schiltron_firme"
+  },
+  {
+    "chave": "d04a1e75dc0f98db",
+    "texto": "Mas lá longe, no campo dos arqueiros, você vê a carga atropelar os homens de Selkirk. Eles estavam em campo aberto. Você procura Ailsa no meio deles e não encontra.",
+    "cena": "c4_schiltron_firme"
+  },
+  {
+    "chave": "b6d8fcf3383620f5",
+    "texto": "O schiltron de Tam.",
+    "cena": "c4_schiltron_luta"
+  },
+  {
+    "chave": "d7760e5496ff0bae",
+    "texto": "Você entra no anel de lanças de Tam e se ajoelha com a lança cravada no chão. A cavalaria inglesa vem a galope, a terra treme, e se arrebenta contra as pontas. Cavalos gritam. Cavaleiros caem.",
+    "cena": "c4_schiltron_luta"
+  },
+  {
+    "chave": "00fbe2d7b77ff449",
+    "texto": "“Segurem!”, ruge Tam. “Segurem!” Dois cavaleiros conseguem abrir caminho até você.",
+    "cena": "c4_schiltron_luta"
+  },
+  {
+    "chave": "df3705d2b429b19c",
+    "texto": "O bordão partido.",
+    "cena": "c4_tam_morto"
+  },
+  {
+    "chave": "af470332b0c57024",
+    "texto": "Você não chega a tempo. Quando abre caminho até o lugar, só encontra o bordão de freixo partido ao meio, e Tam caído ao lado dele, com o sorriso perigoso ainda no rosto.",
+    "cena": "c4_tam_morto"
+  },
+  {
+    "chave": "e283fdb8c914248a",
+    "texto": "Você pega metade do bordão e corre para o bosque.",
+    "cena": "c4_tam_morto"
+  },
+  {
+    "chave": "d3d6380d3f42143b",
+    "texto": "Tam.",
+    "cena": "c4_tam_salvo"
+  },
+  {
+    "chave": "09bfae14f8acf1c2",
+    "texto": "Você chega até Tam no momento em que o bordão dele se parte. Juntos, de costas um para o outro, vocês abrem caminho até o bosque.",
+    "cena": "c4_tam_salvo"
+  },
+  {
+    "chave": "0709018708d4a1f5",
+    "texto": "“Sempre achei que ia morrer numa batalha”, ofega Tam, com sangue na barba. “Não hoje, pelo jeito.”",
+    "cena": "c4_tam_salvo"
+  },
+  {
+    "chave": "28db26340d19cd5a",
+    "texto": "O Mestre do Templo.",
+    "cena": "c4_templario"
+  },
+  {
+    "chave": "92294bd56fe6aa6f",
+    "texto": "No bosque de Callendar, entre o lodo e as raízes, o cavaleiro de manto branco alcança vocês. É o irmão Brian de Jay, Mestre dos Templários na Inglaterra, e ele não faz prisioneiros.",
+    "cena": "c4_templario"
+  },
+  {
+    "chave": "14d0c9045da5a58e",
+    "texto": "Mais tarde você vai saber que Fergus Mór arrancou Tam do meio dos cavaleiros, ferido mas vivo.",
+    "cena": "c4_templario"
+  },
+  {
+    "chave": "e0c726c1054892d7",
+    "texto": "Você não olha para trás. Mais tarde vai saber que Tam morreu cercado, girando o bordão até o fim.",
+    "cena": "c4_templario"
+  },
+  {
+    "chave": "c0f77bf3b737ad95",
+    "texto": "E entre as árvores, olhos azuis de gelo. Os lobos da Velha cumprem a promessa.",
+    "cena": "c4_templario"
+  },
+  {
+    "chave": "aa7f0f1cf7a2571e",
+    "texto": "Terra queimada.",
+    "cena": "c4_terra"
+  },
+  {
+    "chave": "4ab1d9b4d2bfe832",
+    "texto": "O exército de Eduardo atravessa a fronteira: dois mil cavaleiros, milhares de arqueiros galeses e ingleses. Wallace não pode enfrentá-lo em campo aberto. A ordem dele é simples e terrível: queimar tudo. Cada campo, cada celeiro, cada vaca que o inglês possa comer.",
+    "cena": "c4_terra"
+  },
+  {
+    "chave": "cbe7f898dbb23a86",
+    "texto": "Num vale perto de Linlithgow, um lavrador chamado Hob se ajoelha na frente do seu trigo maduro. “É tudo o que temos. Meus filhos vão passar fome no inverno.”",
+    "cena": "c4_terra"
+  },
+  {
+    "chave": "c4079d557736aebb",
+    "texto": "Agora é contigo.",
+    "cena": "c5_bruce"
+  },
+  {
+    "chave": "7b275b17a2c98e45",
+    "texto": "Você encontra Robert Bruce, conde de Carrick, num castelo da família dele, perto da fronteira. Ele tem trinta e um anos, uma barba curta e escura, e o olhar de quem pensa três jogadas à frente.",
+    "cena": "c5_bruce"
+  },
+  {
+    "chave": "773f6777bde81485",
+    "texto": "Você põe o anel de ferro na mão dele e repete as palavras: agora é contigo.",
+    "cena": "c5_bruce"
+  },
+  {
+    "chave": "e43d2b81ea7fc64f",
+    "texto": "Bruce olha para o anel por muito tempo. Ele jurou lealdade ao rei Eduardo, como todos os nobres. Ele já trocou de lado mais de uma vez. Mas agora, com o anel na mão, alguma coisa muda no rosto dele.",
+    "cena": "c5_bruce"
+  },
+  {
+    "chave": "8fbd41012d7eb527",
+    "texto": "“Então será comigo”, diz ele, baixinho. Depois, mais alto: “Fica. Vou precisar de gente que não muda de lado.”",
+    "cena": "c5_bruce"
+  },
+  {
+    "chave": "e5d52f96632af330",
+    "texto": "O selo do rei.",
+    "cena": "c5_carta"
+  },
+  {
+    "chave": "91ddc94b5f2ab8b1",
+    "texto": "No quarto de Menteith, enquanto ele ronca, você encontra a carta na mesa. Tem o selo de cera vermelha com os três leões do rei Eduardo.",
+    "cena": "c5_carta"
+  },
+  {
+    "chave": "2b96d964c7f08512",
+    "texto": "Ao nosso fiel John de Menteith: entregai-nos William Wallace, e tereis terras no valor de cem libras por ano.",
+    "cena": "c5_carta"
+  },
+  {
+    "chave": "67a08fb8adb20456",
+    "texto": "Embaixo, na letra de Menteith: Robroyston, na noite de 3 de agosto. Faltam dois dias.",
+    "cena": "c5_carta"
+  },
+  {
+    "chave": "66dfe6a325aac7a9",
+    "texto": "Corrida na noite.",
+    "cena": "c5_corrida"
+  },
+  {
+    "chave": "1ddf623a0de5f808",
+    "texto": "Você corre a noite inteira. Callum corre ao seu lado.",
+    "cena": "c5_corrida"
+  },
+  {
+    "chave": "8f23898d8d237bdf",
+    "texto": "Quando a casa de Robroyston aparece no escuro, já é tarde. Há tochas em volta dela. Muitas tochas. Os homens de Menteith cercam a casa em silêncio.",
+    "cena": "c5_corrida"
+  },
+  {
+    "chave": "7d7f9384ee30f23a",
+    "texto": "Você corre a noite inteira. Callum tenta acompanhar, mancando, até você mandá-lo buscar ajuda no acampamento.",
+    "cena": "c5_corrida"
+  },
+  {
+    "chave": "382f7595e8900f57",
+    "texto": "O pão virado.",
+    "cena": "c5_criado"
+  },
+  {
+    "chave": "f28f12b016247b0e",
+    "texto": "O criado se chama Jack, e depois da quarta caneca ele chora no seu ombro.",
+    "cena": "c5_criado"
+  },
+  {
+    "chave": "62b913b9a8b94d9b",
+    "texto": "“Sir John prometeu terras para mim. Terras! Eu só preciso dar o sinal. Quando Wallace estiver dormindo na casa de Robroyston, eu viro o pão de cabeça para baixo na mesa, e os homens entram.” Ele soluça. “Eu não queria. Ele é um homem bom.”",
+    "cena": "c5_criado"
+  },
+  {
+    "chave": "71bb22350b9516e7",
+    "texto": "Os velhos poetas contam essa história do pão virado. Talvez seja verdade.",
+    "cena": "c5_criado"
+  },
+  {
+    "chave": "ada58ef208354390",
+    "texto": "O dia marcado é 3 de agosto. Faltam dois dias.",
+    "cena": "c5_criado"
+  },
+  {
+    "chave": "3a084a6630caaa40",
+    "texto": "O castelo de Dumbarton.",
+    "cena": "c5_dumbarton"
+  },
+  {
+    "chave": "8ad5e225336f8b17",
+    "texto": "O castelo de Dumbarton fica no alto de uma rocha negra que sobe do rio Clyde como um dente. De noite, só as tochas das muralhas aparecem.",
+    "cena": "c5_dumbarton"
+  },
+  {
+    "chave": "8463453be0cfe395",
+    "texto": "A estrada do sul.",
+    "cena": "c5_estrada"
+  },
+  {
+    "chave": "7d19122b133fe36d",
+    "texto": "Wallace é levado para o sul acorrentado numa carroça, cercado por cavaleiros. Primeiro para Carlisle, depois para Londres.",
+    "cena": "c5_estrada"
+  },
+  {
+    "chave": "17905cd572f65cff",
+    "texto": "Você segue o comboio de longe por dois dias. Na estrada, no meio das colinas, os guardas se distraem por um momento.",
+    "cena": "c5_estrada"
+  },
+  {
+    "chave": "30253d318161f62f",
+    "texto": "O anel de ferro.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "8ec495571e092659",
+    "texto": "Em fevereiro de 1306, numa igreja de Dumfries, Robert Bruce e John Comyn discutem diante do altar. Bruce puxa o punhal. Comyn morre ali mesmo, nos degraus da igreja.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "5afd642e3a49994c",
+    "texto": "Não há mais volta. Bruce vai ser rei, ou vai morrer.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "dbaab640ec79740a",
+    "texto": "Robert Bruce recebeu o anel de Wallace.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "e30436258e852a17",
+    "texto": "Você descobriu a traição de Menteith, mas Wallace escolheu não fugir.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "ff10c136ed186ff8",
+    "texto": "Você ofereceu a Pedra à Cailleach pela vida de Wallace. Ela tirou a dor dele, e o trato continua.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "447f45e9269f7723",
+    "texto": "Você recusou a oferta da Cailleach em Londres.",
+    "cena": "c5_fim"
+  },
+  {
+    "chave": "60906c5490082d02",
+    "texto": "Um recado de Menteith.",
+    "cena": "c5_floresta"
+  },
+  {
+    "chave": "74791142b819f788",
+    "texto": "Wallace está mais magro, e o cabelo dele ficou branco nas têmporas. Ele segura um pedaço de pergaminho.",
+    "cena": "c5_floresta"
+  },
+  {
+    "chave": "a60554e72212539d",
+    "texto": "“Sir John Menteith mandou recado. É o xerife de Dumbarton. Diz que tem uma casa segura em Robroyston, perto de Glasgow, onde podemos passar o inverno.” Ele dobra o pergaminho. “Menteith é escocês. Lutou do nosso lado, uma vez.”",
+    "cena": "c5_floresta"
+  },
+  {
+    "chave": "668923aa16d7fdb8",
+    "texto": "Mas Menteith também jurou lealdade ao rei Eduardo, como todos os outros.",
+    "cena": "c5_floresta"
+  },
+  {
+    "chave": "49a40c8c6e0d9cfe",
+    "texto": "Mas Menteith também jurou lealdade ao rei Eduardo, como todos os outros. Você se lembra da carta dos condes antes de Falkirk. Os escoceses que mudam de lado são os mais perigosos.",
+    "cena": "c5_floresta"
+  },
+  {
+    "chave": "a1db00494773852b",
+    "texto": "Glasgow.",
+    "cena": "c5_glasgow"
+  },
+  {
+    "chave": "e0cac07325d313f5",
+    "texto": "Glasgow é uma cidade pequena, de ruas de lama, agrupada em volta da grande catedral. Soldados ingleses patrulham o mercado, e todo mundo fala baixo.",
+    "cena": "c5_glasgow"
+  },
+  {
+    "chave": "7105f04b2e8a762d",
+    "texto": "Dizem que Menteith tem um criado que vive bêbado nas tavernas perto do rio. E que o próprio Menteith dorme no castelo de Dumbarton, sobre a rocha, à beira do Clyde.",
+    "cena": "c5_glasgow"
+  },
+  {
+    "chave": "e5f76c8feeed391d",
+    "texto": "Sete anos.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "024b8d471ce82461",
+    "texto": "Inverno de 1305. Sete anos se passaram desde Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "21a562b2c4dd752c",
+    "texto": "Wallace foi à França e a Roma pedir ajuda. Voltou de mãos vazias. Enquanto isso, a Escócia caiu pedaço por pedaço: John Comyn se rendeu ao rei Eduardo, o castelo de Stirling caiu depois de um cerco de três meses, e os nobres, um a um, juraram lealdade à Inglaterra.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "9a16ab3bfdb88a79",
+    "texto": "Só Wallace não jurou. Agora ele é o homem mais caçado da Escócia, e o rei ofereceu terras e ouro a quem o entregar.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "575ffd8e8b4277b4",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam, com a barba ficando grisalha, também.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "8f8986e6d41cfe20",
+    "texto": "São só vinte homens agora, escondidos nas florestas. Sete anos de guerra deixaram você mais forte e mais cansado.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "341fcc2b649a7275",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam, com a barba ficando grisalha, também. Ailsa está enterrada em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "4faedc185a17afd2",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam, com a barba ficando grisalha, também. Ailsa está enterrada em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "b18804994bfc1c8b",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk. Ailsa está enterrada em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "749f85c3f8a3ea45",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk. Ailsa também, mais calada do que nunca.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "08a6b925a7ad886f",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam, com a barba ficando grisalha, também. Ailsa também, mais calada do que nunca.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "8932c2c8f85b45ee",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "0f8cfc460c404268",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam está enterrado em Falkirk. Ailsa está enterrada em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "3338a8ed3df1922b",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam está enterrado em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "ee35ce5b19d9e7a9",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam, com a barba ficando grisalha, também.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "7d1511408d55cab6",
+    "texto": "“Sabia que um dia ia ser assim”.",
+    "cena": "c5_janela"
+  },
+  {
+    "chave": "e83b3f3f96354175",
+    "texto": "Você chega até Wallace no quarto. Ele já está de pé, de espada na mão, calmo como quem esperava visita.",
+    "cena": "c5_janela"
+  },
+  {
+    "chave": "53abd38de42d5497",
+    "texto": "Lá fora, são sessenta homens. Vocês são três. Ele olha pela janela, depois para você.",
+    "cena": "c5_janela"
+  },
+  {
+    "chave": "523d8040de67d632",
+    "texto": "“Sabia que um dia ia ser assim. Se eu fugir agora, eles me caçam até o fim do ano, e queimam cada aldeia no caminho.” Ele tira do dedo um anel de ferro simples e põe na sua mão. “Leva isto a Robert Bruce, conde de Carrick. Diz a ele: agora é contigo. E vive. Isso é uma ordem.”",
+    "cena": "c5_janela"
+  },
+  {
+    "chave": "94659c67d0804ec5",
+    "texto": "Ele abre a porta da frente e sai, sozinho, de espada na mão, para o meio das tochas.",
+    "cena": "c5_janela"
+  },
+  {
+    "chave": "be8344d8191c4be6",
+    "texto": "Vai!.",
+    "cena": "c5_janela_ferido"
+  },
+  {
+    "chave": "4907de5dd0405abf",
+    "texto": "Você cai, cercado. Então a porta da casa se abre e Wallace sai, de espada na mão, sozinho. Todos os homens de Menteith se viram para ele.",
+    "cena": "c5_janela_ferido"
+  },
+  {
+    "chave": "380dc9f8ee43648a",
+    "texto": "No meio da confusão, ele joga algo na sua direção. Um anel de ferro simples cai na lama ao seu lado. “Leva a Bruce!”, ele grita. “Diz a ele: agora é contigo! Vai!”",
+    "cena": "c5_janela_ferido"
+  },
+  {
+    "chave": "b414efe365e94ea5",
+    "texto": "Você se arrasta para a escuridão.",
+    "cena": "c5_janela_ferido"
+  },
+  {
+    "chave": "1d1dfd54e9aaf5b6",
+    "texto": "Névoa sobre o Tâmisa.",
+    "cena": "c5_londres"
+  },
+  {
+    "chave": "fd4c881c20f924fa",
+    "texto": "Londres é a maior cidade que você já viu, cheia de fumaça, sinos e gente. Na noite antes do julgamento, a névoa sobe do Tâmisa, e as pedras da margem ficam brancas de geada. Em agosto.",
+    "cena": "c5_londres"
+  },
+  {
+    "chave": "7e09f7d5a7e67e43",
+    "texto": "A Cailleach está de pé sobre a água congelada.",
+    "cena": "c5_londres"
+  },
+  {
+    "chave": "ebb89eada001c8f7",
+    "texto": "“Amanhã eles vão julgá-lo e matá-lo no mesmo dia, de um jeito que nem os lobos matam.” A voz dela é quase triste. “Eu posso levá-lo daqui. Um sopro de inverno, e ele sai andando de Westminster, e ninguém vê. Só preciso de uma coisa: a Pedra.”",
+    "cena": "c5_londres"
+  },
+  {
+    "chave": "e31384832a9f8dc1",
+    "texto": "O que o inverno pode fazer.",
+    "cena": "c5_pacto_wallace"
+  },
+  {
+    "chave": "daf7901003edd596",
+    "texto": "Você aceita. A Velha segura sua mão, e o frio sobe até o coração.",
+    "cena": "c5_pacto_wallace"
+  },
+  {
+    "chave": "9cf37f9dd948111f",
+    "texto": "Mas antes do amanhecer ela volta, e pela primeira vez parece cansada. “Não consigo, criança. Ele não quer sair. Ofereci a porta, e ele não quis.” Ela olha para você com o olho único. “O que posso fazer é tirar a dor dele. Quando chegar a hora, o frio vai chegar antes da faca, e ele não vai sentir nada.”",
+    "cena": "c5_pacto_wallace"
+  },
+  {
+    "chave": "5e65a8c1edfe2b57",
+    "texto": "“E o nosso trato?”",
+    "cena": "c5_pacto_wallace"
+  },
+  {
+    "chave": "61ea386b2a7ec161",
+    "texto": "“O trato continua. A Pedra é minha.”",
+    "cena": "c5_pacto_wallace"
+  },
+  {
+    "chave": "4f11883037cbf416",
+    "texto": "A cela sobre o Clyde.",
+    "cena": "c5_preso"
+  },
+  {
+    "chave": "8f715238fa0bbb36",
+    "texto": "Você acorda numa cela sobre o Clyde. Pela janela gradeada, vê o rio correr lá embaixo.",
+    "cena": "c5_preso"
+  },
+  {
+    "chave": "759c3ad0ab8786a6",
+    "texto": "Na segunda noite, uma névoa branca entra pela grade e abre a fechadura. A Dama não esqueceu de você.",
+    "cena": "c5_preso"
+  },
+  {
+    "chave": "86fe031d0d135bf3",
+    "texto": "No caminho de fuga, você ouve dois soldados rindo: “Robroyston. Daqui a dois dias. O homem mais procurado da Escócia, e vai ser pego dormindo.”",
+    "cena": "c5_preso"
+  },
+  {
+    "chave": "ad252cc78cac311d",
+    "texto": "Na segunda noite, uma pedra de funda acerta o guarda na nuca. Callum abre a porta com a chave do homem desmaiado. “Achou que eu ia deixar você aqui?”",
+    "cena": "c5_preso"
+  },
+  {
+    "chave": "05783e160df4ad94",
+    "texto": "O rio Clyde. O rio do kelpie. Você sussurra o nome da água negra, Abhainn Dubh, e as grades da janela se enchem de algas e ferrugem até quebrarem. Lá embaixo, uma cabeça negra de cavalo espera na água. “Agora estamos quites”, diz o kelpie, quando você cai no rio.",
+    "cena": "c5_preso"
+  },
+  {
+    "chave": "4269103087ba1636",
+    "texto": "A última ordem.",
+    "cena": "c5_recusa"
+  },
+  {
+    "chave": "44246e85e95b0223",
+    "texto": "Você derruba o cavaleiro da escolta e chega até a carroça. Quebra a corrente com o machado, com a espada, com as mãos.",
+    "cena": "c5_recusa"
+  },
+  {
+    "chave": "51c747f277e77a38",
+    "texto": "Wallace segura seu pulso. “Não.”",
+    "cena": "c5_recusa"
+  },
+  {
+    "chave": "83ab9eda459572ac",
+    "texto": "Você não entende. Ele explica, devagar, como quem fala com uma criança: “Se eu fugir, o rei queima a Escócia inteira procurando por mim. Se eu morrer em Londres, a Escócia lembra. Os homens esquecem um fugitivo. Não esquecem um mártir.”",
+    "cena": "c5_recusa"
+  },
+  {
+    "chave": "f690fa1fc6a68cbd",
+    "texto": "Ele empurra você para longe. “Vai antes que voltem. Leva o anel a Bruce.”",
+    "cena": "c5_recusa"
+  },
+  {
+    "chave": "09d82bcb257ed0cd",
+    "texto": "Ele não ia querer.",
+    "cena": "c5_recusa_velha"
+  },
+  {
+    "chave": "407b84d396d94075",
+    "texto": "“Ele não ia querer. Ele já escolheu.”",
+    "cena": "c5_recusa_velha"
+  },
+  {
+    "chave": "619ebf33a6226d21",
+    "texto": "A Velha fica em silêncio por muito tempo. “Os homens são estranhos. Morrem por ideias.” A geada recua das pedras. “Talvez seja por isso que nunca consegui congelar vocês de vez.”",
+    "cena": "c5_recusa_velha"
+  },
+  {
+    "chave": "f698c988be04c21e",
+    "texto": "Na lama da estrada.",
+    "cena": "c5_resgate_mal"
+  },
+  {
+    "chave": "e9386b33bd21930d",
+    "texto": "Os guardas derrubam você na lama, e o comboio segue. Da carroça, Wallace olha para trás e balança a cabeça, quase sorrindo, como quem diz: eu mandei você viver.",
+    "cena": "c5_resgate_mal"
+  },
+  {
+    "chave": "37c28812c04c198c",
+    "texto": "A casa de Robroyston.",
+    "cena": "c5_robroyston_cedo"
+  },
+  {
+    "chave": "caddf223ec0a9e39",
+    "texto": "A casa de Robroyston é pequena e quente. Wallace dorme pela primeira vez em semanas numa cama de verdade. Um criado chamado Jack serve o jantar e, sem motivo, vira o pão de cabeça para baixo na mesa.",
+    "cena": "c5_robroyston_cedo"
+  },
+  {
+    "chave": "0b87f72239a53d28",
+    "texto": "Pouco depois, você ouve passos lá fora. Muitos passos. A porta explode.",
+    "cena": "c5_robroyston_cedo"
+  },
+  {
+    "chave": "c68f61365f8d8030",
+    "texto": "Smithfield.",
+    "cena": "c5_smithfield"
+  },
+  {
+    "chave": "08cef039a9412947",
+    "texto": "Você não vai contar o que viu em Smithfield. Ninguém que estava lá conta.",
+    "cena": "c5_smithfield"
+  },
+  {
+    "chave": "b89bb0f353713e51",
+    "texto": "Só isto: no meio da multidão que gritava, havia uma pessoa de capuz que não gritava. E por um instante, antes do fim, Wallace olhou para a multidão, e você tem certeza de que ele viu você.",
+    "cena": "c5_smithfield"
+  },
+  {
+    "chave": "0f785b2aa72515d0",
+    "texto": "Uma névoa branca subiu do chão, só por um instante, e você sentiu a mão da Dama no seu ombro. Ele não está sozinho, disse a névoa.",
+    "cena": "c5_smithfield"
+  },
+  {
+    "chave": "08884ab6b918ef04",
+    "texto": "William Wallace morreu em 23 de agosto de 1305. Tinha uns trinta e cinco anos.",
+    "cena": "c5_smithfield"
+  },
+  {
+    "chave": "059d7c769c53f50c",
+    "texto": "Uma névoa fria desceu sobre o lugar, só por um instante, e o rosto dele ficou calmo. A Velha cumpriu a parte dela.",
+    "cena": "c5_smithfield"
+  },
+  {
+    "chave": "deb4b73c312915aa",
+    "texto": "O salão de Westminster.",
+    "cena": "c5_westminster"
+  },
+  {
+    "chave": "0b7bc0f73623fe8d",
+    "texto": "O grande salão de Westminster está lotado de nobres, juízes e curiosos. Você se esconde no fundo, com o capuz sobre o rosto.",
+    "cena": "c5_westminster"
+  },
+  {
+    "chave": "9f89e8c9f6bbba1b",
+    "texto": "Trazem Wallace acorrentado. Puseram uma coroa de louros na cabeça dele, de deboche, porque diziam que um dia ele quis ser rei em Westminster. Ele não deixa que a coroa o faça baixar a cabeça.",
+    "cena": "c5_westminster"
+  },
+  {
+    "chave": "d94b70477b135115",
+    "texto": "Os juízes leem as acusações: traição, assassinato, incêndio, sacrilégio. Ele não tem direito a falar. Fala assim mesmo, uma única vez:",
+    "cena": "c5_westminster"
+  },
+  {
+    "chave": "ecfb1bd631b2e7d4",
+    "texto": "“Não posso ser traidor do rei Eduardo, porque nunca fui súdito dele.”",
+    "cena": "c5_westminster"
+  },
+  {
+    "chave": "c12b11d6a29f9874",
+    "texto": "O salão fica em silêncio. A sentença é dada ali mesmo, e cumprida na mesma tarde.",
+    "cena": "c5_westminster"
+  },
+  {
+    "chave": "c91f4c0893d543f6",
+    "texto": "Sete anos de novo.",
+    "cena": "c6_anos"
+  },
+  {
+    "chave": "9bfce46ffc721175",
+    "texto": "Em julho de 1307, o rei Eduardo, o Martelo dos Escoceses, morre a caminho da Escócia, velho e furioso. O filho dele, Eduardo II, não tem a mesma vontade.",
+    "cena": "c6_anos"
+  },
+  {
+    "chave": "1f00223b0b17e5e1",
+    "texto": "Bruce volta das montanhas. Vence em Glen Trool, vence em Loudoun Hill, e toma de volta os castelos um a um, à noite, com escadas de corda e surpresa. Em 1314, só resta um grande castelo nas mãos inglesas: Stirling. O comandante inglês promete entregá-lo se nenhum exército vier socorrê-lo até o dia de São João, 24 de junho.",
+    "cena": "c6_anos"
+  },
+  {
+    "chave": "4d217b4698ab3e34",
+    "texto": "O rei Eduardo II vem, com o maior exército que a Inglaterra já mandou à Escócia.",
+    "cena": "c6_anos"
+  },
+  {
+    "chave": "7289b62f428cc03d",
+    "texto": "Antes da batalha, há tempo para uma última coisa.",
+    "cena": "c6_anos"
+  },
+  {
+    "chave": "c4a3768ffbf18c09",
+    "texto": "Entre dois rios.",
+    "cena": "c6_avanco"
+  },
+  {
+    "chave": "ac1ea46165b0d197",
+    "texto": "Os schiltrons escoceses descem a encosta, e desta vez são eles que atacam. O exército inglês, enorme, está espremido entre o Bannock Burn e o Forth, sem espaço para manobrar. Os cavaleiros se atropelam. Os arqueiros não conseguem atirar sem acertar os próprios homens.",
+    "cena": "c6_avanco"
+  },
+  {
+    "chave": "58fe061ee98346dc",
+    "texto": "Na sua frente, um cavaleiro tenta abrir caminho.",
+    "cena": "c6_avanco"
+  },
+  {
+    "chave": "712c71aa6121bf4c",
+    "texto": "O exército se desfaz.",
+    "cena": "c6_avanco_ok"
+  },
+  {
+    "chave": "a298679415ba2fe6",
+    "texto": "As lanças empurram, e o exército inglês começa a ceder. Então, do monte atrás das linhas escocesas, surge um segundo exército.",
+    "cena": "c6_avanco_ok"
+  },
+  {
+    "chave": "ce9301ced48353c4",
+    "texto": "É a gente miúda do acampamento: cozinheiros, carroceiros, meninos, mulheres, com lençóis e cobertores amarrados em varas como bandeiras. Os ingleses acham que são reforços. O pânico corre pelas fileiras deles como fogo em palha.",
+    "cena": "c6_avanco_ok"
+  },
+  {
+    "chave": "efb6d0a4e866247e",
+    "texto": "E é nesse momento que a neve volta a cair, só sobre a carroça da Pedra.",
+    "cena": "c6_avanco_ok"
+  },
+  {
+    "chave": "ec1e01ddbae31937",
+    "texto": "O primeiro dia.",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "7c075e64e30a0b0a",
+    "texto": "O exército escocês espera na borda de um bosque, perto de um riacho chamado Bannock Burn. Do outro lado, o exército inglês cobre a planície: cavaleiros, arqueiros, carroças sem fim.",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "99dda695ccfca337",
+    "texto": "Bruce passa na frente das linhas montado num pônei cinzento, só com um machado na mão e uma coroa de ouro sobre o elmo.",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "e4e2f17df246fceb",
+    "texto": "Um cavaleiro inglês, Sir Henry de Bohun, vê o rei escocês sozinho e baixa a lança. Atravessa o campo a galope, direto para ele. Os dois exércitos prendem a respiração.",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "f31ef64b27ed4429",
+    "texto": "No último instante, Bruce desvia o pônei, se ergue nos estribos e desce o machado na cabeça do cavaleiro. De Bohun cai morto. O machado se parte.",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "9b8c6a07154abefd",
+    "texto": "Os capitães de Bruce correm até ele, furiosos por ele ter arriscado a vida. Ele só olha o cabo quebrado. “Perdi o meu bom machado.”",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "a79a6020288507f6",
+    "texto": "O exército escocês ruge.",
+    "cena": "c6_bannock"
+  },
+  {
+    "chave": "aa2766413996fe1b",
+    "texto": "Escadas de corda.",
+    "cena": "c6_castelo"
+  },
+  {
+    "chave": "0b1ad991da239a83",
+    "texto": "Vocês sobem a rocha de Edimburgo numa noite sem lua, por um caminho que um soldado conhecia desde menino, quando descia para visitar a namorada. No alto, a guarnição inglesa dorme. De manhã, o castelo é escocês.",
+    "cena": "c6_castelo"
+  },
+  {
+    "chave": "30f47b3a68da63b0",
+    "texto": "Uma queda.",
+    "cena": "c6_castelo_mal"
+  },
+  {
+    "chave": "23c31a40a5bf4b42",
+    "texto": "Você escorrega na rocha e despenca alguns metros, mas os outros sobem. De manhã, o castelo é escocês, e você está com o braço enfaixado.",
+    "cena": "c6_castelo_mal"
+  },
+  {
+    "chave": "b63f4ada75a16028",
+    "texto": "A Escócia é livre.",
+    "cena": "c6_creditos"
+  },
+  {
+    "chave": "077e1d0f76468a21",
+    "texto": "Bannockburn, 24 de junho de 1314. Dezoito anos depois da noite em que Kilbride queimou, a Escócia é livre.",
+    "cena": "c6_creditos"
+  },
+  {
+    "chave": "6524e80bd020d145",
+    "texto": "A sua história terminou. O que aconteceu com cada um que cruzou o seu caminho está no epílogo.",
+    "cena": "c6_creditos"
+  },
+  {
+    "chave": "de664fe5cca99043",
+    "texto": "Filho da Névoa.",
+    "cena": "c6_dama4"
+  },
+  {
+    "chave": "1d8e3c029ad26684",
+    "texto": "Na estrada para Stirling, a névoa sobe numa manhã de verão, e a Dama Branca caminha ao seu lado. Ela parece cansada, mais transparente do que antes.",
+    "cena": "c6_dama4"
+  },
+  {
+    "chave": "827ee2d115ce15e7",
+    "texto": "“Faz dezoito anos desde Kilbride”, diz ela. “Tu cresceste, e o teu sangue também.” Ela toca sua testa, como na primeira noite. “Agora és o que os antigos chamavam de Filho da Névoa. O último degrau. Vais precisar dele.”",
+    "cena": "c6_dama4"
+  },
+  {
+    "chave": "0148b478c9b7396e",
+    "texto": "“A Velha vem buscar a Pedra. Quando vier, estarás entre as duas.”",
+    "cena": "c6_dama4"
+  },
+  {
+    "chave": "290620494b33e467",
+    "texto": "O Sangue Antigo chegou ao nível 4. Você aprendeu a Canção das Estações.",
+    "cena": "c6_dama4"
+  },
+  {
+    "chave": "c3dc0bfbcb733ae1",
+    "texto": "Ela olha para o seu pulso, onde as marcas da Velha ainda estão. “E vais ter de escolher entre a tua palavra e a tua terra.”",
+    "cena": "c6_dama4"
+  },
+  {
+    "chave": "1fa3d911451f137f",
+    "texto": "A colina de novo.",
+    "cena": "c6_dunsinane"
+  },
+  {
+    "chave": "992bec3659cbc7a0",
+    "texto": "O irmão Aodh está muito velho e quase cego, mas reconhece sua voz na porta da cabana e chora.",
+    "cena": "c6_dunsinane"
+  },
+  {
+    "chave": "2a9e1f5e56f2e3ac",
+    "texto": "Na câmara, a Pedra brilha mais do que nunca. A geada nas paredes já não recua.",
+    "cena": "c6_dunsinane"
+  },
+  {
+    "chave": "c7387725f7aa0abb",
+    "texto": "“A Velha está mais forte”, diz o monge. “Os homens derramaram tanto sangue nesta terra que o inverno cresceu. Ela vai tentar quebrar a Pedra logo, quando o sangue correr de novo.” Ele segura seu braço. “Leva a Pedra para a batalha. Um rei vai lutar pela Escócia. A Pedra deve estar lá.”",
+    "cena": "c6_dunsinane"
+  },
+  {
+    "chave": "47a1187ea001ffdc",
+    "texto": "Na boca da caverna, a estátua de gelo do irmão Aodh continua de braços abertos, há dezesseis anos sem derreter. Um jovem monge cuida da Pedra agora, e diz que reza para a estátua todas as manhãs.",
+    "cena": "c6_dunsinane"
+  },
+  {
+    "chave": "551d88b8bb9760ca",
+    "texto": "Sangue e Névoa.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "53021f1364d372c9",
+    "texto": "Em 1320, os nobres da Escócia escrevem ao papa uma carta que vai ficar famosa: enquanto cem de nós estivermos vivos, nunca nos submeteremos ao domínio inglês. Não lutamos por glória, nem riquezas, nem honras, mas pela liberdade, que nenhum homem de bem perde senão com a vida.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "fc6cafdc019025da",
+    "texto": "Muitos anos depois, você ouve lerem essa carta numa praça, já com cabelos brancos. Pensa em Kilbride, numa noite de Samhain, numa fogueira e num menino que esculpia nabos feios.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "a530c965d51bf35b",
+    "texto": "Callum se tornou capitão dos arqueiros do rei Robert. Teve quatro filhos, e o mais velho leva o seu nome.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "596a3073d2d07ca1",
+    "texto": "Tam voltou para Cartland, ficou grisalho e contava a história da ponte de Stirling para qualquer um que pagasse uma cerveja.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "cca698d77bd71c45",
+    "texto": "O irmão Aodh morreu em paz em Dunsinane, ao lado da Pedra.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "79bc93a9ac35e623",
+    "texto": "Seu título final é Camponês.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "a4f0a93a602e48fc",
+    "texto": "Fim de Sangue e Névoa. Obrigado por jogar.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "17b22d867458ac0c",
+    "texto": "A Escócia é livre e coberta de neve. Os escoceses aprenderam a viver no inverno. Os ingleses nunca mais voltaram. Ninguém quer conquistar uma terra de gelo.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "107321d345e8b2e1",
+    "texto": "Ailsa está enterrada em Falkirk, entre os arqueiros de Selkirk.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "6809e444f2b7ab62",
+    "texto": "Seu título final é Lenda.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "bae41fc7cc0903e1",
+    "texto": "A Pedra dorme de novo sob a colina. A primavera ainda vem todo ano, mas um pouco mais tarde, e um pouco mais triste.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "0c5b8da5c50a3957",
+    "texto": "Callum mancou a vida inteira e se tornou o melhor arqueiro do exército de Bruce. Teve quatro filhos, e o mais velho leva o seu nome.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "16bb582839697dfe",
+    "texto": "Tam está enterrado em Falkirk, e todo ano alguém deixa um bordão de freixo no túmulo dele.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "3dd9a3040523f802",
+    "texto": "O Ghillie Dhu das bétulas deixou flores na sua porta todo ano.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "73e4ec29c3f352e7",
+    "texto": "Seu título final é Herói da Escócia.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "9b2d609bf804c899",
+    "texto": "Mairi viveu até os noventa anos e morreu dormindo, numa noite de Samhain, com um galho de sorveira na mão.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "b0358d8bdcca72d1",
+    "texto": "Roger Blackwood criou ovelhas em Yorkshire até morrer de velho. Nunca mais vestiu uma cota de malha.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "027c7914eeb4e6ce",
+    "texto": "A estátua de gelo do irmão Aodh ainda está na colina de Dunsinane. Não derrete.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "cfb48b91a39de8af",
+    "texto": "Ailsa nunca se casou. Ensinou meninas a atirar com arco até o fim da vida.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "61ce97e74bf1f46d",
+    "texto": "Desde então, o inverno na Escócia vem em Samhain e vai embora em Beltane, sem falhar. Os velhos dizem que é por causa de um acordo. Ninguém lembra com quem.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "52ab5e5e3841caf8",
+    "texto": "O kelpie do Clyde ainda lhe deve um favor. Ele espera.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "765ca5dde66c5e63",
+    "texto": "A Pedra dorme de novo sob a colina de Dunsinane. Em Londres, os reis ingleses continuam sendo coroados sobre a tampa da fossa de Scone, e os monges continuam rindo.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "8cc9998e929d53c4",
+    "texto": "O sacrifício da Dama.",
+    "cena": "c6_fim_dama"
+  },
+  {
+    "chave": "e11e99fa73456464",
+    "texto": "Você cai na neve, e a Velha ergue o cajado sobre a Pedra.",
+    "cena": "c6_fim_dama"
+  },
+  {
+    "chave": "06e06fd6082a0d74",
+    "texto": "Então a névoa sobe do chão, e a Dama Branca se põe entre as duas. Pela primeira vez você entende: elas são irmãs. Inverno e primavera. A Velha e a Donzela.",
+    "cena": "c6_fim_dama"
+  },
+  {
+    "chave": "e2ae597dd835be73",
+    "texto": "“Basta, irmã.” A Dama abraça a Cailleach, e as duas brilham, branco e azul, até você não conseguir olhar.",
+    "cena": "c6_fim_dama"
+  },
+  {
+    "chave": "579ecf6d96d8cc6f",
+    "texto": "Quando a luz some, a Pedra está selada de novo, e não há mais ninguém sobre a carroça. Só uma flor branca de sorveira, no meio da neve que derrete.",
+    "cena": "c6_fim_dama"
+  },
+  {
+    "chave": "5748052374886dd5",
+    "texto": "A batalha está ganha. A Escócia é livre. E você nunca mais vai ver a Dama.",
+    "cena": "c6_fim_dama"
+  },
+  {
+    "chave": "72e28ddcdf12973a",
+    "texto": "O inverno eterno.",
+    "cena": "c6_fim_inverno"
+  },
+  {
+    "chave": "89bf8b2b44435415",
+    "texto": "Você deu a sua palavra. Ergue o machado, a espada, a pedra mais pesada que encontra, e desce sobre a Pedra do Destino.",
+    "cena": "c6_fim_inverno"
+  },
+  {
+    "chave": "b16f8cf6b2f34e1c",
+    "texto": "Ela se parte com um som de mil lagos congelando ao mesmo tempo.",
+    "cena": "c6_fim_inverno"
+  },
+  {
+    "chave": "48545d29fc72e19f",
+    "texto": "A Cailleach suspira, livre, e cresce até cobrir o céu. A neve começa a cair e não para mais. Na batalha, ingleses e escoceses largam as armas e olham para cima. O riacho congela. O Forth congela. Os campos somem debaixo do branco.",
+    "cena": "c6_fim_inverno"
+  },
+  {
+    "chave": "c42b6d0d4a1c2b93",
+    "texto": "“Obrigada, criança”, diz a Velha, já muito longe. “Cumpriste a tua palavra. Poucos homens cumprem.”",
+    "cena": "c6_fim_inverno"
+  },
+  {
+    "chave": "8a9c123165ac02a3",
+    "texto": "Bruce ganhou a batalha de Bannockburn. Mas não houve primavera em 1315, nem em 1316. Os velhos ainda contam que foi o pior inverno que a Escócia já viu, e que nunca terminou de verdade.",
+    "cena": "c6_fim_inverno"
+  },
+  {
+    "chave": "34c4ab75ee36bfff",
+    "texto": "O acordo das estações.",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "dd12adfa09ef5d04",
+    "texto": "Você tira as mãos da Pedra.",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "710cff71ddaa9feb",
+    "texto": "“Os pictos te prenderam porque tinham medo do frio. Mas o inverno faz parte desta terra. O inverno mata a praga, deixa a terra descansar, faz a primavera valer a pena.” Você respira fundo. “Então seja livre. Mas só no teu tempo. De Samhain a Beltane, a terra é tua. De Beltane a Samhain, é nossa. E a Pedra fica onde está, guardando o acordo.”",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "c111bc299f6cddc3",
+    "texto": "A Velha fica imóvel por tanto tempo que a neve para no ar, como as faíscas da noite do fogo, dezoito anos atrás.",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "8ff474ed8c45e473",
+    "texto": "Então ela ri. Um riso velho, enorme, que parece o gelo dos lagos rachando na primavera.",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "b3b4e085986e1fc7",
+    "texto": "“Nenhum rei me ofereceu isso. Nenhum druida. Uma criança de Kilbride.” Ela se abaixa até o rosto dela ficar na altura do seu. “Aceito.”",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "dd20cf49766a87ab",
+    "texto": "A geada recua da Pedra. A neve vira chuva, a chuva vira sol. Em volta da carroça, a grama branca fica verde, e flores nascem onde o gelo estava. Na batalha, os ingleses fogem, e os escoceses param, olhando para o campo florido sem entender.",
+    "cena": "c6_fim_primavera"
+  },
+  {
+    "chave": "b7d55d0480471f52",
+    "texto": "A Velha cai de joelhos diante da Pedra, e o Lobo-Rei vira neve fina. Você põe as duas mãos na Pedra e canta, sem saber como, a Canção das Estações.",
+    "cena": "c6_fim_selo"
+  },
+  {
+    "chave": "ba14df9ea7444300",
+    "texto": "A Pedra puxa a Cailleach para dentro de si como a água puxa a chuva. Ela não grita. No último instante, olha para você com o olho único, e não há ódio nele. Só cansaço.",
+    "cena": "c6_fim_selo"
+  },
+  {
+    "chave": "9fc6210521c4e2bf",
+    "texto": "“Por mais mil anos, então”, diz ela. E some.",
+    "cena": "c6_fim_selo"
+  },
+  {
+    "chave": "4f8f329eb66286c4",
+    "texto": "A neve para. O sol volta. Na batalha, o exército inglês foge em pânico, e o rei Eduardo II galopa para o castelo de Dunbar. A Escócia é livre.",
+    "cena": "c6_fim_selo"
+  },
+  {
+    "chave": "25e544cf1f09832d",
+    "texto": "A Pedra, agora pesada como nunca, só aceita voltar para debaixo da colina de Dunsinane.",
+    "cena": "c6_fim_selo"
+  },
+  {
+    "chave": "877b1102d58000e4",
+    "texto": "Um rei fugitivo.",
+    "cena": "c6_fuga"
+  },
+  {
+    "chave": "dc7e64e34d7378b5",
+    "texto": "Methven é um desastre. O exército de Bruce se desfaz. A rainha, a filha e as irmãs dele são capturadas. Os irmãos são presos e executados. Bruce foge para as montanhas com um punhado de homens, e você vai junto.",
+    "cena": "c6_fuga"
+  },
+  {
+    "chave": "fb38bd97800792d9",
+    "texto": "Naquele inverno, dizem que ele se escondeu numa caverna, e que viu uma aranha tentar seis vezes prender o fio na pedra, e conseguir na sétima.",
+    "cena": "c6_fuga"
+  },
+  {
+    "chave": "fd2210c1ecfd0083",
+    "texto": "Ninguém sabe se a história da aranha é verdade. Mas você estava lá, e sabe que Bruce não desistiu.",
+    "cena": "c6_fuga"
+  },
+  {
+    "chave": "ae32a5b45c4f891e",
+    "texto": "A gente miúda.",
+    "cena": "c6_gillies"
+  },
+  {
+    "chave": "aa7af9273f2caa09",
+    "texto": "No monte atrás das linhas, a gente do acampamento espera a batalha terminar: cozinheiros, carroceiros, meninos, mulheres. Estão com medo.",
+    "cena": "c6_gillies"
+  },
+  {
+    "chave": "3d6cfd17c50d0f8d",
+    "texto": "Lá embaixo, o exército inglês treme, mas ainda não cedeu.",
+    "cena": "c6_gillies"
+  },
+  {
+    "chave": "35344631b62ee12f",
+    "texto": "O monte desce sozinho.",
+    "cena": "c6_gillies_mal"
+  },
+  {
+    "chave": "3156fa53a8012115",
+    "texto": "Eles não ouvem você. Mas logo depois, por conta própria, a gente do acampamento desce o monte gritando, com lençóis amarrados em varas. O pânico explode nas linhas inglesas.",
+    "cena": "c6_gillies_mal"
+  },
+  {
+    "chave": "ce6a0159e5e14a0f",
+    "texto": "Lençóis como bandeiras.",
+    "cena": "c6_gillies_ok"
+  },
+  {
+    "chave": "c65cfa2655258554",
+    "texto": "“Peguem tudo o que tiverem! Lençóis, varas, panelas!” Você amarra a primeira bandeira com as próprias mãos.",
+    "cena": "c6_gillies_ok"
+  },
+  {
+    "chave": "de26f5becac44c18",
+    "texto": "Centenas de pessoas aparecem no alto do monte, gritando, com lençóis brancos tremulando como estandartes. Lá embaixo, os ingleses veem um exército novo chegando. O pânico explode. A fileira inglesa se quebra, e a fuga começa.",
+    "cena": "c6_gillies_ok"
+  },
+  {
+    "chave": "cad3712532a97453",
+    "texto": "Uma coroa sem pedra.",
+    "cena": "c6_inicio"
+  },
+  {
+    "chave": "f4957726988d162c",
+    "texto": "25 de março de 1306. Na abadia de Scone, Robert Bruce é coroado rei dos escoceses.",
+    "cena": "c6_inicio"
+  },
+  {
+    "chave": "27f5413fe8942bc9",
+    "texto": "É uma coroação apressada e pobre. Os bispos estão lá, alguns condes, um punhado de cavaleiros. A coroa é um aro simples de ouro. E não há pedra: o trono onde os reis da Escócia sempre foram coroados está vazio, porque todo mundo acredita que a Pedra do Destino está em Londres, na abadia de Westminster.",
+    "cena": "c6_inicio"
+  },
+  {
+    "chave": "acab8aaaac202614",
+    "texto": "Você sabe que não está.",
+    "cena": "c6_inicio"
+  },
+  {
+    "chave": "1e5e42e3707340c1",
+    "texto": "Depois da cerimônia, Bruce chama você num canto. “Wallace me disse uma vez que tu sabias de coisas que os outros não sabem. Sobre a Pedra.” Ele espera.",
+    "cena": "c6_inicio"
+  },
+  {
+    "chave": "3626f507e96a43d5",
+    "texto": "Você põe as mãos na Pedra, e ela queima de frio e de fogo ao mesmo tempo. O Sangue Antigo responde. A Velha grita, e o vento vira uma lâmina.",
+    "cena": "c6_luta_final"
+  },
+  {
+    "chave": "d191e34c0164ef7e",
+    "texto": "Ela desce da carroça, e com ela vem o Lobo-Rei do Inverno, renascido da neve.",
+    "cena": "c6_luta_final"
+  },
+  {
+    "chave": "8be5a76ddb0e0367",
+    "texto": "Ajoelhados.",
+    "cena": "c6_manha"
+  },
+  {
+    "chave": "adad605d70d2aaaf",
+    "texto": "De manhã, a neve derreteu, mas o frio ficou. Maurice, abade de Inchaffray, ergue um relicário de prata, e o exército escocês inteiro se ajoelha para rezar.",
+    "cena": "c6_manha"
+  },
+  {
+    "chave": "c82424b6f06c5d0c",
+    "texto": "Do outro lado, o rei Eduardo II ri. “Eles se ajoelham para pedir misericórdia!”",
+    "cena": "c6_manha"
+  },
+  {
+    "chave": "0fc87c2ccaa44b3e",
+    "texto": "Um velho cavaleiro ao lado dele responde: “Pedem, sim, majestade. Mas não a vós.”",
+    "cena": "c6_manha"
+  },
+  {
+    "chave": "a026d7a02954c0c6",
+    "texto": "Os escoceses se levantam e avançam. Onde você vai estar?",
+    "cena": "c6_manha"
+  },
+  {
+    "chave": "cfb3c14ab61a7a58",
+    "texto": "Methven.",
+    "cena": "c6_methven"
+  },
+  {
+    "chave": "e4acf26027ef86ca",
+    "texto": "Três meses depois, o exército de Bruce acampa num bosque perto de Methven. Um cavaleiro inglês, Aymer de Valence, mandou dizer que lutaria no dia seguinte. Bruce acreditou.",
+    "cena": "c6_methven"
+  },
+  {
+    "chave": "62b24ea45257ef76",
+    "texto": "Os ingleses atacam à noite. O acampamento vira fogo e gritos.",
+    "cena": "c6_methven"
+  },
+  {
+    "chave": "7e1d5681c7de4deb",
+    "texto": "Neve no solstício.",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "928b541a6a353948",
+    "texto": "Na noite mais curta do ano, começa a nevar.",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "87748ea03d4a99a6",
+    "texto": "Os soldados olham para o céu sem entender. A neve cai sobre os dois exércitos, sobre o riacho, sobre a carroça do abade de Inchaffray, que, você descobre agora, trouxe a Pedra escondida de Dunsinane.",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "8aff2f46c5e79a6c",
+    "texto": "A Cailleach sai da neve. Está maior do que nunca, alta como um carvalho.",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "fc7d633b5adf5e25",
+    "texto": "“Amanhã, quando o sangue correr, eu quebro a Pedra. E a Escócia vai dormir debaixo da neve para sempre.”",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "1af650e0399d0eb2",
+    "texto": "Ela some. A neve continua caindo até o amanhecer.",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "e8aecd77cede6ae1",
+    "texto": "Os soldados olham para o céu sem entender. A neve cai sobre os dois exércitos, sobre o riacho, sobre a carroça onde a Pedra dorme coberta de palha.",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "655e09bce7c32d26",
+    "texto": "“A guerra acaba amanhã, criança. Cumpre a tua palavra. Amanhã, quando o sangue correr, tu quebras a Pedra.”",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "05ceca4be8ddbfc5",
+    "texto": "“Nós já conversamos uma vez, criança. Amanhã, quando o sangue correr, eu venho buscar a minha liberdade. Pensa no que vais dizer.”",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "1088c92722f21229",
+    "texto": "“Rompeste a tua palavra, e eu cacei-te por dezesseis anos. Amanhã, quando o sangue correr, eu mesma quebro a Pedra.”",
+    "cena": "c6_noite"
+  },
+  {
+    "chave": "b307a5917b0bab13",
+    "texto": "A Pedra e o inverno.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "e97ba4c6441910ec",
+    "texto": "Na borda do campo, a carroça está coberta de gelo. A palha caiu, e a Pedra negra brilha azul, cada vez mais forte. Em volta dela, o verão virou inverno: a grama está branca, o riacho congelou.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "a9cda202ebaffd14",
+    "texto": "Sobre a carroça, alta como uma torre de gelo, está a Cailleach. O olho único brilha como a estrela da manhã. Atrás de você, a batalha continua, e os gritos parecem muito longe.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "2fb340cc3b090fb6",
+    "texto": "“Sai da frente, criança. Ou fica, e congela com a tua terra.”",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "1381ef99317429db",
+    "texto": "Ao seu lado chegam Callum, Tam, Irmão Aodh.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "e1d4e0e54c340903",
+    "texto": "“Chegou a hora, criança. A tua palavra.”",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "aa6c650958b51bc7",
+    "texto": "Ao seu lado chegam Callum, Irmão Aodh.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "9594abf50501ed73",
+    "texto": "Ao seu lado chegam Callum.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "dface10d3d1ba4ab",
+    "texto": "Ao seu lado chegam Callum, Ailsa, Irmão Aodh.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "1bbf14dda7c5e527",
+    "texto": "Ao seu lado chegam Callum, Tam, Ailsa, Irmão Aodh.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "1d73aed11d468dbf",
+    "texto": "Ao seu lado chegam Callum, Ailsa.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "9bb085653d960c8f",
+    "texto": "Ao seu lado chegam Callum, Tam.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "3245ae408c4923b6",
+    "texto": "O que um rei precisa.",
+    "cena": "c6_segredo"
+  },
+  {
+    "chave": "8d1b0fe387205531",
+    "texto": "Você não responde. Bruce olha para você por um longo momento e concorda com a cabeça. “Bom. Um segredo que todo mundo sabe não é segredo. Guarda-o até que eu precise.”",
+    "cena": "c6_segredo"
+  },
+  {
+    "chave": "90c8e97e46d3fba4",
+    "texto": "Você conta tudo: Dunsinane, o monge Aodh, a tampa da fossa, a Velha do Inverno.",
+    "cena": "c6_segredo"
+  },
+  {
+    "chave": "422136aee76981e0",
+    "texto": "Bruce ri da tampa da fossa até lacrimejar. Depois fica sério. “Deixa a Pedra dormir. Um rei que precisa de uma pedra para ser rei não é rei. Primeiro eu ganho o reino. Depois a Pedra decide se me quer.”",
+    "cena": "c6_segredo"
+  }
+]

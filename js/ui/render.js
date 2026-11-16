@@ -58,6 +58,7 @@ function renderScene() {
      .join("")}</div>`;
   bindChoices(el);
   bindTip(el);
+  NARRATOR.onScene(state.scene);
   ART.show(meta(state.scene)[0], { visao: state.visao, flags: state.flags });
 }
 function renderCombat() {
