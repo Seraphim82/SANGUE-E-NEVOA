@@ -142,8 +142,11 @@ button {
   gap: 28px;
   padding-block: 24px 60px;
 }
-.story {
+.story,
+.sheet {
   min-width: 0;
+}
+.story {
   max-width: 44rem;
 }
 aside.sheet {
@@ -211,8 +214,15 @@ h1.scene-title {
   color: #c3ced0;
   transition:
     color 0.3s,
-    background 0.4s,
-    padding 0.3s;
+    background 0.4s;
+}
+/* O deslocamento do vento é só visual (transform): mudar o recuo mudava a altura do botão
+   e empurrava as escolhas de baixo no meio de um clique. */
+.choice-main {
+  transition: transform 0.3s;
+}
+.choice.wind-on .choice-main {
+  transform: translateX(8px);
 }
 .choice::before {
   content: "";
@@ -234,7 +244,6 @@ h1.scene-title {
 }
 .choice.wind-on {
   color: #fff;
-  padding-left: 14px;
   background: linear-gradient(90deg, rgba(111, 151, 201, 0.16), rgba(111, 151, 201, 0) 80%);
 }
 .choice.wind-on::before {
@@ -559,11 +568,18 @@ dl.kv dd {
 /* combat */
 .foes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* min(…, 100%) impede que a coluna mínima passe da largura disponível. */
+  grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
   gap: 10px;
   margin: 6px 0 16px;
 }
 .foe {
+  /* Em alguns navegadores (Firefox, Safari) um botão dentro de uma grade não encolhe
+     abaixo do próprio conteúdo e invade a coluna da ficha. min-width: 0 permite encolher. */
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  display: block;
   background: var(--slate);
   border: 1px solid var(--line);
   border-radius: var(--r);
@@ -584,6 +600,13 @@ dl.kv dd {
   display: flex;
   gap: 10px;
   align-items: flex-start;
+}
+.foe-top > div {
+  min-width: 0;
+}
+.foe .nm,
+.foe .st {
+  overflow-wrap: anywhere;
 }
 .foe-pic {
   width: 54px;

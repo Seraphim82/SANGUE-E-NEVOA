@@ -265,6 +265,117 @@ await caso("partidas inteiras só com toques, cinema ligado e pulado com toque",
   return resumo.join(" | ");
 });
 
+await caso("no computador, UM clique basta, mesmo com o mouse vindo de outra escolha", async () => {
+  const context = await browser.newContext({ viewport: { width: 1100, height: 800 } });
+  await context.addInitScript(() =>
+    localStorage.setItem("sen-cinema", JSON.stringify({ mode: "desligado" })),
+  );
+  const page = await context.newPage();
+  const erros = [];
+  page.on("pageerror", (e) => erros.push(e.message));
+  await page.goto(servidor.url);
+  const cenas = await page.evaluate(() =>
+    Object.keys(SC)
+      .filter((id) => SC[id].choices.length >= 3)
+      .slice(0, 25),
+  );
+  const perdidos = [];
+  let cliques = 0;
+  for (const id of cenas) {
+    const snap = await page.evaluate((id) => {
+      closeEvolve();
+      state = newChar("Teste", "ferreiro");
+      state.mode = "playing";
+      migrate(state);
+      state.coins = 200;
+      go(id);
+      return JSON.stringify(state);
+    }, id);
+    const n = await page.locator("#choices .choice").count();
+    for (let i = 1; i < n; i++) {
+      await page.evaluate((s) => {
+        closeEvolve();
+        CINEMA.stop();
+        state = migrate(JSON.parse(s));
+        render();
+      }, snap);
+      await page.locator(`#choices .choice[data-i="${i}"]`).scrollIntoViewIfNeeded();
+      // Quem lê antes de clicar espera a rolagem suave da troca de cena acabar.
+      await page.waitForTimeout(700);
+      const a = await page.locator(`#choices .choice[data-i="${i - 1}"]`).boundingBox();
+      const b = await page.locator(`#choices .choice[data-i="${i}"]`).boundingBox();
+      if (!a || !b) continue;
+      const antes = await retrato(page);
+      // O mouse descansa na escolha de cima e desce rápido até a borda de cima da outra.
+      await page.mouse.move(a.x + 40, a.y + a.height / 2);
+      await page.waitForTimeout(350);
+      await page.mouse.move(b.x + 40, b.y + 4, { steps: 2 });
+      await page.mouse.down();
+      await page.waitForTimeout(90);
+      await page.mouse.up();
+      await page.waitForTimeout(600);
+      cliques++;
+      if (antes === (await retrato(page))) perdidos.push(`${id}#${i}`);
+    }
+  }
+  verificar(
+    !perdidos.length,
+    `cliques que não fizeram nada (${perdidos.length}): ${perdidos.slice(0, 10).join(", ")}`,
+  );
+  verificar(!erros.length, erros.slice(0, 5).join("; "));
+  await context.close();
+  return `${cliques} cliques`;
+});
+
+await caso(
+  "no combate, nada da história invade a coluna da ficha (900 a 1400 px, todos os inimigos)",
+  async () => {
+    const achados = [];
+    for (const w of [900, 950, 1000, 1050, 1100, 1150, 1200, 1300, 1400]) {
+      const context = await browser.newContext({ viewport: { width: w, height: 900 } });
+      await context.addInitScript(() =>
+        localStorage.setItem("sen-cinema", JSON.stringify({ mode: "desligado" })),
+      );
+      const page = await context.newPage();
+      await page.goto(servidor.url);
+      await page.waitForTimeout(300);
+      const r = await page.evaluate(() => {
+        const foes = Object.keys(FOES);
+        const grupos = [
+          ...foes.map((k) => [k]),
+          ...foes.map((k, i) => [k, foes[(i + 1) % foes.length]]),
+          ...foes.map((k, i) => [k, foes[(i + 3) % foes.length], foes[(i + 7) % foes.length]]),
+        ];
+        state = newChar("Teste", "ferreiro");
+        state.mode = "playing";
+        migrate(state);
+        go("c1_inicio");
+        CINEMA.stop();
+        const out = [];
+        for (const g of grupos) {
+          state.combat = null;
+          runOutcome({ e: g, win: "c1_inicio", lose: "c1_inicio" });
+          const sheet = document.getElementById("sheet");
+          if (getComputedStyle(sheet).display === "none") continue;
+          const borda = sheet.getBoundingClientRect().left;
+          for (const el of document.querySelectorAll("#story *")) {
+            const ret = el.getBoundingClientRect();
+            if (ret.width && ret.right > borda + 1) {
+              out.push(`${g.join("+")}: ${String(el.className || el.tagName).slice(0, 20)}`);
+              break;
+            }
+          }
+        }
+        return out;
+      });
+      achados.push(...r.map((x) => `${w}px ${x}`));
+      await context.close();
+    }
+    verificar(!achados.length, `sobreposições (${achados.length}): ${achados.slice(0, 6).join("; ")}`);
+    return "9 larguras × 60 grupos de inimigos";
+  },
+);
+
 // ---------------------------------------------------------------- tela do personagem
 
 await caso("tela do personagem: todas as abas, itens, vestir, empunhar, forjar e fechar", async () => {
