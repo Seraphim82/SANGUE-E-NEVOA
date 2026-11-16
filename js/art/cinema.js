@@ -914,7 +914,9 @@ const CINEMA = (() => {
     const f = film;
     if (!f) return;
     try {
-      const real = Math.min(1 / 30, (now - f.last) / 1000);
+      // O navegador pode entregar o primeiro quadro com um horário anterior ao início do
+      // filme: o relógio nunca anda para trás.
+      const real = Math.max(0, Math.min(1 / 30, (now - f.last) / 1000));
       f.last = now;
       if (now - f.startedAt > (f.maxMs || WATCHDOG_MS)) return stop();
       if (f.kind === "finale") {
@@ -1367,7 +1369,7 @@ const CINEMA = (() => {
     const c = canvasContext();
     if (!c) return;
     const t = performance.now() / 1000;
-    const i = Math.min(f.slides.length - 1, Math.floor(f.shotTime / SLIDE_S));
+    const i = Math.max(0, Math.min(f.slides.length - 1, Math.floor(f.shotTime / SLIDE_S)));
     const local = f.shotTime - i * SLIDE_S;
     c.fillStyle = "#000";
     c.fillRect(0, 0, W, H);

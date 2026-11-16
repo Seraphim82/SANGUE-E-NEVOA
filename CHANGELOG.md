@@ -7,6 +7,9 @@
 - Nova tela de encerramento com as opções "Ler o epílogo" e "Rever o filme do final". O epílogo também permite rever o filme.
 - Alguns quadros do trailer mudam conforme as suas escolhas (o kelpie, o destino de Tam).
 
+### Correções
+- O trailer não quebra mais quando o navegador entrega o primeiro quadro da animação com um horário anterior ao início do filme (achado pelo teste de stress na integração contínua).
+
 ## 1.3.3 · Aprendizados sem voltar ao topo
 
 ### Correções

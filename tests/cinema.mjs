@@ -306,6 +306,44 @@ const casos = [
       await context.close();
     },
   ],
+  [
+    "o trailer do final começa, avança, pode ser pulado e leva à tela de encerramento",
+    async (browser) => {
+      const { page, context, erros } = await abrirJogo(browser, { cinema: true });
+      await comecarJogo(page);
+      await page.evaluate(() => {
+        CINEMA.stop();
+        state.flags.final = "selo";
+        go("c6_creditos");
+      });
+      verificar(await page.evaluate(() => CINEMA.isPlaying()), "o trailer não começou ao entrar no fim");
+      await page.waitForTimeout(6000);
+      verificar(await page.evaluate(() => CINEMA.isPlaying()), "o trailer parou antes da hora");
+      await page.mouse.click(400, 300);
+      verificar(!(await page.evaluate(() => CINEMA.isPlaying())), "o clique não pulou o trailer");
+      await page.waitForTimeout(600);
+      const opcoes = await page.$$eval("#choices .choice", (l) => l.map((b) => b.textContent.trim()));
+      verificar(
+        opcoes.some((t) => t.includes("epílogo")),
+        `sem a opção do epílogo: ${opcoes.join(" | ")}`,
+      );
+      verificar(
+        opcoes.some((t) => t.includes("Rever o filme")),
+        `sem a opção de rever: ${opcoes.join(" | ")}`,
+      );
+      // Entrar e sair do fim muitas vezes seguidas, como no teste de stress, não pode quebrar o trailer.
+      await page.evaluate(() => {
+        for (let i = 0; i < 50; i++) {
+          CINEMA.finale(["selo", "dama", "inverno", "primavera"][i % 4]);
+          go("c1_inicio");
+        }
+        CINEMA.finale("inverno");
+      });
+      await page.waitForTimeout(1500);
+      verificar(!erros.length, `erros: ${erros.join("; ")}`);
+      await context.close();
+    },
+  ],
 ];
 
 const falhas = await executar("Testes do cinema e do retrato do herói", casos);
