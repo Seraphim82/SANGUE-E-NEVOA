@@ -789,7 +789,8 @@ label.field {
   font-size: 0.9rem;
   max-width: 22rem;
 }
-input[type="text"] {
+input[type="text"],
+select {
   background: #0d1214;
   border: 1px solid var(--line);
   border-radius: var(--r);
@@ -1718,4 +1719,84 @@ button,
 }
 .card-acoes {
   justify-content: center;
+}
+
+/* Modo Mesa */
+.mesa-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0 4px;
+}
+.mesa-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+.mesa-chip.on {
+  border-color: #e8b765;
+  box-shadow: 0 0 0 1px #e8b765 inset;
+}
+.mesa-chip.caido {
+  opacity: 0.5;
+}
+.mesa-chip .nm {
+  font-family: var(--f-label);
+  letter-spacing: 0.04em;
+}
+.mesa-chip .pv {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+.vote-hint {
+  margin-top: 18px;
+  font-size: 0.92rem;
+  color: #e8b765;
+}
+.choice .tag.votos {
+  border-color: #e8b765;
+  color: #e8b765;
+}
+.roll-grupo {
+  display: block;
+}
+.roll-heroi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.roll-heroi .nm {
+  min-width: 90px;
+  font-family: var(--f-label);
+}
+.roll-heroi.fail {
+  opacity: 0.75;
+}
+.mesa-linhas {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0;
+}
+.mesa-linha {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.mesa-linha .slot-n {
+  grid-column: 1 / -1;
+}
+.mesa-linha select {
+  width: 100%;
 }

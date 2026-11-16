@@ -3,6 +3,8 @@
 ## 1.6.0 · Narração, conquistas e jornadas salvas
 
 ### Novidades
+- **Modo Mesa local:** de 2 a 4 heróis no mesmo aparelho, cada um com nome, origem e aparência. As escolhas da história são votadas (no empate, decide o mestre), os testes de dados valem se pelo menos metade dos heróis acertar, e cada herói ganha os próprios pontos, itens e moedas. No combate, cada herói age na sua vez e os inimigos escolhem alvos entre os heróis de pé; quem cai fica fora até o fim da luta, e ninguém morre de vez. Compras são de cada herói, sem votação.
+- **Carta do Herói:** uma carta rara dourada, com o retrato pintado, raridade pelo título, atributos, perícias, equipamento com o nível da forja e o final alcançado. Pode ser baixada ou compartilhada.
 - **Narração:** um narrador de voz grave e épica lê cada cena, no estilo dos narradores de anime clássico, com a trilha sonora continuando por baixo, mais baixa. Tocar numa escolha interrompe. Pode ser desligada no menu.
 - **Conquistas:** 25 medalhas em cinco grupos (jornada, finais, mistérios, companheiros e combate) e uma tela de estatísticas: partidas, finais vistos, inimigos e criaturas feéricas derrotados, quedas e mortes. Valem para todas as partidas.
 - **Jornadas salvas:** três espaços de jornada. Uma jornada pode ser exportada como arquivo ou como código (para colar no WhatsApp e continuar em outro aparelho) e importada de volta. O save antigo continua no espaço 1.
@@ -11,6 +13,7 @@
 - Jornadas importadas e o perfil de conquistas passam pela mesma validação do save: só entram campos e valores conhecidos, com tamanho máximo.
 
 ### Testes
+- `npm run test:mesa`: criação da mesa, votação com maioria e voto de minerva, teste em grupo, compras individuais, turnos no combate, derrota só quando todos caem, recompensas para todos, save, exportar e importar, mesa adulterada no save e uma partida de mesa por toques num iPhone até o fim do Capítulo I.
 - `npm run test:progresso`: conquistas, perfil adulterado, espaços, exportar e importar entre aparelhos, importação de lixo e HTML, apagar com dois toques, narração com a trilha por baixo.
 
 ## 1.5.0 · Primeiro retorno de jogadores

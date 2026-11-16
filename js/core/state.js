@@ -59,7 +59,9 @@ function slotInfo(n) {
     // Sem data: mostra só o herói.
   }
   const cap = Number((/^c(\d)/.exec(c.scene) || [0, 1])[1]);
-  return { name: c.name, title: title(c), cap, quando, dead: c.dead, fim: !!c.flags.fim_jogo };
+  const mesa = c.mesa ? c.mesa.heroes.length : 0;
+  const nome = mesa ? c.mesa.heroes.map((h) => h.name).join(", ") : c.name;
+  return { name: nome, title: title(c), cap, quando, dead: c.dead, fim: !!c.flags.fim_jogo, mesa };
 }
 function deleteSlot(n) {
   try {
@@ -169,9 +171,25 @@ function banner() {
   if (!state.banner) state.banner = { roll: null, lines: [] };
   return state.banner;
 }
+/**
+ * Na Mesa, recompensas e danos da história valem para cada herói: `forAll` roda a mudança
+ * em todos, uma vez só (a guarda evita repetir quando uma recompensa chama outra).
+ */
+let mesaGiving = false;
+function forAll(fn) {
+  if (typeof inMesa !== "function" || !inMesa() || mesaGiving) return fn();
+  mesaGiving = true;
+  try {
+    forEachHero(fn);
+  } finally {
+    mesaGiving = false;
+  }
+}
 function gain(n, why) {
-  state.unspent += n;
-  state.earned += n;
+  forAll(() => {
+    state.unspent += n;
+    state.earned += n;
+  });
   banner().lines.push({ t: `+${n} PP · ${why}`, cls: "" });
   toast(`+${n} pontos de personagem`);
   setTimeout(() => AUD.sting("moeda"), 900);
@@ -180,21 +198,31 @@ function note(t, cls) {
   banner().lines.push({ t, cls: cls || "gain" });
 }
 function hurt(dmgStr, why) {
-  const d = rollDmg(parseDmg(dmgStr));
-  const before = state.hp;
-  state.hp = Math.max(1, state.hp - d.total);
-  note(`−${before - state.hp} PV · ${why}`, "hurt");
+  const perdas = [];
+  forAll(() => {
+    const d = rollDmg(parseDmg(dmgStr));
+    const before = state.hp;
+    state.hp = Math.max(1, state.hp - d.total);
+    perdas.push(before - state.hp);
+  });
+  note(`−${perdas.join(" / ")} PV · ${why}`, "hurt");
 }
 function giveWeapon(k) {
-  if (!state.weapons.includes(k)) {
-    state.weapons.push(k);
-    note(`Nova arma: ${WEAPONS[k].n}`);
-  }
+  let nova = false;
+  forAll(() => {
+    if (!state.weapons.includes(k)) {
+      state.weapons.push(k);
+      nova = true;
+    }
+  });
+  if (nova) note(`Nova arma: ${WEAPONS[k].n}`);
 }
 function giveItem(k, n) {
-  state.inv[k] = (state.inv[k] || 0) + (n || 1);
+  forAll(() => {
+    state.inv[k] = (state.inv[k] || 0) + (n || 1);
+    if (AMULETS[k] && !state.amulet) state.amulet = k;
+  });
   note(`Item: ${ITEMS[k].n}`);
-  if (AMULETS[k] && !state.amulet) state.amulet = k;
 }
 const hasIron = () => state.weapons.some((w) => WEAPONS[w].iron);
 const hasFlag = (k) => !!state.flags[k];

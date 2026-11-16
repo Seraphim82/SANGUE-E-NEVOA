@@ -233,5 +233,46 @@ function sanitizeSave(raw) {
 
   c.hp = clampInt(raw.hp, -maxHP(c) * 5, maxHP(c), maxHP(c));
   c.fp = clampInt(raw.fp, 0, maxFP(c), maxFP(c));
+  if (raw.mesa !== undefined) {
+    const mesa = sanitizeMesa(raw, c);
+    if (mesa) c.mesa = mesa;
+  }
   return c;
+}
+
+/**
+ * Valida a Mesa de um save. Cada herói passa pela mesma `sanitizeSave` (com os campos
+ * compartilhados do save) e fica só com os campos pessoais. Qualquer coisa fora do esperado
+ * descarta a mesa inteira: o jogo segue com o herói ativo, sozinho, sem quebrar.
+ */
+function sanitizeMesa(raw, c) {
+  const m = raw.mesa;
+  if (!isPlainObject(m) || !Array.isArray(m.heroes)) return null;
+  const n = m.heroes.length;
+  if (n < MESA_MIN || n > MESA_MAX) return null;
+  const valido = (i) => Number.isInteger(i) && i >= 0 && i < n;
+  const active = valido(m.active) ? m.active : 0;
+  const heroes = [];
+  for (let i = 0; i < n; i++) {
+    if (i === active) {
+      heroes.push(pickPersonal(c));
+      continue;
+    }
+    const h = m.heroes[i];
+    if (!isPlainObject(h)) return null;
+    // Só os campos pessoais conhecidos entram; a mesa do herói nunca é lida (sem recursão).
+    const junto = { mode: "playing", scene: raw.scene, flags: raw.flags, visited: raw.visited };
+    for (const k of PERSONAL_KEYS) if (Object.hasOwn(h, k)) junto[k] = h[k];
+    const limpo = sanitizeSave(junto);
+    if (!limpo) return null;
+    heroes.push(pickPersonal(limpo));
+  }
+  const votes = {};
+  if (isPlainObject(m.votes))
+    for (const k of Object.keys(m.votes)) {
+      const i = Number(k);
+      const v = m.votes[k];
+      if (valido(i) && String(i) === k && typeof v === "string" && v.length <= 200) votes[i] = v;
+    }
+  return { heroes, active, voter: valido(m.voter) ? m.voter : 0, votes };
 }

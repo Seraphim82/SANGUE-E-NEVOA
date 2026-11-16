@@ -149,12 +149,16 @@ function giveOutfit(k) {
 }
 function giveMat(o) {
   for (const k in o) {
-    state.mat[k] = (state.mat[k] || 0) + o[k];
+    forAll(() => {
+      state.mat[k] = (state.mat[k] || 0) + o[k];
+    });
     note(`+${o[k]} ${MATS[k]}`);
   }
 }
 function givePennies(n) {
-  state.coins += n;
+  forAll(() => {
+    state.coins += n;
+  });
   note(`+${n} pennies de prata`);
 }
 function figState() {

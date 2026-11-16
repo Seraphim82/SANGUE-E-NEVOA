@@ -91,6 +91,16 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 - `CINEMA.finale(final)` toca o trailer do final: 13 quadros de 4,6 s com fusão, montados por `finaleSlides()` a partir das marcas da história. A cena `c6_creditos` o toca ao entrar, e a ação de escolha `act: "filme"` o repete. Ele roda mesmo com as cenas de luta desligadas; com "reduzir movimento", os quadros ficam parados.
 - `CINEMA.titleCard()` abre os capítulos. `go()` chama essa função ao entrar pela primeira vez numa cena `cN_inicio`, e também registra o herói na galeria da jornada (`recordJourney()`).
 
+## Modo Mesa
+
+`js/core/mesa.js` é uma camada por cima do jogo de um herói: `state` continua sendo o herói ativo, e `state.mesa = { heroes, active, voter, votes }` guarda os campos pessoais (`PERSONAL_KEYS`) dos outros heróis. `switchHero(j)` troca o herói ativo, inclusive os campos pessoais do combate (`COMBAT_PERSONAL`, guardados em `C.per`). `withHero` e `forEachHero` rodam código com outro herói ativo; `forAll`, em `js/core/state.js`, faz recompensas e danos da história valerem para todos. A cena, as marcas e o combate são compartilhados.
+
+- `choose()` registra votos pelo texto da escolha (`castVote`) e só executa quando todos votaram; o empate vale o voto do mestre (herói 0). Escolhas pessoais (`isPersonalChoice`: têm `fx` e voltam para a mesma cena) não são votadas.
+- Testes de escolhas usam `groupTest`: cada herói rola com a própria perícia; vale se pelo menos metade acertar.
+- No combate, `enemyPhase()` desvia para `mesaEnemyPhase()`: passa a vez (`mesaPassTurn`) até todos agirem; depois aliados, um ataque de cada inimigo (`foeStrike`) num herói de pé ao acaso, e o teste de HT de cada um. Quem falha fica em `C.down`; só se todos caírem a luta é perdida. Ninguém morre de vez.
+- `sanitizeMesa()` valida a mesa do save: 2 a 4 heróis, cada um pela mesma `sanitizeSave`; qualquer problema descarta a mesa e o jogo segue com o herói ativo.
+- Todo código da Mesa fica atrás de `inMesa()`: o jogo de um herói não muda.
+
 ## Narração
 
 `js/audio/narration.js` divide o texto da cena em parágrafos (`narrationParagraphs()`), com o nome do herói trocado por um marcador e contornado, e números que mudam a cada partida (moedas, pontos) tirados da voz. Cada parágrafo tem uma chave (`narrationKey()`, dois FNV-1a de 32 bits) e um MP3 em `audio/narracao/<chave>.mp3`. Só as chaves listadas em `NARRATION_CLIPS` são pedidas. `NARRATOR.onScene()` toca a cena em sequência quando ela muda; `AUD.narrating()` abaixa a trilha, que continua tocando. As ferramentas `coletar_narracao.mjs`, `gerar_narracao.py` e `listar_narracao.mjs` usam essas mesmas funções, rodando o jogo no navegador.

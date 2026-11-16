@@ -7,6 +7,7 @@ function go(id, keepBanner) {
   if (!keepBanner) state.banner = null;
   // Voltar à mesma cena (uma compra na loja, por exemplo) não leva a página de volta ao topo.
   const sameScene = state.scene === id;
+  if (inMesa() && !sameScene) resetVotes();
   state.scene = id;
   const sc = SC[id];
   AUD.mood(trackFor(id));
@@ -40,14 +41,35 @@ function runOutcome(o) {
 }
 function choose(i) {
   const sc = SC[state.scene];
-  const ch = visibleChoices(sc)[i];
+  let ch = visibleChoices(sc)[i];
   if (!ch) return;
+  // Mesa: as escolhas da história são votadas; compras e outras escolhas pessoais, não.
+  if (inMesa() && !ch.act && !isPersonalChoice(ch)) {
+    const venc = castVote(ch.t);
+    if (venc === null) {
+      save();
+      render();
+      return;
+    }
+    // A escolha da mesa é feita com o mestre como herói ativo.
+    switchHero(0);
+    ch = visibleChoices(sc).find((c) => c.t === venc) || ch;
+  }
   state.banner = null;
   if (ch.act === "evolve") return openEvolve();
   if (ch.act === "newgame") return showTitle(true);
   if (ch.act === "filme") return CINEMA.finale(state.flags.final);
   if (ch.act === "carta") return openHeroCard();
   if (ch.fx) ch.fx();
+  if (ch.test && inMesa()) {
+    // Todos rolam; vale se pelo menos metade acertar.
+    const opts = typeof ch.test.o === "function" ? ch.test.o() : ch.test.o;
+    const g = groupTest(opts);
+    AUD.sting("dado");
+    setTimeout(() => AUD.sting(g.ok ? "sucesso" : "infortunio"), 220);
+    banner().roll = { group: g.rolls, ok: g.ok, acertos: g.acertos };
+    return runOutcome(g.ok ? ch.test.ok : ch.test.fail);
+  }
   if (ch.test) {
     const opts = typeof ch.test.o === "function" ? ch.test.o() : ch.test.o;
     const b = bestOf(state, opts);

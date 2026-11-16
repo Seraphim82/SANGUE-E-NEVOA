@@ -238,7 +238,7 @@ await caso("partidas inteiras só com toques, cinema ligado e pulado com toque",
       }
       if (tela === "cinema") await page.locator("#cinema").tap({ position: { x: 20, y: 20 } });
       else if (tela === "overlay") {
-        const fechar = page.locator("#eOk, #dClose, #mClose").first();
+        const fechar = page.locator("#eOk, #dClose, #mClose, #cardClose, #achClose, #slotClose").first();
         await fechar.tap();
       } else if (tela === "combate") {
         const acoes = page.locator("#aAtk, #aAll, #aDef");

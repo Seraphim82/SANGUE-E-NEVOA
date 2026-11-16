@@ -28,6 +28,15 @@ function render() {
 function rollHTML(b) {
   if (!b || !b.roll) return "";
   const r = b.roll;
+  // Teste da Mesa: os dados de cada herói e o resultado do grupo.
+  if (Array.isArray(r.group))
+    return `<div class="roll ${r.ok ? "ok" : "fail"} roll-grupo"><div class="verdict"><b>${r.ok ? "Sucesso do grupo" : "Falha do grupo"}</b> · ${r.acertos} de ${r.group.length} acertaram (precisa de pelo menos metade)</div>
+    ${r.group
+      .map(
+        (g) =>
+          `<div class="roll-heroi ${g.ok ? "ok" : "fail"}"><span class="nm">${esc(g.name)}</span><div class="dice">${g.dice.map((d) => `<div class="die roll-anim">${d}</div>`).join("")}</div><span class="meta">${g.sum} contra ${g.target} · ${esc(g.label)} · ${g.ok ? "acertou" : "errou"}</span></div>`,
+      )
+      .join("")}</div>`;
   return `<div class="roll ${r.ok ? "ok" : "fail"}"><div class="dice">${r.dice.map((d) => `<div class="die roll-anim">${d}</div>`).join("")}</div>
   <div><div class="verdict"><b>${r.crit || (r.ok ? "Sucesso" : "Falha")}</b> · ${esc(r.label)} ${r.target}</div>
   <div class="meta">Rolou ${r.sum} contra ${r.target}${r.ok ? `, margem de ${r.margin}` : `, faltaram ${-r.margin}`}</div></div></div>`;
@@ -41,23 +50,27 @@ function renderScene() {
       ? `<div class="rewards">${b.lines.map((l) => `<div class="reward ${l.cls}">${esc(l.t)}</div>`).join("")}</div>`
       : "";
   const ch = visibleChoices(sc);
-  el.innerHTML = `${artBox}${rollHTML(b)}${lines}${tipHTML()}
+  const votos = voteCounts();
+  el.innerHTML = `${artBox}${mesaBarHTML(true)}${rollHTML(b)}${lines}${tipHTML()}
    ${sc.eyebrow ? `<div class="eyebrow">${sc.eyebrow}</div>` : ""}
    <h1 class="scene-title">${sc.title}</h1>
    <div class="prose">${md(toParagraphs(sc.text()))}</div>
    <div class="wind-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/></svg><span class="mouse">O vento das Terras Altas mostra o caminho: passe o cursor sobre uma escolha</span><span class="touch">O vento das Terras Altas leva você pelo caminho que escolher</span></div>
+   ${inMesa() ? `<div class="vote-hint">Votação · vez de <b>${esc(mesaName(state.mesa.voter))}</b> (${Object.keys(state.mesa.votes).length} de ${mesaSize()} votos). Empate: decide o mestre. Compras são de cada herói.</div>` : ""}
    <div class="choices" id="choices">${ch
      .map((c, i) => {
        const h = testHint(c);
        const extra = c.tag ? c.tag() : "";
        const prepare = fightHint(c);
+       const nv = votos[c.t] || 0;
        return `<button class="choice" data-i="${i}">
      <span class="choice-main"><span>${c.t}</span>${c.sub ? `<small class="note">${c.sub}</small>` : ""}${c.after ? `<small class="note">${c.after}</small>` : ""}${prepare ? `<small class="note prepare">${prepare}</small>` : ""}</span>
-     <span class="choice-side">${h ? `<span class="tag">${h}${extra ? " · " + extra : ""}</span>` : ""}<span class="arrow">→</span></span></button>`;
+     <span class="choice-side">${nv ? `<span class="tag votos">${nv} voto${nv > 1 ? "s" : ""}</span>` : ""}${h ? `<span class="tag">${h}${extra ? " · " + extra : ""}</span>` : ""}<span class="arrow">→</span></span></button>`;
      })
      .join("")}</div>`;
   bindChoices(el);
   bindTip(el);
+  bindMesaBar(el);
   NARRATOR.onScene(state.scene);
   ART.show(meta(state.scene)[0], { visao: state.visao, flags: state.flags });
 }
@@ -72,7 +85,7 @@ function renderCombat() {
   const w = curWeapon(state);
   const [dn, dv] = bestDefense(state);
   const spells = Object.keys(SK).filter((k) => SK[k].spell && state.skills[k]);
-  el.innerHTML = `${artBox}${rollHTML(state.banner)}<div class="eyebrow">Combate · Rodada ${C.round}</div>
+  el.innerHTML = `${artBox}${mesaBarHTML(false)}${rollHTML(state.banner)}<div class="eyebrow">Combate · Rodada ${C.round}${inMesa() ? ` · Vez de ${esc(state.name)}` : ""}</div>
    <h1 class="scene-title">${C.foes
      .map((f) => f.n)
      .filter((v, i, a) => a.indexOf(v) === i)
@@ -231,4 +244,30 @@ function renderDeath() {
     }
   };
   document.getElementById("ng").onclick = () => showTitle(true);
+}
+
+/**
+ * Faixa da Mesa: cada herói com os PV. Na cena, tocar num herói o torna o ativo (para ver a
+ * ficha, gastar pontos ou fazer compras); no combate, só mostra de quem é a vez e quem caiu.
+ */
+function mesaBarHTML(trocavel) {
+  if (!inMesa()) return "";
+  const C = state.combat;
+  return `<div class="mesa-bar" role="group" aria-label="Heróis da mesa">${state.mesa.heroes
+    .map((h, i) => {
+      const heroi = i === state.mesa.active ? state : h;
+      const caido = C && C.down && C.down[i];
+      return `<button class="mesa-chip ${i === state.mesa.active ? "on" : ""} ${caido ? "caido" : ""}" data-heroi="${i}" ${trocavel ? "" : "disabled"}>
+        <span class="nm">${esc(heroi.name)}${i === 0 ? " ★" : ""}</span><span class="pv">${caido ? "caído" : `PV ${heroi.hp}/${maxHP(heroi)}`}</span></button>`;
+    })
+    .join("")}</div>`;
+}
+function bindMesaBar(el) {
+  el.querySelectorAll(".mesa-chip[data-heroi]").forEach((b) => {
+    b.onclick = () => {
+      switchHero(Number(b.dataset.heroi));
+      save();
+      render();
+    };
+  });
 }

@@ -42,6 +42,7 @@ function startCombat(spec) {
   if (spec.blindAll) C.foes.forEach((f) => (f.blind = Math.max(f.blind, 1)));
   state.combat = C;
   selTarget = 0;
+  if (inMesa()) mesaStartCombat(C);
   if (spec.intro) clog(`<i>${spec.intro}</i>`);
   if (spec.pre) {
     const d = rollDmg(parseDmg(spec.pre));
@@ -387,113 +388,18 @@ function playerFlee() {
 function enemyPhase() {
   const C = state.combat;
   if (!aliveFoes().length) return endCombat("win");
-  for (const a of C.spec.allies || []) {
-    const fs = aliveFoes();
-    if (!fs.length) break;
-    const f = C.foes[selTarget] && C.foes[selTarget].hp > 0 ? C.foes[selTarget] : fs[0];
-    const fi = C.foes.indexOf(f);
-    const r = test(a.skill);
-    if (!r.ok) {
-      CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "miss" });
-      clog(`${a.n} ataca ${f.n} e erra.`);
-      continue;
-    }
-    if (test(f.def).ok) {
-      CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "parry" });
-      clog(`${a.n} ataca, mas ${f.n} se defende.`);
-      continue;
-    }
-    const d = rollDmg(parseDmg(a.dmg));
-    const pen = Math.max(0, d.total + (a.fey && f.fey ? 2 : 0) - f.rd);
-    const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[a.type].m)) : 0;
-    f.hp -= inj;
-    CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "hit", dmg: inj, killed: f.hp <= 0 });
-    clog(`<span class="ok">${a.n} acerta ${f.n}: ${inj} de dano.</span>`);
-    if (f.hp <= 0) clog(`<span class="ok">${f.n} cai.</span>`);
-  }
+  if (inMesa()) return mesaEnemyPhase(C);
+  runAllies(C);
   if (!aliveFoes().length) return endCombat("win");
   C.shock = 0;
   let took = 0;
   for (const f of aliveFoes()) {
     if (state.hp <= 0) break;
-    const fi = C.foes.indexOf(f);
-    if (f.stun) {
-      CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome: "stunned" });
-      f.stun = 0;
-      clog(`${f.n} ainda está atordoado e não ataca.`);
-      continue;
-    }
-    let atk =
-      f.atk -
-      (f.blind > 0 ? 3 : 0) -
-      (C.mist > 0 ? 2 : 0) -
-      (f.fey && C.rowan > 0 ? 3 : 0) -
-      (C.stone > 0 ? 2 : 0);
-    const r = test(atk);
-    if (!r.ok) {
-      CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome: "miss", roll: rollInfo(r) });
-      clog(`${f.n} ataca e erra. ${rtxt(r)}`);
-      continue;
-    }
-    if (!r.critOk && !C.allout) {
-      const [dn, dv0] = bestDefense(state);
-      let dv =
-        dv0 + (C.totaldef ? 2 : 0) + (f.fey && state.amulet === "sorveira" ? 2 : 0) - (C.feroz ? 2 : 0);
-      const d = test(dv);
-      if (d.ok) {
-        const outcome = dn === "Esquiva" ? "dodge" : dn === "Bloqueio" ? "block" : "parry";
-        CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome, roll: rollInfo(r) });
-        clog(
-          `${f.n} ataca, mas você usa ${dn.toLowerCase()} e evita o golpe. <span class="r">[defesa ${d.sum} contra ${dv}]</span>`,
-        );
-        continue;
-      }
-    }
-    const roll = rollDmg(parseDmg(f.dmg));
-    const rd = f.ignoreRD ? 0 : armorRD(state);
-    const pen = Math.max(0, roll.total - rd);
-    const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[f.type].m)) : 0;
-    state.hp -= inj;
-    took += inj;
-    CINEMA.shot({
-      type: "strike",
-      by: "foe",
-      foe: fi,
-      outcome: inj > 0 ? "hit" : "block",
-      dmg: inj,
-      crit: r.critOk,
-      roll: rollInfo(r),
-    });
-    if (inj > 0) {
-      ART.FX.hurt = performance.now();
-      AUD.sting("ferido");
-    }
-    clog(
-      `<span class="bad">${r.critOk ? "Crítico! " : ""}${f.n} acerta você: ${inj} de dano.</span> ${rtxt(r)}`,
-    );
-    if (inj > 0 && f.chill && state.armor !== "peles") {
-      state.fp = Math.max(0, state.fp - f.chill);
-      clog(`<span class="bad">O frio da mordida congela seu fôlego: −${f.chill} PF.</span>`);
-    }
-    if (inj > 0 && f.drain) {
-      state.fp = Math.max(0, state.fp - f.drain);
-      clog(`<span class="bad">${f.n} bebe seu fôlego: −${f.drain} PF.</span>`);
-    }
+    took += foeStrike(C, f);
   }
   C.shock = Math.min(2, took);
   C.feroz = false;
-  if (C.rowan > 0) C.rowan--;
-  if (C.stone > 0) C.stone--;
-  for (const f of C.foes) {
-    if (f.blind > 0) f.blind--;
-    if (f.regen && !(C.stone > 0) && f.hp > 0 && f.hp < f.max) {
-      f.hp = Math.min(f.max, f.hp + f.regen);
-      clog(
-        `<span class="r">${f.n} regenera ${f.regen} PV ${f.k === "redcap" ? "com o sangue do gorro" : "no frio"}.</span>`,
-      );
-    }
-  }
-  if (C.mist > 0) C.mist--;
+  roundUpkeep(C);
   C.allout = false;
   // início do turno do jogador: ferimentos graves
   if (C.spec.nonlethal && state.hp <= 0) {
@@ -524,6 +430,169 @@ function enemyPhase() {
   }
   render();
 }
+/** Os aliados atacam, uma vez por rodada. */
+function runAllies(C) {
+  for (const a of C.spec.allies || []) {
+    const fs = aliveFoes();
+    if (!fs.length) break;
+    const f = C.foes[selTarget] && C.foes[selTarget].hp > 0 ? C.foes[selTarget] : fs[0];
+    const fi = C.foes.indexOf(f);
+    const r = test(a.skill);
+    if (!r.ok) {
+      CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "miss" });
+      clog(`${a.n} ataca ${f.n} e erra.`);
+      continue;
+    }
+    if (test(f.def).ok) {
+      CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "parry" });
+      clog(`${a.n} ataca, mas ${f.n} se defende.`);
+      continue;
+    }
+    const d = rollDmg(parseDmg(a.dmg));
+    const pen = Math.max(0, d.total + (a.fey && f.fey ? 2 : 0) - f.rd);
+    const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[a.type].m)) : 0;
+    f.hp -= inj;
+    CINEMA.shot({ type: "ally", name: a.n, foe: fi, outcome: "hit", dmg: inj, killed: f.hp <= 0 });
+    clog(`<span class="ok">${a.n} acerta ${f.n}: ${inj} de dano.</span>`);
+    if (f.hp <= 0) clog(`<span class="ok">${f.n} cai.</span>`);
+  }
+}
+/** Um inimigo ataca o herói ativo. Devolve o dano causado. */
+function foeStrike(C, f) {
+  const alvo = inMesa() ? esc(state.name) : "você";
+  const fi = C.foes.indexOf(f);
+  if (f.stun) {
+    CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome: "stunned" });
+    f.stun = 0;
+    clog(`${f.n} ainda está atordoado e não ataca.`);
+    return 0;
+  }
+  let atk =
+    f.atk -
+    (f.blind > 0 ? 3 : 0) -
+    (C.mist > 0 ? 2 : 0) -
+    (f.fey && C.rowan > 0 ? 3 : 0) -
+    (C.stone > 0 ? 2 : 0);
+  const r = test(atk);
+  if (!r.ok) {
+    CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome: "miss", roll: rollInfo(r) });
+    clog(`${f.n} ataca e erra. ${rtxt(r)}`);
+    return 0;
+  }
+  if (!r.critOk && !C.allout) {
+    const [dn, dv0] = bestDefense(state);
+    let dv = dv0 + (C.totaldef ? 2 : 0) + (f.fey && state.amulet === "sorveira" ? 2 : 0) - (C.feroz ? 2 : 0);
+    const d = test(dv);
+    if (d.ok) {
+      const outcome = dn === "Esquiva" ? "dodge" : dn === "Bloqueio" ? "block" : "parry";
+      CINEMA.shot({ type: "strike", by: "foe", foe: fi, outcome, roll: rollInfo(r) });
+      clog(
+        `${f.n} ataca, mas ${alvo} usa ${dn.toLowerCase()} e evita o golpe. <span class="r">[defesa ${d.sum} contra ${dv}]</span>`,
+      );
+      return 0;
+    }
+  }
+  const roll = rollDmg(parseDmg(f.dmg));
+  const rd = f.ignoreRD ? 0 : armorRD(state);
+  const pen = Math.max(0, roll.total - rd);
+  const inj = pen > 0 ? Math.max(1, Math.floor(pen * DTYPE[f.type].m)) : 0;
+  state.hp -= inj;
+  CINEMA.shot({
+    type: "strike",
+    by: "foe",
+    foe: fi,
+    outcome: inj > 0 ? "hit" : "block",
+    dmg: inj,
+    crit: r.critOk,
+    roll: rollInfo(r),
+  });
+  if (inj > 0) {
+    ART.FX.hurt = performance.now();
+    AUD.sting("ferido");
+  }
+  clog(
+    `<span class="bad">${r.critOk ? "Crítico! " : ""}${f.n} acerta ${alvo}: ${inj} de dano.</span> ${rtxt(r)}`,
+  );
+  if (inj > 0 && f.chill && state.armor !== "peles") {
+    state.fp = Math.max(0, state.fp - f.chill);
+    clog(`<span class="bad">O frio da mordida congela seu fôlego: −${f.chill} PF.</span>`);
+  }
+  if (inj > 0 && f.drain) {
+    state.fp = Math.max(0, state.fp - f.drain);
+    clog(`<span class="bad">${f.n} bebe seu fôlego: −${f.drain} PF.</span>`);
+  }
+  return inj;
+}
+/** O que passa no fim de cada rodada: amuletos, regeneração e névoa. */
+function roundUpkeep(C) {
+  if (C.rowan > 0) C.rowan--;
+  if (C.stone > 0) C.stone--;
+  for (const f of C.foes) {
+    if (f.blind > 0) f.blind--;
+    if (f.regen && !(C.stone > 0) && f.hp > 0 && f.hp < f.max) {
+      f.hp = Math.min(f.max, f.hp + f.regen);
+      clog(
+        `<span class="r">${f.n} regenera ${f.regen} PV ${f.k === "redcap" ? "com o sangue do gorro" : "no frio"}.</span>`,
+      );
+    }
+  }
+  if (C.mist > 0) C.mist--;
+}
+/**
+ * Rodada da Mesa: cada herói de pé age uma vez; depois os aliados, e cada inimigo ataca um
+ * herói de pé ao acaso. Quem cair fica fora até o fim da luta; ninguém morre de vez. A luta
+ * só é perdida quando todos os heróis caem.
+ */
+function mesaEnemyPhase(C) {
+  if (mesaPassTurn(C)) return render();
+  runAllies(C);
+  if (!aliveFoes().length) return endCombat("win");
+  const levou = {};
+  for (const f of aliveFoes()) {
+    const alvos = mesaStanding(C);
+    if (!alvos.length) break;
+    const t = alvos[Math.floor(Math.random() * alvos.length)];
+    switchHero(t);
+    levou[t] = (levou[t] || 0) + foeStrike(C, f);
+  }
+  for (let i = 0; i < state.mesa.heroes.length; i++) {
+    switchHero(i);
+    C.shock = Math.min(2, levou[i] || 0);
+    C.feroz = false;
+    C.allout = false;
+  }
+  roundUpkeep(C);
+  for (const i of mesaStanding(C)) {
+    switchHero(i);
+    const nome = esc(state.name);
+    let cai = false;
+    if (C.spec.nonlethal && state.hp <= 0) cai = true;
+    else if (state.hp <= 0) {
+      const r = test(state.attrs.HT + (state.adv.some((a) => a.n.startsWith("Duro")) ? 1 : 0));
+      cai = !r.ok;
+      clog(
+        cai
+          ? `<span class="bad">${nome} perde os sentidos e fica fora da luta.</span> ${rtxt(r)}`
+          : `<span class="r">${nome} se mantém de pé.</span> ${rtxt(r)}`,
+      );
+    }
+    if (cai) C.down[i] = true;
+  }
+  if (!mesaStanding(C).length) {
+    clog('<span class="bad">Todos caíram.</span>');
+    return endCombat("lose");
+  }
+  C.round++;
+  C.acted = [];
+  clog(`<div class="round">RODADA ${C.round}</div>`);
+  switchHero(mesaStanding(C)[0]);
+  clog(`<div class="round">Vez de ${esc(state.name)}</div>`);
+  if (C.foes[selTarget].hp <= 0) {
+    const i = C.foes.findIndex((f) => f.hp > 0);
+    if (i >= 0) selTarget = i;
+  }
+  render();
+}
 function endCombat(res) {
   const C = state.combat;
   const spec = C.spec;
@@ -533,6 +602,11 @@ function endCombat(res) {
   const caidos = C.foes.filter((f) => f.hp <= 0);
   ACH.count("inimigos", caidos.length);
   ACH.count("feericos", caidos.filter((f) => f.fey).length);
+  // Na Mesa, ninguém morre de vez: depois da luta, todos voltam de pé.
+  if (inMesa())
+    forEachHero(() => {
+      state.hp = Math.max(state.hp, 1);
+    });
   if (res === "win") {
     AUD.sting("vitoria");
     const xp = C.foes.reduce((a, f) => a + f.xp, 0);

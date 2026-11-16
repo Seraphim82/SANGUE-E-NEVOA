@@ -18,7 +18,7 @@ function openSlots(paraNova = false, aviso = "") {
           : `Capítulo ${["", "I", "II", "III", "IV", "V", "VI"][i.cap] || "I"}`;
     cartoes.push(`<div class="slot ${i ? "" : "vazio"} ${n === activeSlot ? "ativo" : ""}" data-n="${n}">
       <div class="slot-n">Espaço ${n}${n === activeSlot && i ? " · atual" : ""}</div>
-      ${i ? `<div class="slot-nome">${esc(i.name)}</div><div class="slot-sub">${esc(i.title)} · ${estado}</div>${i.quando ? `<div class="slot-sub">Salvo em ${new Date(i.quando).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}</div>` : ""}` : `<div class="slot-sub">${estado}</div>`}
+      ${i ? `<div class="slot-nome">${esc(i.name)}</div><div class="slot-sub">${i.mesa ? `Mesa · ${i.mesa} heróis` : esc(i.title)} · ${estado}</div>${i.quando ? `<div class="slot-sub">Salvo em ${new Date(i.quando).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}</div>` : ""}` : `<div class="slot-sub">${estado}</div>`}
       <div class="slot-acoes">${
         paraNova
           ? `<button class="btn primary" data-acao="nova">${i ? "Substituir por uma nova" : "Começar aqui"}</button>`
@@ -99,7 +99,8 @@ function slotAction(n, acao, botao) {
     deleteSlot(n);
     setSlot(n);
     closeEvolve();
-    renderOriginPick();
+    if (draftMesa) renderMesaCreate();
+    else renderOriginPick();
     return;
   }
   if (acao === "jogar") {

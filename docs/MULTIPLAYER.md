@@ -37,7 +37,9 @@ Este documento registra as decisões do modo multiplayer **antes** da implementa
 - **Escolhas da história:** votação. Em caso de empate, decide o mestre (voto de minerva).
 - **Testes de dados nas escolhas:** todos os heróis rolam com a própria perícia; a ação vale se **pelo menos metade** acertar (2 jogadores: 1; 3: 2; 4: 2).
 - **Recompensas:** cada herói ganha os próprios pontos de personagem.
-- **Combate:** cada herói age na sua vez; os inimigos escolhem alvos entre os heróis de pé.
+- **Combate:** cada herói age na sua vez; os inimigos escolhem alvos entre os heróis de pé. Quem cai fica fora até o fim da luta; a luta só é perdida se todos caírem. **Ninguém morre de vez na Mesa**, para preservar o progresso de todos.
+- **Compras e escolhas pessoais** (que só mudam o próprio herói e voltam para a mesma cena) não são votadas: valem para o herói ativo.
+- **Recompensas e danos da história** valem para cada herói.
 
 ## Fim da campanha
 
@@ -45,8 +47,8 @@ A sala é apagada do aparelho do mestre. Cada jogador recebe a sua **Carta do He
 
 ## Fases
 
-1. Carta do Herói (também no jogo sozinho).
-2. Modo Mesa local: 2 a 4 heróis no mesmo aparelho, votação e turnos.
+1. ✅ Carta do Herói (também no jogo sozinho).
+2. ✅ Modo Mesa local: 2 a 4 heróis no mesmo aparelho, votação e turnos (`js/core/mesa.js`, `tests/mesa.mjs`).
 3. Camada de conexão segura e bateria de ataques.
 4. Mesa online: reconexão, banimento, encerramento.
 5. Revisão final de segurança e teste fechado.

@@ -94,7 +94,9 @@ const CINEMA = (() => {
     return im && im.complete && im.naturalWidth ? im : null;
   }
 
-  const heroKey = () => `${state.look || DEFAULT_LOOK}_${state.armor}`;
+  /** Herói da tomada sendo montada (Mesa); fora dela, o herói ativo. */
+  let who = null;
+  const heroKey = () => `${(who || state).look || DEFAULT_LOOK}_${(who || state).armor}`;
 
   /** Baixa antes do primeiro golpe os planos que este combate pode usar. */
   function preload(combat) {
@@ -125,7 +127,10 @@ const CINEMA = (() => {
 
   /** Registra uma tomada. Ignorada quando nada está sendo gravado. */
   function shot(s) {
-    if (capture && capture.shots.length < MAX_SHOTS) capture.shots.push(s);
+    if (!capture || capture.shots.length >= MAX_SHOTS) return;
+    // Na Mesa, cada tomada lembra qual herói agia, para o filme mostrar o herói certo.
+    if (inMesa()) s.who = { look: state.look, armor: state.armor, weapon: state.weapon, name: state.name };
+    capture.shots.push(s);
   }
 
   /** Termina a gravação e encena o que aconteceu. */
@@ -144,7 +149,7 @@ const CINEMA = (() => {
 
   // ---------------------------------------------------------------- montagem
 
-  const heroLabel = () => (state?.name ? state.name : "Você");
+  const heroLabel = () => who?.name || state?.name || "Você";
 
   /**
    * Um plano da montagem.
@@ -160,13 +165,13 @@ const CINEMA = (() => {
 
   /** Planos do herói e do inimigo, com o retrato como reserva quando o plano não existe. */
   function heroPlate(pose) {
-    return { plate: `heroi_${pose}_${heroKey()}`, fallback: { hero: true, pose } };
+    return { plate: `heroi_${pose}_${heroKey()}`, fallback: { hero: true, pose, who } };
   }
   function foePlate(foe, pose) {
     return { plate: `inimigo_${pose}_${foe?.pic}`, fallback: { foe, pose } };
   }
   function weaponPlate(kind) {
-    return { plate: `arma_${kind}_${state.weapon}`, fallback: heroPlate("furia") };
+    return { plate: `arma_${kind}_${(who || state).weapon}`, fallback: heroPlate("furia") };
   }
 
   /** Transforma as tomadas gravadas na lista de planos do filme. */
@@ -179,6 +184,7 @@ const CINEMA = (() => {
         fx.text(`−${s.dmg}`, FOE_SPOT.x - 40, 150, color, 58);
 
     for (const s of shots) {
+      who = s.who || null;
       const foe = s.foe !== undefined ? roster[s.foe] : null;
       const name = foe?.n || "";
       const roll = s.roll || null;
@@ -736,6 +742,7 @@ const CINEMA = (() => {
         );
       }
     }
+    who = null;
     return cuts;
   }
 
@@ -1006,7 +1013,7 @@ const CINEMA = (() => {
     const v = view.plate ? view.fallback : view;
     sceneBackdrop(c, f, t, v.wide ? 0.3 : 0.55);
     if (v.hero) {
-      const p = heroPortrait(state);
+      const p = heroPortrait(v.who || state);
       if (p) standing(c, p, HERO_SPOT.x + dx, H * 1.12);
       if (v.pose === "dor") {
         c.fillStyle = "rgba(150,20,10,.25)";

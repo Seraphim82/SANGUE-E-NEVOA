@@ -31,6 +31,7 @@ O progresso é salvo automaticamente no navegador. A música começa no primeiro
 - **Combate por turnos** com aliados, amuletos de uso ativo, frio, sede e regeneração dos inimigos.
 - **299 pinturas:** 97 cenas, 20 retratos de inimigos, 32 retratos do herói (4 aparências em 8 roupas) 146 planos de ação para as lutas e 4 amuletos, com animações por cima: névoa, brasas, neve e vento.
 - **Modo cinema:** depois de cada ação no combate, a luta é montada como num filme, cortando entre planos pintados: o rosto do seu herói em fúria, o close da arma que ele usa, o inimigo atingido ou caindo, a espada aparando com faíscas, o escudo segurando o golpe. Câmera que aproxima, borrão nos cortes rápidos, clarão no impacto e câmera lenta no acerto crítico. Cada capítulo abre com uma cartela de título, e as pinturas das cenas se fundem umas nas outras. O final ganha um trailer de um minuto que recapitula a jornada até a vitória da Escócia. Dá para pular com um toque, deixar mais rápido ou desligar no menu.
+- **Modo Mesa:** de 2 a 4 heróis no mesmo aparelho, com votação nas escolhas (voto de minerva do mestre), testes de dados em grupo e turnos no combate. A **Carta do Herói** dourada guarda a lembrança de cada jornada.
 - **Narração** em voz grave e épica, com a trilha por baixo; **25 conquistas** com estatísticas; **três espaços de jornada**, que podem ser exportados e importados entre aparelhos.
 - **Dicas para quem joga pela primeira vez:** onde gastar os pontos, a forja e um aviso antes das lutas, cada uma mostrada uma vez só.
 - **Aparência do herói** escolhida na criação, e uma **galeria da jornada** na tela do personagem que mostra como ele estava no começo de cada capítulo.
@@ -87,6 +88,7 @@ npx playwright install chromium
 |---|---|
 | `npm test` | Lint e os testes de história, sabotagem, segurança e cinema |
 | `npm run test:cinema` | Só os testes do modo cinema, da aparência e da galeria da jornada |
+| `npm run test:mesa` | Modo Mesa local: votação, testes em grupo, turnos, recompensas, save e uma partida por toques |
 | `npm run test:progresso` | Conquistas, jornadas salvas (espaços, exportar e importar) e narração |
 | `npm run test:rigor` | Testes rigorosos: o jogo servido por HTTP e jogado por toques num iPhone emulado (toda escolha de toda cena, partidas inteiras, tela do personagem, cinema, saves corrompidos; cerca de 12 minutos) |
 | `npm run test:stress` | Stress: 200 partidas completas, sessão longa, desempenho, 3.000 combates (cerca de 4 minutos) |
