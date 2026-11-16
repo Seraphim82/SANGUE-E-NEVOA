@@ -232,6 +232,7 @@ Um bug no iPhone ("Partir em missão" preso na loja do Capítulo III) passou por
 | 12 | **O toque que pula o cinema não atravessa** e aciona o botão de baixo | 6 tentativas em momentos diferentes |
 | 13 | Nenhum texto diz que um capítulo que já existe está "em preparação" | 221 cenas |
 | 14 | Nenhum arquivo pedido pelo jogo falta no servidor (erro 404) | |
+| 15 | Gastar pontos ou escolher um item lá embaixo não joga a tela para o topo (1.3.3) | Aprendizados e tela do personagem |
 
 ### 7.2 Bugs encontrados e corrigidos
 

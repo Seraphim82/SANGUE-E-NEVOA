@@ -26,7 +26,11 @@ const servidor = await servirJogo();
 const browser = await abrirNavegador();
 let falhas = 0;
 
+/** RIGOR_SO="trecho do nome" roda só os casos cujo nome contém o trecho. */
+const SO = process.env.RIGOR_SO;
+
 async function caso(nome, fn) {
+  if (SO && !nome.includes(SO)) return;
   const inicio = Date.now();
   try {
     const detalhe = await fn();
@@ -322,6 +326,51 @@ await caso("evolução: gastar pontos e voltar, por toques", async () => {
     () => state?.mode === "playing" && document.getElementById("overlay").hidden,
   );
   verificar(ok, "a criação não terminou depois de confirmar");
+  verificar(!erros.length, erros.slice(0, 5).join("; "));
+  await context.close();
+});
+
+await caso("gastar pontos ou escolher um item lá embaixo não joga a tela de volta para o topo", async () => {
+  const { page, context, erros } = await abrirCelular();
+  await page.evaluate(() => {
+    state = newChar("Teste", "curandeira");
+    state.mode = "playing";
+    migrate(state);
+    state.unspent = 200;
+    state.outfits = Object.keys(ARMOR);
+    state.weapons = Object.keys(WEAPONS);
+    go("c1_inicio");
+    CINEMA.stop();
+    openEvolve();
+  });
+  const problemas = [];
+  // Aprendizados: o último "+" ativo fica bem abaixo da dobra no celular.
+  for (let i = 0; i < 3; i++) {
+    const mais = page.locator("#overlay button.pm:not([disabled])", { hasText: "+" }).last();
+    await mais.scrollIntoViewIfNeeded();
+    const antes = await page.evaluate(() => document.getElementById("overlay").scrollTop);
+    await mais.tap();
+    await page.waitForTimeout(150);
+    const depois = await page.evaluate(() => document.getElementById("overlay").scrollTop);
+    if (antes > 200 && Math.abs(depois - antes) > 40)
+      problemas.push(`Aprendizados: rolagem ${antes} → ${depois}`);
+  }
+  // Tela do personagem: tocar num item lá embaixo.
+  await page.evaluate(() => {
+    closeEvolve();
+    openChar("arma");
+  });
+  const tiles = page.locator(".tile");
+  const ultimo = tiles.nth((await tiles.count()) - 1);
+  await ultimo.scrollIntoViewIfNeeded();
+  const antes = await page.evaluate(() => document.getElementById("overlay").scrollTop);
+  await ultimo.tap();
+  await page.waitForTimeout(150);
+  const depois = await page.evaluate(() => document.getElementById("overlay").scrollTop);
+  if (antes > 200 && Math.abs(depois - antes) > 40)
+    problemas.push(`Personagem: rolagem ${antes} → ${depois}`);
+  verificar(antes > 200, `o teste não conseguiu rolar a tela do personagem (${antes})`);
+  verificar(!problemas.length, problemas.join("; "));
   verificar(!erros.length, erros.slice(0, 5).join("; "));
   await context.close();
 });

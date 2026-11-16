@@ -1,5 +1,14 @@
 # Histórico de versões
 
+## 1.3.3 · Aprendizados sem voltar ao topo
+
+### Correções
+- Na tela de Aprendizados, gastar um ponto não joga mais a tela de volta ao topo. A rolagem fica onde estava.
+
+### Testes
+- Teste novo na bateria rigorosa: gastar pontos ou escolher um item lá embaixo, no celular, não muda a rolagem.
+- `RIGOR_SO="trecho do nome"` roda só os testes rigorosos que interessam.
+
 ## 1.3.2 · Testes rigorosos e varredura de segurança
 
 ### Correções

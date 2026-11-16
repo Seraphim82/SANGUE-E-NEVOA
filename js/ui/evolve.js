@@ -15,6 +15,8 @@ function openEvolve(back) {
     base: { attrs: { ...state.attrs }, skills: { ...state.skills } },
   };
   renderEvolve();
+  // Só ao abrir a tela ela começa do topo.
+  document.getElementById("overlay").scrollTop = 0;
 }
 function evoChar() {
   return { ...state, attrs: draft.attrs, skills: draft.skills };
@@ -22,6 +24,8 @@ function evoChar() {
 function renderEvolve() {
   const ov = document.getElementById("overlay");
   ov.hidden = false;
+  // A tela se refaz a cada ponto gasto: guarda a rolagem para não voltar ao topo.
+  const scroll = ov.scrollTop;
   const left = state.unspent - draft.spent;
   const c = evoChar();
   const creating = state.mode === "creating";
@@ -162,7 +166,7 @@ function renderEvolve() {
       if (draft.back) openChar(draft.back);
     }
   };
-  ov.scrollTop = 0;
+  ov.scrollTop = scroll;
 }
 function closeEvolve() {
   const ov = document.getElementById("overlay");
