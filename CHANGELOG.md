@@ -10,6 +10,7 @@
 - **Jornadas salvas:** três espaços de jornada. Uma jornada pode ser exportada como arquivo ou como código (para colar no WhatsApp e continuar em outro aparelho) e importada de volta. O save antigo continua no espaço 1.
 
 ### Segurança
+- Bateria de ataques da Mesa: nomes hostis em todas as telas, saves e códigos de importação adulterados, botões falsificados na página, preferências adulteradas e 2.000 saves corrompidos ao acaso. Encontrado e corrigido: um voto salvo com texto especial era aceito; agora só valem votos com o texto de uma escolha real da cena.
 - Jornadas importadas e o perfil de conquistas passam pela mesma validação do save: só entram campos e valores conhecidos, com tamanho máximo.
 
 ### Testes

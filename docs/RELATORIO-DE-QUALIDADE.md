@@ -12,7 +12,7 @@ Este relatório documenta a revisão de código e os testes de sabotagem, stress
 | Testes de história | 221 cenas válidas e alcançáveis; partidas completas do Capítulo I ao epílogo sem travamentos |
 | Testes de sabotagem | 18 casos. **8 falhavam** antes das correções; hoje 18 de 18 passam |
 | Testes de stress | 5 casos. 1 bug encontrado (limite de partículas) e corrigido; hoje 5 de 5 passam |
-| Testes de segurança | 10 casos, 10 de 10 passam. 8 problemas de segurança encontrados na revisão e corrigidos |
+| Testes de segurança | 16 casos, 16 de 16 passam. 9 problemas de segurança encontrados na revisão e corrigidos |
 | Testes rigorosos (1.3.2) | 14 casos com toques reais num iPhone emulado e o jogo servido por HTTP. **3 bugs reais encontrados** e corrigidos; hoje 14 de 14 passam (seção 7) |
 | Dependências (`npm audit`) | 4 alertas moderados corrigidos. Zero vulnerabilidades |
 | Ferramentas em Python (Bandit) | 2 alertas médios e 2 baixos corrigidos. Nenhum problema restante |
@@ -147,6 +147,12 @@ O jogo é uma página estática, sem servidor, sem contas e sem envio de dados. 
 | 8 | CSP diretiva por diretiva (`default-src`, `script-src`, `connect-src`, `object-src`, `base-uri`, `form-action`, `media-src`, `font-src`, `img-src`) | ✓ todas no valor mais restrito que o jogo aceita |
 | 9 | Rede com o jogo servido por HTTP, música e cinema ligados | ✓ só o próprio site e as fontes do Google; nenhum arquivo faltando |
 | 10 | Aparência e galeria da jornada adulteradas no save (caminhos `../`, HTML, `onerror`) | ✓ descartadas; nenhum pedido fora das pastas do jogo |
+| 11 | Mesa: 4 nomes hostis em 8 telas (votação, dados do grupo, combate, personagem, evolução, carta, jornadas, conquistas) | ✓ todo nome exibido como texto |
+| 12 | Mesa: 11 saves adulterados (heróis demais ou de menos, índices absurdos, votos venenosos, `__proto__`, mesa dentro de herói, números inválidos, nome de 100 mil caracteres) | ✓ limpos ou recusados; a mesa carregada continua jogável |
+| 13 | Mesa: códigos de importação adulterados (50 heróis, voto `__proto__`, HTML no nome) | ✓ recusados ou limpos |
+| 14 | Mesa: botões de herói adulterados na página (`999`, `-1`, `__proto__`, `1e9`…) | ✓ a troca de herói ignora índices que não existem |
+| 15 | Preferências adulteradas no navegador (espaço de save, narração, cinema, áudio, perfil) | ✓ voltam ao padrão, sem erro |
+| 16 | Mesa: 2.000 saves corrompidos ao acaso | ✓ nenhum quebra o jogo |
 
 ### 4.3 Problemas encontrados e corrigidos
 
@@ -160,6 +166,7 @@ O jogo é uma página estática, sem servidor, sem contas e sem envio de dados. 
 | 6 | O histórico de combate, salvo em HTML, era restaurado do save | Baixa | Nunca é restaurado; o combate recomeça com o histórico vazio |
 | 7 | Ferramentas em Python: o nome do modelo, vindo da linha de comando ou do ambiente, entrava no caminho da URL da API sem validação | Baixa | Nome validado (`[\w.-]+`), URL conferida antes da chamada |
 | 8 | Ferramentas em Python: proteção feita com `assert`, que some quando o Python roda otimizado (`-O`) | Baixa | Trocada por uma checagem que sempre roda |
+| 9 | Mesa: um voto salvo com texto especial (`__proto__`) era aceito e podia distorcer a contagem dos votos (não executava código) | Baixa | Só são aceitos votos com o texto de uma escolha real da cena; a contagem usa `Map` |
 
 ### 4.4 Política de Segurança de Conteúdo
 

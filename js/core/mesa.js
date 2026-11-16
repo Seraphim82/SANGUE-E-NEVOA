@@ -145,10 +145,11 @@ function castVote(texto) {
     m.voter = [...Array(n).keys()].find((h) => m.votes[h] === undefined);
     return null;
   }
-  const conta = {};
-  for (const v of Object.values(m.votes)) conta[v] = (conta[v] || 0) + 1;
-  const max = Math.max(...Object.values(conta));
-  const empatados = Object.keys(conta).filter((k) => conta[k] === max);
+  // Map, e não objeto comum: um texto como "__proto__" não pode mexer na contagem.
+  const conta = new Map();
+  for (const v of Object.values(m.votes)) conta.set(v, (conta.get(v) || 0) + 1);
+  const max = Math.max(...conta.values());
+  const empatados = [...conta.keys()].filter((k) => conta.get(k) === max);
   const venc = empatados.length === 1 ? empatados[0] : m.votes[0];
   resetVotes();
   return venc;
@@ -156,7 +157,8 @@ function castVote(texto) {
 
 /** Quantos votos cada escolha tem agora. */
 function voteCounts() {
-  const out = {};
+  // Sem protótipo: a contagem é lida pelo texto da escolha, que poderia ser "__proto__".
+  const out = Object.create(null);
   if (!inMesa()) return out;
   for (const v of Object.values(state.mesa.votes)) out[v] = (out[v] || 0) + 1;
   return out;

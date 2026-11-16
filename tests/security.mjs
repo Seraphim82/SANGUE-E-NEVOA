@@ -387,4 +387,420 @@ casos.push(
   ],
 );
 
+// ---------------------------------------------------------------- Mesa (multiplayer local)
+
+const NOMES_HOSTIS = [
+  `<img src=x onerror="window.__xss=1">`,
+  `"><svg onload="window.__xss=1">`,
+  `</b><script>window.__xss=1</script>`,
+  "${window.__xss=1}",
+];
+
+/** Elementos que um ataque de HTML deixaria na página. */
+const injetados = (page) =>
+  page.evaluate(() => document.querySelectorAll("img[src='x'], svg[onload], script:not([src])").length);
+
+/** Um save de mesa válido, que os casos abaixo adulteram. */
+function saveDeMesa(extra = {}) {
+  const heroi = (nome) => ({
+    name: nome,
+    origin: "pastor",
+    look: "ruivo",
+    armor: "la",
+    hp: 10,
+    unspent: 4,
+    earned: 4,
+  });
+  return {
+    ...heroi("Mestre"),
+    mode: "playing",
+    scene: "c1_inicio",
+    flags: {},
+    visited: { c1_inicio: 1 },
+    mesa: { heroes: [heroi("Mestre"), heroi("Ailsa"), heroi("Callum")], active: 0, voter: 0, votes: {} },
+    ...extra,
+  };
+}
+
+casos.push(
+  [
+    "Mesa: nomes hostis em todas as telas da mesa não executam nada",
+    async (browser) => {
+      const { page, context, erros } = await abrirJogo(browser);
+      await page.evaluate((nomes) => {
+        const herois = nomes.map((n, i) => {
+          const c = newChar(n, ["ferreiro", "pastor", "curandeira"][i % 3]);
+          c.mode = "playing";
+          return migrate(c);
+        });
+        createMesa(herois);
+        go("c1_inicio");
+      }, NOMES_HOSTIS);
+      const telas = [
+        // votação e faixa dos heróis
+        () => document.querySelector("#choices .choice")?.click(),
+        // teste em grupo (banner com os dados de cada herói)
+        () => {
+          go("c1_vau");
+          const i = visibleChoices(SC[state.scene]).findIndex((c) => c.test);
+          for (let k = 0; k < state.mesa.heroes.length && i >= 0; k++) choose(i);
+        },
+        // combate com a vez de cada herói no registro
+        () => {
+          state.combat = null;
+          runOutcome({ e: ["recruta", "cao"], win: "c1_inicio", lose: "c1_inicio" });
+          playerAttack("normal");
+          playerAttack("normal");
+        },
+        () => {
+          state.combat = null;
+          render();
+          openChar("roupa");
+        },
+        () => {
+          closeEvolve();
+          openEvolve();
+        },
+        () => {
+          closeEvolve();
+          openHeroCard();
+        },
+        () => {
+          closeEvolve();
+          save();
+          openSlots();
+        },
+        () => {
+          closeEvolve();
+          openAchievements();
+        },
+      ];
+      for (let i = 0; i < telas.length; i++) {
+        await page.evaluate(`(${telas[i].toString()})()`);
+        await page.waitForTimeout(250);
+        verificar(!(await page.evaluate(() => window.__xss)), `um nome executou código na tela ${i + 1}`);
+        verificar(!(await injetados(page)), `HTML de um nome entrou na página na tela ${i + 1}`);
+      }
+      verificar(!erros.length, `erro de execução: ${erros[0]}`);
+      await context.close();
+      return `${NOMES_HOSTIS.length} nomes × ${telas.length} telas`;
+    },
+  ],
+  [
+    "Mesa: saves adulterados são limpos, sem erro, sem XSS e sem poluir o protótipo",
+    async (browser) => {
+      const fundo = { name: "x", origin: "pastor" };
+      const ataques = {
+        "heróis demais": saveDeMesa({
+          mesa: { heroes: Array(10000).fill(fundo), active: 0, voter: 0, votes: {} },
+        }),
+        "nome gigante": saveDeMesa({
+          mesa: {
+            ...saveDeMesa().mesa,
+            heroes: [
+              { name: "x".repeat(100000), origin: "pastor" },
+              { name: "B", origin: "pastor" },
+            ],
+          },
+        }),
+        "herói só": saveDeMesa({ mesa: { heroes: [fundo], active: 0, voter: 0, votes: {} } }),
+        "índices absurdos": saveDeMesa({ mesa: { ...saveDeMesa().mesa, active: 1e9, voter: -1 } }),
+        "índices em texto": saveDeMesa({ mesa: { ...saveDeMesa().mesa, active: "1", voter: "__proto__" } }),
+        "votos venenosos": saveDeMesa({
+          mesa: {
+            ...saveDeMesa().mesa,
+            votes: {
+              0: "__proto__",
+              1: "constructor",
+              2: "<img src=x onerror=window.__xss=1>",
+              99: "a",
+              __proto__: { polluted: 1 },
+            },
+          },
+        }),
+        "herói venenoso": saveDeMesa({
+          mesa: {
+            ...saveDeMesa().mesa,
+            heroes: [
+              { name: "Mestre", origin: "pastor" },
+              JSON.parse(
+                '{"__proto__":{"polluted":1},"name":"<svg onload=window.__xss=1>","origin":"pastor","constructor":{"prototype":{"polluted":1}}}',
+              ),
+              { name: "C", origin: "inexistente" },
+            ],
+          },
+        }),
+        "mesa dentro de herói": saveDeMesa({
+          mesa: {
+            ...saveDeMesa().mesa,
+            heroes: [
+              { name: "A", origin: "pastor", mesa: saveDeMesa().mesa },
+              { name: "B", origin: "pastor" },
+            ],
+          },
+        }),
+        "números inválidos": saveDeMesa({
+          mesa: {
+            ...saveDeMesa().mesa,
+            heroes: [
+              { name: "A", origin: "pastor", hp: "NaN", attrs: { ST: 1e9, DX: -50 }, coins: Infinity },
+              { name: "B", origin: "pastor", unspent: -1e9, earned: "999" },
+            ],
+          },
+        }),
+        "mesa que não é objeto": saveDeMesa({ mesa: "<img src=x onerror=window.__xss=1>" }),
+        "heróis que não são lista": saveDeMesa({ mesa: { heroes: { 0: {}, length: 3 }, active: 0 } }),
+      };
+      const resultados = [];
+      for (const [nome, save] of Object.entries(ataques)) {
+        const { page, context, erros } = await abrirJogo(browser, {
+          antes: `localStorage.setItem(${JSON.stringify(SAVE_KEY)}, ${JSON.stringify(JSON.stringify(save))})`,
+        });
+        const r = await page.evaluate(() => {
+          const c = loadSave();
+          if (c) {
+            state = migrate(c);
+            render();
+          }
+          return {
+            ok: !!c,
+            n: c?.mesa ? c.mesa.heroes.length : 1,
+            active: c?.mesa?.active,
+            voter: c?.mesa?.voter,
+            votos: c?.mesa ? Object.values(c.mesa.votes) : [],
+            textos: c ? SC[c.scene].choices.map((x) => x.t) : [],
+            nomes: c?.mesa ? c.mesa.heroes.map((h) => String(h.name).length) : [],
+            poluiu: {}.polluted !== undefined,
+          };
+        });
+        verificar(!r.poluiu, `${nome}: o save poluiu o protótipo`);
+        verificar(r.n >= 1 && r.n <= 4, `${nome}: mesa com ${r.n} heróis`);
+        if (r.active !== undefined)
+          verificar(
+            Number.isInteger(r.active) && r.active >= 0 && r.active < r.n,
+            `${nome}: herói ativo inválido (${r.active})`,
+          );
+        if (r.voter !== undefined)
+          verificar(
+            Number.isInteger(r.voter) && r.voter >= 0 && r.voter < r.n,
+            `${nome}: votante inválido (${r.voter})`,
+          );
+        verificar(
+          r.votos.every((v) => r.textos.includes(v)),
+          `${nome}: voto que não é uma escolha da cena: ${r.votos}`,
+        );
+        verificar(
+          r.nomes.every((t) => t <= 24),
+          `${nome}: nome de herói longo demais`,
+        );
+        if (r.ok) {
+          // A mesa carregada continua jogável: um toque numa escolha faz efeito.
+          const antes = await page.evaluate(() => JSON.stringify(state));
+          await page.evaluate(() => document.querySelector("#choices .choice")?.click());
+          await page.waitForTimeout(700);
+          verificar(
+            (await page.evaluate(() => JSON.stringify(state))) !== antes,
+            `${nome}: a mesa carregada travou`,
+          );
+        }
+        verificar(!(await page.evaluate(() => window.__xss)), `${nome}: executou código`);
+        verificar(!(await injetados(page)), `${nome}: HTML do save entrou na página`);
+        verificar(!erros.length, `${nome}: erro de execução: ${erros[0]}`);
+        resultados.push(`${nome}: ${r.ok ? `${r.n} herói(s)` : "recusado"}`);
+        await context.close();
+      }
+      return `${resultados.length} ataques`;
+    },
+  ],
+  [
+    "Mesa: código de importação adulterado é recusado ou limpo",
+    async (browser) => {
+      const { page, context, erros } = await abrirJogo(browser);
+      const r = await page.evaluate((save) => {
+        const codigo = (obj) => `SEN1.${toBase64Url(JSON.stringify(obj))}`;
+        const tentativas = [
+          codigo({
+            jogo: "sangue-e-nevoa",
+            versao: 1,
+            save: { ...save, mesa: { heroes: Array(50).fill(save.mesa.heroes[0]) } },
+          }),
+          codigo({
+            jogo: "sangue-e-nevoa",
+            versao: 1,
+            save: { ...save, mesa: { ...save.mesa, votes: { 0: "__proto__" } } },
+          }),
+          codigo({
+            jogo: "sangue-e-nevoa",
+            versao: 1,
+            save: {
+              ...save,
+              mesa: {
+                ...save.mesa,
+                heroes: [
+                  { name: "<img src=x onerror=window.__xss=1>", origin: "pastor" },
+                  save.mesa.heroes[1],
+                ],
+              },
+            },
+          }),
+        ];
+        return tentativas.map((t) => {
+          const out = importSave(t);
+          if (out.erro) return "recusado";
+          return `${out.save.mesa ? out.save.mesa.heroes.length : 1} herói(s), votos ${JSON.stringify(out.save.mesa?.votes || {})}`;
+        });
+      }, saveDeMesa());
+      verificar(!r[0].startsWith("50"), `importou uma mesa com 50 heróis: ${r[0]}`);
+      verificar(!/__proto__/.test(r[1]), `importou um voto venenoso: ${r[1]}`);
+      verificar(!(await page.evaluate(() => window.__xss)), "a importação executou código");
+      verificar(await page.evaluate(() => ({}).polluted === undefined), "a importação poluiu o protótipo");
+      verificar(!erros.length, `erro de execução: ${erros[0]}`);
+      await context.close();
+      return r.join(" | ");
+    },
+  ],
+  [
+    "Mesa: botões de herói adulterados na página não trocam para heróis que não existem",
+    async (browser) => {
+      const { page, context, erros } = await abrirJogo(browser);
+      await page.evaluate(() => {
+        const herois = ["A", "B", "C"].map((n) => {
+          const c = newChar(n, "pastor");
+          c.mode = "playing";
+          return migrate(c);
+        });
+        createMesa(herois);
+        go("c3_intendente");
+      });
+      for (const falso of ["999", "-1", "__proto__", "1e9", "1.5", "constructor", ""]) {
+        await page.evaluate((v) => {
+          const b = document.querySelector(".mesa-chip[data-heroi]");
+          b.dataset.heroi = v;
+          b.disabled = false;
+          b.click();
+        }, falso);
+        const r = await page.evaluate(() => [state.mesa.active, state.mesa.heroes.length, typeof state.name]);
+        verificar(
+          Number.isInteger(r[0]) && r[0] >= 0 && r[0] < r[1] && r[2] === "string",
+          `índice falso "${falso}" corrompeu a mesa: ${r}`,
+        );
+      }
+      verificar(!erros.length, `erro de execução: ${erros[0]}`);
+      await context.close();
+    },
+  ],
+);
+
+casos.push(
+  [
+    "Preferências adulteradas no navegador (espaço, narração, cinema, áudio, perfil) não quebram nem injetam",
+    async (browser) => {
+      const lixo = [
+        '"__proto__"',
+        '{"__proto__":{"polluted":1}}',
+        '"<img src=x onerror=window.__xss=1>"',
+        "nao-e-json{",
+        "1e309",
+        '{"mode":"__proto__","on":"sim","music":"<b>"}',
+      ];
+      const resultados = [];
+      for (const valor of lixo) {
+        const { page, context, erros } = await abrirJogo(browser, {
+          antes: `for (const k of ["sen-slot","sen-narracao","sen-cinema","sen-audio","sen-perfil"]) localStorage.setItem(k, ${JSON.stringify(valor)});`,
+        });
+        await comecarJogo(page);
+        await page.click("#btnMenu");
+        await page.click("#mClose");
+        const r = await page.evaluate(() => ({
+          slot: activeSlot,
+          cinema: CINEMA.mode,
+          narr: typeof NARRATOR.on,
+          poluiu: {}.polluted !== undefined,
+          xss: !!window.__xss,
+        }));
+        verificar(
+          Number.isInteger(r.slot) && r.slot >= 1 && r.slot <= 3,
+          `espaço inválido com ${valor}: ${r.slot}`,
+        );
+        verificar(
+          ["completo", "rapido", "desligado"].includes(r.cinema) && r.narr === "boolean",
+          `preferência inválida aceita com ${valor}`,
+        );
+        verificar(!r.poluiu && !r.xss, `ataque pelas preferências funcionou com ${valor}`);
+        verificar(!erros.length, `erro com ${valor}: ${erros[0]}`);
+        resultados.push("ok");
+        await context.close();
+      }
+      return `${resultados.length} valores hostis`;
+    },
+  ],
+  [
+    "Mesa: 2.000 saves de mesa corrompidos ao acaso não quebram o jogo",
+    async (browser) => {
+      const { page, context, erros } = await abrirJogo(browser);
+      const r = await page.evaluate((base) => {
+        let semente = 11;
+        const aleatorio = () => (semente = (semente * 1103515245 + 12345) % 2147483648) / 2147483648;
+        const lixo = () => {
+          const opcoes = [
+            null,
+            -1,
+            1e308,
+            NaN,
+            "",
+            "<img src=x onerror=window.__xss=1>",
+            "__proto__",
+            [],
+            {},
+            true,
+            99,
+            "1",
+            { __proto__: { x: 1 } },
+          ];
+          return opcoes[Math.floor(aleatorio() * opcoes.length)];
+        };
+        const caminhos = [];
+        const percorrer = (o, p) => {
+          for (const k of Object.keys(o)) {
+            caminhos.push([...p, k]);
+            if (o[k] && typeof o[k] === "object") percorrer(o[k], [...p, k]);
+          }
+        };
+        percorrer(base, []);
+        let quebrou = 0;
+        const exemplos = [];
+        for (let n = 0; n < 2000; n++) {
+          const save = JSON.parse(JSON.stringify(base));
+          for (let m = 0; m < 1 + Math.floor(aleatorio() * 4); m++) {
+            const c = caminhos[Math.floor(aleatorio() * caminhos.length)];
+            let alvo = save;
+            for (const k of c.slice(0, -1)) alvo = alvo && typeof alvo === "object" ? alvo[k] : null;
+            if (alvo && typeof alvo === "object") alvo[c.at(-1)] = lixo();
+          }
+          try {
+            const limpo = sanitizeSave(JSON.parse(JSON.stringify(save)));
+            if (limpo) {
+              state = migrate(limpo);
+              render();
+              if (inMesa()) {
+                switchHero(state.mesa.heroes.length - 1);
+                switchHero(0);
+              }
+            }
+          } catch (e) {
+            quebrou++;
+            if (exemplos.length < 2) exemplos.push(e.message);
+          }
+        }
+        return { quebrou, exemplos, poluiu: {}.x !== undefined, xss: !!window.__xss };
+      }, saveDeMesa());
+      verificar(!r.quebrou, `${r.quebrou} saves quebraram o jogo: ${r.exemplos.join(" | ")}`);
+      verificar(!r.poluiu && !r.xss, "um save corrompido poluiu o protótipo ou executou código");
+      verificar(!erros.length, `erro de execução: ${erros[0]}`);
+      await context.close();
+      return "2000 saves";
+    },
+  ],
+);
+
 process.exit((await executar("Testes de segurança", casos)) ? 1 : 0);

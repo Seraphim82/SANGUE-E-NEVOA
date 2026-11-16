@@ -267,12 +267,14 @@ function sanitizeMesa(raw, c) {
     if (!limpo) return null;
     heroes.push(pickPersonal(limpo));
   }
+  // Um voto só vale se for o texto de uma escolha que existe na cena salva.
+  const textos = new Set((SC[c.scene]?.choices || []).map((ch) => ch.t).filter((t) => typeof t === "string"));
   const votes = {};
   if (isPlainObject(m.votes))
     for (const k of Object.keys(m.votes)) {
       const i = Number(k);
       const v = m.votes[k];
-      if (valido(i) && String(i) === k && typeof v === "string" && v.length <= 200) votes[i] = v;
+      if (valido(i) && String(i) === k && typeof v === "string" && textos.has(v)) votes[i] = v;
     }
   return { heroes, active, voter: valido(m.voter) ? m.voter : 0, votes };
 }
