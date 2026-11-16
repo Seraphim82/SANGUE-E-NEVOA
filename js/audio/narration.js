@@ -166,6 +166,16 @@ const NARRATOR = (() => {
     start();
   }
 
+  /** Diz uma frase solta (o trailer do final), se ela tiver áudio gravado. */
+  function say(text) {
+    if (!on) return;
+    const key = narrationKey(text);
+    if (!NARRATION_CLIPS.has(key)) return;
+    stop();
+    queue = [key];
+    playNext();
+  }
+
   /** Chamado a cada desenho de cena: só começa a narrar quando a cena é outra. */
   function onScene(id) {
     if (id !== lastScene) scene(id);
@@ -178,6 +188,7 @@ const NARRATOR = (() => {
 
   return {
     scene,
+    say,
     onScene,
     stop,
     reset,

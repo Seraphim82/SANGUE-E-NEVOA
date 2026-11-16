@@ -33,7 +33,21 @@ const coletar = (partidas) => {
     migrate(state);
     anotar(id);
   }
-  // 2. Partidas aleatórias: cada cena visitada é lida com as marcas daquele momento.
+  // 2. As frases do trailer do final, para cada final e para as marcas que mudam os quadros.
+  for (const final of ["primavera", "selo", "dama", "inverno"])
+    for (const kelpie of [0, 1])
+      for (const tamMorto of [0, 1]) {
+        state = newChar("Teste", origens[0]);
+        state.mode = "playing";
+        migrate(state);
+        state.flags.kelpie_divida = kelpie;
+        state.flags.tam_morto = tamMorto;
+        for (const texto of CINEMA.finaleNarration(final)) {
+          const chave = narrationKey(texto);
+          if (!clips.has(chave)) clips.set(chave, { chave, texto, cena: "c6_trailer" });
+        }
+      }
+  // 3. Partidas aleatórias: cada cena visitada é lida com as marcas daquele momento.
   CINEMA.finale = () => {};
   CINEMA.titleCard = () => {};
   const goOriginal = go;

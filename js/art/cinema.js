@@ -1255,6 +1255,19 @@ const CINEMA = (() => {
   }
 
   /** Toca o trailer do final. Roda mesmo com as cenas de luta desligadas; só fica parado com "reduzir movimento". */
+  /** A frase que o narrador diz em cada quadro do trailer. */
+  function slideNarration(slide) {
+    if (slide.end) return "Fim. Sangue e Névoa.";
+    if (slide.hero) return "Esta foi a sua lenda.";
+    const lugar = slide.eyebrow ? `${slide.eyebrow.replace(/ · /g, ", ")}. ` : "";
+    return `${lugar}${slide.line}`.trim();
+  }
+
+  /** As frases do trailer para um final, com as marcas atuais da história (para as ferramentas). */
+  function finaleNarration(ending) {
+    return finaleSlides(ending).map(slideNarration);
+  }
+
   function finale(ending) {
     if (state) heroPortrait(state);
     const slides = finaleSlides(ending);
@@ -1371,6 +1384,11 @@ const CINEMA = (() => {
     const t = performance.now() / 1000;
     const i = Math.max(0, Math.min(f.slides.length - 1, Math.floor(f.shotTime / SLIDE_S)));
     const local = f.shotTime - i * SLIDE_S;
+    // A cada quadro novo, o narrador diz a frase dele, por cima da música do final.
+    if (f.spoken !== i) {
+      f.spoken = i;
+      NARRATOR.say(slideNarration(f.slides[i]));
+    }
     c.fillStyle = "#000";
     c.fillRect(0, 0, W, H);
     // Fusão: o quadro anterior some enquanto o novo aparece.
@@ -1425,6 +1443,7 @@ const CINEMA = (() => {
     preload,
     titleCard,
     finale,
+    finaleNarration,
     stop,
     setMode,
     setupOverlay,

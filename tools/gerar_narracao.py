@@ -85,6 +85,10 @@ def gravar(chave, audio, taxa, tipo):
     return destino
 
 
+class CotaDoDia(Exception):
+    """O Google avisou que a cota de pedidos do dia acabou: só amanhã."""
+
+
 def gerar(item):
     chave, texto = item["chave"], item["texto"]
     if not CHAVE_VALIDA.match(chave):
@@ -99,13 +103,16 @@ def gerar(item):
             gravar(chave, audio, taxa, tipo)
             return f"{chave}: ok ({item['cena']})"
         except urllib.error.HTTPError as erro:
-            corpo = erro.read().decode()[:160]
+            corpo = erro.read().decode()[:1200]
             if erro.code == 402:
                 raise SystemExit("Os créditos da chave do Gemini acabaram.") from erro
+            if erro.code == 429 and "per_day" in corpo + erro.headers.get("x-quota", ""):
+                raise CotaDoDia() from erro
             if erro.code not in (429, 500, 502, 503):
                 return f"{chave}: erro HTTP {erro.code} {corpo}"
         except Exception as erro:  # rede instável: tenta de novo
             corpo = str(erro)[:160]
+        print(f"{chave}: o Google pediu calma, nova tentativa em {espera} s", flush=True)
         time.sleep(espera)
         espera = min(300, espera * 2)
     return f"{chave}: desistiu depois de várias tentativas ({corpo})"
@@ -117,10 +124,17 @@ def main():
     itens = [i for i in itens if i["cena"].startswith(filtro)]
     faltam = [i for i in itens if not (PASTA / f"{i['chave']}.mp3").exists()]
     print(f"{len(itens)} parágrafos, {len(faltam)} sem áudio", flush=True)
-    with ThreadPoolExecutor(max_workers=3) as pool:
-        for resultado in pool.map(gerar, faltam):
-            if resultado:
-                print(resultado, flush=True)
+    feitos = 0
+    try:
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            for resultado in pool.map(gerar, faltam):
+                if resultado:
+                    feitos += resultado.endswith(")")
+                    print(resultado, flush=True)
+    except CotaDoDia:
+        print("Cota de pedidos do dia esgotada: a geração continua amanhã.", flush=True)
+    restam = sum(1 for i in itens if not (PASTA / f"{i['chave']}.mp3").exists())
+    print(f"RESUMO: {feitos} gravados agora, {restam} ainda sem áudio", flush=True)
 
 
 if __name__ == "__main__":
