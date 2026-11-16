@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## 1.4.0 · O filme do final
+
+### Novidades
+- **Trailer do final:** depois do final escolhido, "Ver o fim da história" abre um filme de cerca de um minuto, com a música do final. Ele recapitula a jornada de 1296 a 1314 (Kilbride em chamas, a ponte de Stirling, Falkirk, a traição de Wallace, a coroação de Bruce, Bannockburn), mostra o final que você escolheu, "A Escócia é livre", o seu herói com o título conquistado e, por fim, "Fim".
+- Nova tela de encerramento com as opções "Ler o epílogo" e "Rever o filme do final". O epílogo também permite rever o filme.
+- Alguns quadros do trailer mudam conforme as suas escolhas (o kelpie, o destino de Tam).
+
 ## 1.3.3 · Aprendizados sem voltar ao topo
 
 ### Correções

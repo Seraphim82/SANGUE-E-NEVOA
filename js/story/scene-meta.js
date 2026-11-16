@@ -224,6 +224,7 @@ const META = {
   c6_fim_selo: ["fim_selo", "mistico"],
   c6_fim_dama: ["fim_selo", "lamento"],
   c6_fim_inverno: ["fim_inverno", "lamento"],
+  c6_creditos: ["vitoria", "tema"],
   c6_epilogo: ["epilogo", "tema"],
 };
 const meta = (id) => {
@@ -270,7 +271,7 @@ const ENDING_ART = new Set(["epilogo", "fim_inverno", "fim_primavera", "fim_selo
 /** A faixa da trilha sonora de uma cena, pelo clima e pela ilustração dela. */
 function trackFor(id) {
   const [art, mood] = meta(id);
-  if (ENDING_ART.has(art)) return "final";
+  if (ENDING_ART.has(art) || id === "c6_creditos") return "final";
   if (art === "taverna") return "taverna";
   if (mood === "lamento") return "lamento";
   if (mood === "mistico") return "mistico";

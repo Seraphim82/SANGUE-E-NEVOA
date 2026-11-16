@@ -88,6 +88,7 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 - Os planos ficam em `img/action/` e só são carregados os listados em `ACTION_SHOTS` (`js/data/action-shots.js`, gerado por `tools/listar_planos.mjs`). `CINEMA.preload()` começa a baixá-los quando o combate começa. Se um plano faltar, o cinema usa outro plano ou os retratos pintados sobre a cena.
 - `CINEMA.shot()` sem gravação em andamento não faz nada, então chamar as funções de combate direto (como fazem os testes de stress) não abre filme nenhum.
 - Um clique, toque ou tecla para o filme. Com "reduzir movimento" no sistema ou com o modo desligado no menu (`sen-cinema` no `localStorage`), nada é encenado. Um limite de 25 segundos e um `try/catch` no quadro garantem que a camada nunca prenda o jogador.
+- `CINEMA.finale(final)` toca o trailer do final: 13 quadros de 4,6 s com fusão, montados por `finaleSlides()` a partir das marcas da história. A cena `c6_creditos` o toca ao entrar, e a ação de escolha `act: "filme"` o repete. Ele roda mesmo com as cenas de luta desligadas; com "reduzir movimento", os quadros ficam parados.
 - `CINEMA.titleCard()` abre os capítulos. `go()` chama essa função ao entrar pela primeira vez numa cena `cN_inicio`, e também registra o herói na galeria da jornada (`recordJourney()`).
 
 ## Trilha sonora

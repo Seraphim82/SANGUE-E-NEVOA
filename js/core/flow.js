@@ -40,6 +40,7 @@ function choose(i) {
   state.banner = null;
   if (ch.act === "evolve") return openEvolve();
   if (ch.act === "newgame") return showTitle(true);
+  if (ch.act === "filme") return CINEMA.finale(state.flags.final);
   if (ch.fx) ch.fx();
   if (ch.test) {
     const opts = typeof ch.test.o === "function" ? ch.test.o() : ch.test.o;

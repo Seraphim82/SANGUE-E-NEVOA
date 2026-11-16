@@ -161,6 +161,13 @@ await caso("toda escolha visível de todas as cenas responde a UM toque", async 
         CHECK = snap;
         render();
       }, base.snap);
+      // Se um filme estiver passando (o trailer do final), a pessoa toca nele para pular,
+      // como faria de verdade, e só então escolhe.
+      if (await page.evaluate(() => CINEMA.isPlaying())) {
+        await page.locator("#cinema").tap({ position: { x: 20, y: 20 } });
+        await page.waitForTimeout(500);
+        verificar(!(await page.evaluate(() => CINEMA.isPlaying())), `o toque não pulou o filme em ${id}`);
+      }
       const antes = await retrato(page);
       const botao = page.locator(`#choices .choice[data-i="${i}"]`);
       if (!(await botao.count())) continue;

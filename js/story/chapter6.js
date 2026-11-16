@@ -361,7 +361,7 @@ Então ela ri. Um riso velho, enorme, que parece o gelo dos lagos rachando na pr
 “Nenhum rei me ofereceu isso. Nenhum druida. Uma criança de Kilbride.” Ela se abaixa até o rosto dela ficar na altura do seu. “Aceito.”
 
 A geada recua da Pedra. A neve vira chuva, a chuva vira sol. Em volta da carroça, a grama branca fica verde, e flores nascem onde o gelo estava. Na batalha, os ingleses fogem, e os escoceses param, olhando para o campo florido sem entender.`,
-    choices: [{ t: "Epílogo", go: "c6_epilogo" }],
+    choices: [{ t: "Ver o fim da história", go: "c6_creditos" }],
   },
   c6_fim_selo: {
     eyebrow: "Final",
@@ -379,7 +379,7 @@ A Pedra puxa a Cailleach para dentro de si como a água puxa a chuva. Ela não g
 A neve para. O sol volta. Na batalha, o exército inglês foge em pânico, e o rei Eduardo II galopa para o castelo de Dunbar. A Escócia é livre.
 
 A Pedra, agora pesada como nunca, só aceita voltar para debaixo da colina de Dunsinane.`,
-    choices: [{ t: "Epílogo", go: "c6_epilogo" }],
+    choices: [{ t: "Ver o fim da história", go: "c6_creditos" }],
   },
   c6_fim_dama: {
     eyebrow: "Final",
@@ -397,7 +397,7 @@ Então a névoa sobe do chão, e a Dama Branca se põe entre as duas. Pela prime
 Quando a luz some, a Pedra está selada de novo, e não há mais ninguém sobre a carroça. Só uma flor branca de sorveira, no meio da neve que derrete.
 
 A batalha está ganha. A Escócia é livre. E você nunca mais vai ver a Dama.`,
-    choices: [{ t: "Epílogo", go: "c6_epilogo" }],
+    choices: [{ t: "Ver o fim da história", go: "c6_creditos" }],
   },
   c6_fim_inverno: {
     eyebrow: "Final",
@@ -415,7 +415,21 @@ A Cailleach suspira, livre, e cresce até cobrir o céu. A neve começa a cair e
 “Obrigada, criança”, diz a Velha, já muito longe. “Cumpriste a tua palavra. Poucos homens cumprem.”
 
 Bruce ganhou a batalha de Bannockburn. Mas não houve primavera em 1315, nem em 1316. Os velhos ainda contam que foi o pior inverno que a Escócia já viu, e que nunca terminou de verdade.`,
-    choices: [{ t: "Epílogo", go: "c6_epilogo" }],
+    choices: [{ t: "Ver o fim da história", go: "c6_creditos" }],
+  },
+  c6_creditos: {
+    eyebrow: "Fim",
+    title: "A Escócia é livre",
+    enter() {
+      CINEMA.finale(state.flags.final);
+    },
+    text: () => `Bannockburn, 24 de junho de 1314. Dezoito anos depois da noite em que Kilbride queimou, a Escócia é livre.
+
+A sua história terminou. O que aconteceu com cada um que cruzou o seu caminho está no epílogo.`,
+    choices: [
+      { t: "Ler o epílogo", go: "c6_epilogo" },
+      { t: "Rever o filme do final", act: "filme" },
+    ],
   },
   c6_epilogo: {
     eyebrow: "Epílogo",
@@ -481,6 +495,9 @@ Seu título final é **${title(state)}**, com ${state.earned} pontos de experiê
 
 **Fim de Sangue e Névoa.** Obrigado por jogar.`;
     },
-    choices: [{ t: "Começar uma nova jornada, com outras escolhas", act: "newgame" }],
+    choices: [
+      { t: "Rever o filme do final", act: "filme" },
+      { t: "Começar uma nova jornada, com outras escolhas", act: "newgame" },
+    ],
   },
 });

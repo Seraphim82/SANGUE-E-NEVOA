@@ -916,8 +916,13 @@ const CINEMA = (() => {
     try {
       const real = Math.min(1 / 30, (now - f.last) / 1000);
       f.last = now;
-      if (now - f.startedAt > WATCHDOG_MS) return stop();
-      if (f.kind === "combat") {
+      if (now - f.startedAt > (f.maxMs || WATCHDOG_MS)) return stop();
+      if (f.kind === "finale") {
+        // O trailer do final tem o próprio ritmo: o modo "rápido" do combate não vale aqui.
+        f.shotTime += real;
+        if (f.shotTime >= f.dur) return stop();
+        drawFinale(f);
+      } else if (f.kind === "combat") {
         const cur = f.current;
         const slow = cur?.slow && f.shotTime > 0.05 && f.shotTime < 0.05 + cur.slow ? 0.3 : 1;
         const dt = (real * slow) / f.speed;
@@ -1175,6 +1180,203 @@ const CINEMA = (() => {
     drawBars(c, 1, "", null);
   }
 
+  // ---------------------------------------------------------------- trailer do final
+
+  /** Quanto dura cada quadro do trailer e a fusão entre um e outro, em segundos. */
+  const SLIDE_S = 4.6;
+  const FADE_S = 0.9;
+  const FINALE_LINES = {
+    primavera: [
+      "O acordo das estações",
+      "A Velha do Inverno aceitou o seu acordo. O inverno vem em Samhain e vai embora em Beltane.",
+    ],
+    selo: ["O selo", "A Cailleach voltou a dormir dentro da Pedra, por mais mil anos."],
+    dama: ["O sacrifício da Dama", "A Dama Branca abraçou a irmã, e as duas se foram juntas."],
+    inverno: ["O inverno eterno", "Você cumpriu a sua palavra. A Velha está livre, e a neve não parou mais."],
+  };
+  const FINALE_ART = {
+    primavera: "fim_primavera",
+    selo: "fim_selo",
+    dama: "fim_selo",
+    inverno: "fim_inverno",
+  };
+
+  /** Os quadros do trailer: a jornada de 1296 a 1314, o final escolhido, a vitória e o herói. */
+  function finaleSlides(ending) {
+    const flag = (k) => !!state?.flags?.[k];
+    const [endTitle, endLine] = FINALE_LINES[ending] || FINALE_LINES.selo;
+    return [
+      {
+        art: "aldeia",
+        eyebrow: "1296 · Kilbride",
+        line: "Você era gente comum, numa aldeia às margens do Clyde.",
+      },
+      { art: "fogo", eyebrow: "Noite de Samhain", line: "Até a noite em que os ingleses trouxeram o fogo." },
+      {
+        art: flag("kelpie_divida") ? "vau" : "kelpie_rio",
+        eyebrow: "A névoa",
+        line: "Você fugiu pela névoa, e as coisas antigas acordaram com você.",
+      },
+      {
+        art: "ponte_cai",
+        eyebrow: "1297 · Stirling",
+        line: "Em Stirling, a ponte caiu, e o maior exército do mundo caiu com ela.",
+      },
+      {
+        art: "falkirk",
+        eyebrow: "1298 · Falkirk",
+        line: tamVivo()
+          ? "Em Falkirk, a Escócia sangrou. Mas não se rendeu."
+          : "Em Falkirk, a Escócia sangrou. E Tam ficou lá.",
+      },
+      {
+        art: "westminster",
+        eyebrow: "1305 · Londres",
+        line: "Wallace foi traído e morto. Mas não esquecido.",
+      },
+      { art: "bruce", eyebrow: "1306 · Scone", line: "Robert Bruce foi coroado rei, e a guerra recomeçou." },
+      {
+        art: "bannock",
+        eyebrow: "24 de junho de 1314 · Bannockburn",
+        line: "Dois exércitos. Um riacho. Uma última manhã.",
+      },
+      {
+        art: "cavalaria_foge",
+        eyebrow: "Bannockburn",
+        line: "E o exército de Eduardo II se desfez entre dois rios.",
+      },
+      { art: FINALE_ART[ending] || "fim_selo", eyebrow: endTitle, line: endLine },
+      { art: "vitoria", eyebrow: "", line: "A Escócia é livre.", big: true },
+      { hero: true, art: "epilogo", eyebrow: "Sua lenda", line: "" },
+      { end: true, art: "epilogo" },
+    ];
+  }
+
+  /** Toca o trailer do final. Roda mesmo com as cenas de luta desligadas; só fica parado com "reduzir movimento". */
+  function finale(ending) {
+    if (state) heroPortrait(state);
+    const slides = finaleSlides(ending);
+    AUD.mood("final");
+    startFilm({
+      kind: "finale",
+      slides,
+      dur: slides.length * SLIDE_S,
+      maxMs: (slides.length * SLIDE_S + 5) * 1000,
+      later: [],
+    });
+  }
+
+  function wrapText(c, text, x, y, maxWidth, lineHeight) {
+    const words = String(text).split(" ");
+    const lines = [];
+    let line = "";
+    for (const w of words) {
+      const test = line ? `${line} ${w}` : w;
+      if (c.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = w;
+      } else line = test;
+    }
+    if (line) lines.push(line);
+    lines.forEach((l, i) => c.fillText(l, x, y + (i - (lines.length - 1) / 2) * lineHeight));
+  }
+
+  function drawSlide(c, f, slide, local, alpha, t) {
+    if (alpha <= 0) return;
+    const move = reduceMotion ? 0 : local / SLIDE_S;
+    c.save();
+    c.globalAlpha = alpha;
+    c.fillStyle = "#000";
+    c.fillRect(0, 0, W, H);
+    if (slide.end) {
+      c.restore();
+      drawEndCard(c, local, alpha);
+      return;
+    }
+    c.save();
+    const zoom = 1.04 + 0.08 * move;
+    c.translate(W / 2, H / 2);
+    c.scale(zoom, zoom);
+    c.translate(-W / 2, -H / 2 + (H - ART.H) / 2);
+    ART.paintBackground(c, slide.art, reduceMotion ? 3 : t, {});
+    c.restore();
+    const shade = c.createLinearGradient(0, H * 0.35, 0, H);
+    shade.addColorStop(0, "rgba(0,0,0,0)");
+    shade.addColorStop(1, `rgba(0,0,0,${slide.hero ? 0.8 : 0.72})`);
+    c.fillStyle = shade;
+    c.fillRect(0, 0, W, H);
+    const textIn = Math.min(1, Math.max(0, (local - 0.5) / 0.7));
+    c.globalAlpha = alpha * textIn;
+    c.textAlign = "center";
+    if (slide.hero) {
+      c.fillStyle = "rgba(0,0,0,.45)";
+      c.fillRect(0, 0, W, H);
+      const p = state ? heroPortrait(state) : null;
+      if (p) {
+        const h = H * 1.02;
+        const w = (h * p.width) / p.height;
+        c.drawImage(p, W * 0.3 - w / 2, H - h, w, h);
+      }
+      c.textAlign = "left";
+      c.fillStyle = "#e08a45";
+      c.font = '700 18px "Alegreya Sans SC", sans-serif';
+      c.fillText("S U A   L E N D A", W * 0.52, H / 2 - 70);
+      c.fillStyle = "#eef2f2";
+      c.font = '44px "Uncial Antiqua", Georgia, serif';
+      c.fillText(state?.name || "", W * 0.52, H / 2 - 18);
+      c.font = 'italic 24px "Alegreya", Georgia, serif';
+      c.fillStyle = "#d8dfe0";
+      c.fillText(state ? title(state) : "", W * 0.52, H / 2 + 22);
+      c.font = '600 16px "Alegreya Sans SC", sans-serif';
+      c.fillStyle = "#b7c2c4";
+      c.fillText(state ? `${state.earned} pontos de experiência · 1296–1314` : "", W * 0.52, H / 2 + 56);
+    } else {
+      if (slide.eyebrow) {
+        c.fillStyle = "#e08a45";
+        c.font = '700 18px "Alegreya Sans SC", sans-serif';
+        c.fillText(slide.eyebrow.toUpperCase(), W / 2, H - (slide.big ? 210 : 112));
+      }
+      c.fillStyle = "#eef2f2";
+      if (slide.big) {
+        c.font = `${54 + 6 * move}px "Uncial Antiqua", Georgia, serif`;
+        c.fillText(slide.line, W / 2, H / 2 + 20);
+      } else {
+        c.font = 'italic 28px "Alegreya", Georgia, serif';
+        wrapText(c, slide.line, W / 2, H - 74, W * 0.78, 34);
+      }
+    }
+    c.restore();
+  }
+
+  function drawEndCard(c, local, alpha) {
+    const k = Math.min(1, local / 1.4);
+    c.save();
+    c.globalAlpha = alpha * k;
+    c.textAlign = "center";
+    c.fillStyle = "#eef2f2";
+    c.font = '84px "Uncial Antiqua", Georgia, serif';
+    c.fillText("Fim", W / 2, H / 2 + 6);
+    c.globalAlpha = alpha * Math.min(1, Math.max(0, (local - 1) / 1));
+    c.fillStyle = "#e08a45";
+    c.font = '700 18px "Alegreya Sans SC", sans-serif';
+    c.fillText("S A N G U E   E   N É V O A", W / 2, H / 2 + 56);
+    c.restore();
+  }
+
+  function drawFinale(f) {
+    const c = canvasContext();
+    if (!c) return;
+    const t = performance.now() / 1000;
+    const i = Math.min(f.slides.length - 1, Math.floor(f.shotTime / SLIDE_S));
+    const local = f.shotTime - i * SLIDE_S;
+    c.fillStyle = "#000";
+    c.fillRect(0, 0, W, H);
+    // Fusão: o quadro anterior some enquanto o novo aparece.
+    if (i > 0 && local < FADE_S) drawSlide(c, f, f.slides[i - 1], local + SLIDE_S, 1, t);
+    drawSlide(c, f, f.slides[i], local, i > 0 ? Math.min(1, local / FADE_S) : Math.min(1, local / 1.2), t);
+    drawBars(c, 1, "", null);
+  }
+
   // ---------------------------------------------------------------- controles
 
   /** Quanto tempo a película fica depois do toque que pula a cena, segurando o resto dele. */
@@ -1220,6 +1422,7 @@ const CINEMA = (() => {
     end,
     preload,
     titleCard,
+    finale,
     stop,
     setMode,
     setupOverlay,
