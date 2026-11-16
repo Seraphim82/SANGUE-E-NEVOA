@@ -428,6 +428,7 @@ Bruce ganhou a batalha de Bannockburn. Mas não houve primavera em 1315, nem em 
 A sua história terminou. O que aconteceu com cada um que cruzou o seu caminho está no epílogo.`,
     choices: [
       { t: "Ler o epílogo", go: "c6_epilogo" },
+      { t: "Ver a Carta do Herói", act: "carta" },
       { t: "Rever o filme do final", act: "filme" },
     ],
   },
@@ -496,6 +497,7 @@ Seu título final é **${title(state)}**, com ${state.earned} pontos de experiê
 **Fim de Sangue e Névoa.** Obrigado por jogar.`;
     },
     choices: [
+      { t: "Ver a Carta do Herói", act: "carta" },
       { t: "Rever o filme do final", act: "filme" },
       { t: "Começar uma nova jornada, com outras escolhas", act: "newgame" },
     ],

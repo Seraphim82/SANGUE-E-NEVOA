@@ -13,7 +13,7 @@ const declaradoEm = Object.create(null);
 const duplicados = [];
 for (const arquivo of arquivos) {
   const codigo = readFileSync(new URL(`../${arquivo}`, import.meta.url), "utf8");
-  for (const m of codigo.matchAll(/^(?:const|let|var|function)\s+([A-Za-z_$][\w$]*)/gm)) {
+  for (const m of codigo.matchAll(/^(?:const|let|var|function|async\s+function)\s+([A-Za-z_$][\w$]*)/gm)) {
     const nome = m[1];
     if (declaradoEm[nome] && declaradoEm[nome] !== arquivo)
       duplicados.push(`${nome}: ${declaradoEm[nome]} e ${arquivo}`);

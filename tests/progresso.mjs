@@ -285,6 +285,60 @@ const casos = [
       return `cena ${cena}`;
     },
   ],
+  [
+    "Carta do Herói: abre pela tela do personagem, desenha e baixa (site e disco), sem executar o nome",
+    async (browser) => {
+      const resultados = [];
+      for (const viaSite of [true, false]) {
+        const servidor = viaSite ? await servirJogo() : null;
+        const context = await browser.newContext({ acceptDownloads: true });
+        await context.addInitScript(() => {
+          localStorage.setItem("sen-cinema", JSON.stringify({ mode: "desligado" }));
+          localStorage.setItem("sen-narracao", JSON.stringify({ on: false }));
+        });
+        const page = await context.newPage();
+        const erros = [];
+        page.on("pageerror", (e) => erros.push(e.message));
+        await page.goto(viaSite ? servidor.url : (await import("./lib/harness.mjs")).URL_JOGO);
+        await comecarJogo(page);
+        await page.evaluate(() => {
+          state.name = '<img src=x onerror="window.__xss=1">';
+          state.look = "ruiva";
+          openChar("roupa");
+        });
+        await page.click("#dCard");
+        await page.waitForFunction(() => {
+          const cv = document.getElementById("cardcv");
+          if (!cv) return false;
+          try {
+            const px = cv.getContext("2d").getImageData(375, 80, 1, 1).data;
+            return px[3] > 0;
+          } catch {
+            return true; // canvas com pinturas do disco não pode ser lido, mas foi desenhado
+          }
+        });
+        const [download] = await Promise.all([
+          page.waitForEvent("download", { timeout: 15000 }),
+          page.click("#cardSave"),
+        ]);
+        const nome = download.suggestedFilename();
+        const caminho = await download.path();
+        const tamanho = caminho ? (await import("node:fs")).statSync(caminho).size : 0;
+        verificar(
+          /^carta-.*\.png$/.test(nome) && tamanho > 20000,
+          `download inválido (${nome}, ${tamanho} bytes)`,
+        );
+        verificar(!(await page.evaluate(() => window.__xss)), "o nome do herói executou código na carta");
+        await page.click("#cardClose");
+        verificar(await page.evaluate(() => document.getElementById("overlay").hidden), "a carta não fechou");
+        verificar(!erros.length, erros.join("; "));
+        resultados.push(`${viaSite ? "site" : "disco"} ${Math.round(tamanho / 1024)} KB`);
+        await context.close();
+        if (servidor) await servidor.fechar();
+      }
+      return resultados.join(", ");
+    },
+  ],
 ];
 
 process.exit((await executar("Testes de conquistas, jornadas e narração", casos)) ? 1 : 0);

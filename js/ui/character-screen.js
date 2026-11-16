@@ -311,7 +311,7 @@ function renderDash() {
          `<span class="mchip"><i style="background:${MAT_COL[k]}"></i>${state.mat[k] || 0} ${MATS[k]}</span>`,
      )
      .join("")}</div>
-   <button class="btn" id="dClose">Voltar ao jogo</button></header>
+   <button class="btn" id="dCard">Carta do Herói</button><button class="btn" id="dClose">Voltar ao jogo</button></header>
   <nav class="dash-tabs" aria-label="Seções">${SLOTS.map(([k, n]) => `<button class="dash-tab ${k === slot ? "on" : ""}" data-t="${k}">${n}${k === "evolucao" && ev ? `<span class="badge">${ev}</span>` : ""}</button>`).join("")}</nav>
   <div class="dash-body">
    <div class="figure"><canvas id="figcv" aria-label="Retrato do personagem"></canvas>
@@ -326,6 +326,7 @@ function renderDash() {
     }</div>
    </div></div></div>`;
   ov.querySelector("#dClose").onclick = closeEvolve;
+  ov.querySelector("#dCard").onclick = () => openHeroCard();
   ov.querySelectorAll("[data-t]").forEach((b) => (b.onclick = () => openChar(b.dataset.t)));
   ov.querySelectorAll(".tile").forEach(
     (b) =>
