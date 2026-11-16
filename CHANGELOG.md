@@ -1,5 +1,20 @@
 # Histórico de versões
 
+## 1.5.0 · Primeiro retorno de jogadores
+
+### Novidades
+- **Dicas para quem joga pela primeira vez**, cada uma mostrada uma vez só:
+  - ao ganhar os primeiros pontos, um quadro explica onde gastá-los, e o botão Personagem pulsa até a pessoa ver;
+  - quando já dá para melhorar a arma ou a roupa em uso, um quadro apresenta a forja, e o botão Personagem ganha uma marca dourada;
+  - nas escolhas que começam uma luta, um aviso lembra os pontos para gastar e as melhorias prontas na forja.
+
+### Correções
+- O efeito do vento não muda mais o tamanho da escolha, só desloca o texto, para não empurrar as escolhas de baixo no meio de um clique.
+- Os cartões dos inimigos não invadem mais a coluna da ficha em navegadores nos quais um botão não encolhe dentro da grade.
+
+### Testes
+- Bateria rigorosa: um clique basta no computador mesmo vindo de outra escolha; nada da história invade a ficha no combate de 900 a 1400 px com os 20 inimigos; as três dicas aparecem, somem e não voltam.
+
 ## 1.4.0 · O filme do final
 
 ### Novidades

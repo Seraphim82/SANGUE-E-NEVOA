@@ -15,6 +15,7 @@ function render() {
   if (playing) {
     document.getElementById("ppBadge").textContent = state.unspent;
     document.getElementById("btnEvolve").disabled = !!state.combat;
+    updatePersonagemButton();
   }
   if (!state) return;
   if (state.mode === "creating") return renderCreate();
@@ -40,7 +41,7 @@ function renderScene() {
       ? `<div class="rewards">${b.lines.map((l) => `<div class="reward ${l.cls}">${esc(l.t)}</div>`).join("")}</div>`
       : "";
   const ch = visibleChoices(sc);
-  el.innerHTML = `${artBox}${rollHTML(b)}${lines}
+  el.innerHTML = `${artBox}${rollHTML(b)}${lines}${tipHTML()}
    ${sc.eyebrow ? `<div class="eyebrow">${sc.eyebrow}</div>` : ""}
    <h1 class="scene-title">${sc.title}</h1>
    <div class="prose">${md(toParagraphs(sc.text()))}</div>
@@ -49,12 +50,14 @@ function renderScene() {
      .map((c, i) => {
        const h = testHint(c);
        const extra = c.tag ? c.tag() : "";
+       const prepare = fightHint(c);
        return `<button class="choice" data-i="${i}">
-     <span class="choice-main"><span>${c.t}</span>${c.sub ? `<small class="note">${c.sub}</small>` : ""}${c.after ? `<small class="note">${c.after}</small>` : ""}</span>
+     <span class="choice-main"><span>${c.t}</span>${c.sub ? `<small class="note">${c.sub}</small>` : ""}${c.after ? `<small class="note">${c.after}</small>` : ""}${prepare ? `<small class="note prepare">${prepare}</small>` : ""}</span>
      <span class="choice-side">${h ? `<span class="tag">${h}${extra ? " · " + extra : ""}</span>` : ""}<span class="arrow">→</span></span></button>`;
      })
      .join("")}</div>`;
   bindChoices(el);
+  bindTip(el);
   ART.show(meta(state.scene)[0], { visao: state.visao, flags: state.flags });
 }
 function renderCombat() {

@@ -91,6 +91,10 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 - `CINEMA.finale(final)` toca o trailer do final: 13 quadros de 4,6 s com fusão, montados por `finaleSlides()` a partir das marcas da história. A cena `c6_creditos` o toca ao entrar, e a ação de escolha `act: "filme"` o repete. Ele roda mesmo com as cenas de luta desligadas; com "reduzir movimento", os quadros ficam parados.
 - `CINEMA.titleCard()` abre os capítulos. `go()` chama essa função ao entrar pela primeira vez numa cena `cN_inicio`, e também registra o herói na galeria da jornada (`recordJourney()`).
 
+## Dicas para novatos
+
+`js/ui/tips.js` mostra no topo da cena uma dica por vez: primeiro a dos pontos (quando a pessoa já ganhou pontos e tem algum para gastar), depois a da forja (quando a arma ou a roupa em uso pode ser melhorada). Cada dica grava uma marca em `state.flags` (`dica_pontos`, `dica_forja`) e não volta. `fightHint()` acrescenta um aviso às escolhas com `fight` quando há 3 pontos ou mais para gastar ou uma melhoria pronta, e `updatePersonagemButton()` faz o botão Personagem pulsar ou ganhar a marca da forja.
+
 ## Trilha sonora
 
 `js/audio/soundtrack.js` toca as 12 faixas de `audio/` e faz a fusão entre elas. `trackFor(id)`, em `js/story/scene-meta.js`, escolhe a faixa de cada cena pelo clima e pela ilustração: tavernas, aldeias, estradas, lugares assombrados, magia, lamento, vitória e finais. O combate escolhe entre `combate` e `combate_feerico` pelos inimigos.

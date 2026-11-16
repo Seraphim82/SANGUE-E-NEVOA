@@ -376,6 +376,89 @@ await caso(
   },
 );
 
+await caso("dicas para novatos: pontos, forja e aviso antes da luta, cada uma uma vez só", async () => {
+  const { page, context, erros } = await abrirCelular();
+  await page.locator("#bNew").tap();
+  await page.locator("#bNext").tap();
+  await page.locator("#eOk").tap();
+  await page.waitForTimeout(300);
+  await page.evaluate(() => CINEMA.stop());
+  verificar(
+    !(await page.locator(".tip").count()),
+    "uma dica apareceu antes de a pessoa ganhar qualquer ponto",
+  );
+
+  // Ganhar pontos jogando: a dica aparece e o botão Personagem pulsa.
+  await page.evaluate(() => {
+    state.unspent = 0;
+    gain(4, "Teste");
+    go("c1_mairi_ok");
+  });
+  verificar(
+    await page.locator(".tip", { hasText: "pontos de personagem" }).count(),
+    "a dica dos pontos não apareceu",
+  );
+  verificar(
+    await page.evaluate(() => document.getElementById("btnEvolve").classList.contains("pulse")),
+    "o botão Personagem não pulsa",
+  );
+  await page.locator("#tipOpen").tap();
+  await page.waitForTimeout(300);
+  verificar(
+    await page.evaluate(() => !document.getElementById("overlay").hidden && !!draft),
+    '"Abrir Aprendizados" não abriu a tela de pontos',
+  );
+  await page.evaluate(() => closeEvolve());
+  await page.reload();
+  await page.waitForTimeout(400);
+  await page.locator("#bCont").tap();
+  await page.waitForTimeout(300);
+  verificar(
+    !(await page.locator(".tip", { hasText: "pontos de personagem" }).count()),
+    "a dica dos pontos voltou depois de vista",
+  );
+  verificar(
+    !(await page.evaluate(() => document.getElementById("btnEvolve").classList.contains("pulse"))),
+    "o botão continuou pulsando",
+  );
+
+  // Moedas e materiais suficientes: a dica da forja aparece e abre a aba da arma.
+  await page.evaluate(() => {
+    state.coins = 100;
+    state.mat.ferro = 10;
+    state.mat.couro = 10;
+    state.mat.tecido = 10;
+    render();
+  });
+  verificar(await page.locator(".tip", { hasText: "forja" }).count(), "a dica da forja não apareceu");
+  verificar(
+    await page.evaluate(() => document.getElementById("btnEvolve").classList.contains("forge-ready")),
+    "o botão Personagem não marca a forja",
+  );
+  await page.locator("#tipOk").tap();
+  await page.waitForTimeout(200);
+  verificar(!(await page.locator(".tip").count()), '"Entendi" não fechou a dica da forja');
+
+  // Escolha que começa uma luta avisa quando ainda dá para se preparar.
+  await page.evaluate(() => {
+    state.unspent = 8;
+    go("c6_avanco");
+  });
+  const aviso = await page.locator("#choices .note.prepare").first().textContent();
+  verificar(/8 pontos/.test(aviso || ""), `sem o aviso antes da luta: "${aviso}"`);
+  await page.evaluate(() => {
+    state.unspent = 0;
+    state.coins = 0;
+    render();
+  });
+  verificar(
+    !(await page.locator("#choices .note.prepare").count()),
+    "o aviso apareceu sem ter o que preparar",
+  );
+  verificar(!erros.length, erros.slice(0, 5).join("; "));
+  await context.close();
+});
+
 // ---------------------------------------------------------------- tela do personagem
 
 await caso("tela do personagem: todas as abas, itens, vestir, empunhar, forjar e fechar", async () => {
