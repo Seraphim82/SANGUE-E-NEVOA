@@ -17,6 +17,7 @@
     "test:cinema": "node tests/cinema.mjs",
     "test:rigor": "node tests/rigor.mjs",
     "test:progresso": "node tests/progresso.mjs",
+    "test:conexao": "node tests/conexao.mjs",
     "test:mesa": "node tests/mesa.mjs",
     "test:all": "npm test && npm run test:rigor && npm run test:stress"
   },

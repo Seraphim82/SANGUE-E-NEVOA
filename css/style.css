@@ -1800,3 +1800,59 @@ button,
 .mesa-linha select {
   width: 100%;
 }
+
+/* Mesa online */
+.sala .priv-lista li {
+  margin-bottom: 6px;
+}
+.priv-ok {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 14px 0;
+  font-family: var(--f-label);
+  letter-spacing: 0.04em;
+}
+.priv-ok input {
+  width: 22px;
+  height: 22px;
+}
+.sala textarea,
+.sala input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  font:
+    12px/1.4 ui-monospace,
+    monospace;
+  background: rgba(0, 0, 0, 0.3);
+  color: inherit;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+}
+.sala input[type="text"] {
+  font: inherit;
+}
+.senha-box {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px 12px;
+  border: 1px dashed rgba(224, 168, 80, 0.7);
+  border-radius: 8px;
+}
+.senha-rot {
+  font-family: var(--f-label);
+  font-size: 0.8rem;
+  color: #e8b765;
+  letter-spacing: 0.05em;
+}
+.senha {
+  font:
+    700 1.3rem/1.4 ui-monospace,
+    monospace;
+  word-break: break-all;
+  margin: 4px 0 8px;
+}
+.slot-sub.aviso {
+  color: #e8b765;
+}
