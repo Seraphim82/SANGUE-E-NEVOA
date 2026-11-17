@@ -66,7 +66,11 @@ Os códigos são JSON comprimido (`deflate-raw`, ou sem compressão em navegador
 
 ### Contrassenha
 
-Quatro palavras sorteadas de uma lista de 256 (sem acentos, fáceis de ditar) e dois dígitos: cerca de 39 bits, gerados com `crypto.getRandomValues`. É normalizada (minúsculas, sem acentos, partes separadas por hífen), então pode ser ditada ou digitada com espaços. A chave é derivada com **PBKDF2-SHA-256, 310 000 iterações**, com o sal do convite. A contrassenha e a chave ficam só na memória e são apagadas assim que o jogador é autenticado ou o convite é queimado.
+Cinco palavras sorteadas de uma lista de 256 (sem acentos, fáceis de ditar) e dois dígitos: cerca de 46,6 bits, gerados com `crypto.getRandomValues`.
+
+**Cinco opções para o mestre.** Ao gerar o convite de um lugar, o jogo sorteia cinco contrassenhas diferentes e o mestre escolhe uma (por exemplo, a mais fácil de ditar). Só a escolhida vale: a chave do lugar é derivada só dela, e as outras quatro são apagadas da memória na hora. Antes da escolha, o lugar não aceita resposta. Depois da escolha, a contrassenha fica escondida na tela do mestre ("•••••"); ela só entra na página, por `textContent`, quando o mestre toca em "Mostrar", e sai de novo em "Esconder". Assim, quem olhar a tela ao lado ou vir um print não a descobre.
+
+**Avisos ao mestre.** Cada tentativa que falha aparece na tela: "Alguém tentou entrar no lugar N com a contrassenha errada (tentativa X de 3)". Na terceira, o convite é queimado e a tela avisa. Um pedido de entrada só chega ao mestre depois que a prova da contrassenha deu certo, e aparece com o selo "✓ contrassenha confirmada" ao lado de Aprovar e Recusar. É normalizada (minúsculas, sem acentos, partes separadas por hífen), então pode ser ditada ou digitada com espaços. A chave é derivada com **PBKDF2-SHA-256, 310 000 iterações**, com o sal do convite. A contrassenha e a chave ficam só na memória e são apagadas assim que o jogador é autenticado ou o convite é queimado.
 
 ### Autenticação
 
@@ -108,7 +112,8 @@ A CSP do jogo continua com `connect-src 'none'`: o WebRTC não passa por essa di
 | Alguém intercepta e troca o convite ou a resposta ("homem no meio") | As provas incluem as impressões digitais DTLS dos dois lados: trocar os códigos muda as digitais, e as provas não conferem |
 | Um mestre falso tenta enganar o jogador | O jogador exige a prova do mestre antes de mandar o nome |
 | Reusar uma resposta antiga (replay) | Cada oferta aceita uma resposta; as respostas já vistas são recusadas |
-| Adivinhar a contrassenha | ~39 bits, PBKDF2 com 310 000 iterações, e no máximo 3 tentativas por convite |
+| Adivinhar a contrassenha | ~46,6 bits (5 palavras + 2 dígitos), PBKDF2 com 310 000 iterações, e no máximo 3 tentativas por convite |
+| Alguém olhando a tela do mestre | A contrassenha escolhida fica escondida até "Mostrar"; as quatro opções descartadas somem da memória |
 | Código adulterado, gigante ou "bomba" de compressão | Prefixo, tamanho, campos e SDP conferidos; a descompressão para no limite |
 | Nome com HTML ou código | Validado (tamanho, sem caracteres de controle) e exibido com escape |
 | Enxurrada de mensagens, mensagens gigantes ou malformadas | Limite de taxa, tamanho e esquema por tipo; insistir desconecta |

@@ -9,6 +9,7 @@
 - **Conquistas:** 25 medalhas em cinco grupos (jornada, finais, mistérios, companheiros e combate) e uma tela de estatísticas: partidas, finais vistos, inimigos e criaturas feéricas derrotados, quedas e mortes. Valem para todas as partidas.
 - **Jornadas salvas:** três espaços de jornada. Uma jornada pode ser exportada como arquivo ou como código (para colar no WhatsApp e continuar em outro aparelho) e importada de volta. O save antigo continua no espaço 1.
 - **Mesa online (beta), sala de espera:** o mestre abre uma sala com 3 lugares e gera, para cada um, um convite de uso único e uma contrassenha aleatória, que deve ir por outro canal. O jogador cola o convite, digita a contrassenha e devolve um código de resposta. O mestre aprova ou recusa quem pediu para entrar, vê o ping e pode remover alguém a qualquer momento. Sem servidor do jogo: a conexão é direta entre os navegadores.
+- **Cinco opções de contrassenha:** para cada lugar, o mestre vê cinco contrassenhas de 5 palavras e 2 dígitos e escolhe a que vai mandar; só ela vale. Depois de escolhida, ela fica escondida na tela até o mestre tocar em "Mostrar". O mestre é avisado de cada tentativa errada ("tentativa X de 3") e o pedido de entrada chega com o selo "✓ contrassenha confirmada".
 - **Privacidade da Mesa online:** antes de abrir ou entrar numa sala, o jogo lista tudo o que é compartilhado, inclusive o aviso de que os aparelhos veem o IP um do outro, e só libera os botões com o "Li e autorizo".
 
 ### Segurança

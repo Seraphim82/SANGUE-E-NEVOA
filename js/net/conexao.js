@@ -231,19 +231,39 @@ function criarSalaMestre(aoMudar = () => {}) {
     avisar();
   }
 
-  /** Cria o convite de um lugar com uma contrassenha nova (só em memória). */
+  /**
+   * Cria o convite de um lugar e sorteia cinco contrassenhas para o mestre escolher. Até a
+   * escolha, o lugar não tem chave e recusa qualquer resposta. Tudo só em memória.
+   */
   async function criarConvite(n) {
     const L = lugares[n];
     if (!L || ["conectado", "pendente", "autenticando"].includes(L.estado)) return null;
     if (L.pc) fechar(L, "livre");
-    L.senha = NET.novaContrassenha();
+    L.opcoes = NET.opcoesDeContrassenha();
+    L.senha = null;
+    L.chave = null;
     L.sal = NET.aleatorios(16);
-    L.chave = await NET.derivarChave(L.senha, L.sal);
     L.falhas = 0;
+    L.ultimaFalha = "";
     L.respostas = new Set();
     L.nome = "";
     await prepararOferta(L);
-    return { convite: L.convite, senha: L.senha };
+    return { convite: L.convite, opcoes: [...L.opcoes] };
+  }
+
+  /**
+   * O mestre escolhe a contrassenha do lugar entre as cinco opções. Só ela vale: a chave sai
+   * dela, e as outras quatro são descartadas na hora.
+   */
+  async function escolherSenha(n, i) {
+    const L = lugares[n];
+    if (!L || !Array.isArray(L.opcoes) || !Number.isInteger(i) || i < 0 || i >= L.opcoes.length) return null;
+    const senha = L.opcoes[i];
+    L.opcoes = null;
+    L.chave = await NET.derivarChave(senha, L.sal);
+    L.senha = senha;
+    avisar();
+    return senha;
   }
 
   /** Recebe a resposta de um jogador. Devolve uma mensagem de erro, ou "" se aceitou para autenticar. */
@@ -253,6 +273,7 @@ function criarSalaMestre(aoMudar = () => {}) {
     if (L.estado === "queimado")
       return "Este convite foi queimado depois de tentativas erradas. Gere um convite novo.";
     if (L.estado !== "convite" || !L.pc) return "Este lugar não está esperando resposta.";
+    if (!L.chave) return "Escolha primeiro a contrassenha deste lugar.";
     let r;
     try {
       r = await NET.desempacotar("SENR1", codigo);
@@ -286,6 +307,7 @@ function criarSalaMestre(aoMudar = () => {}) {
     L.ultimaFalha = motivo;
     if (L.falhas >= MESA_NET.falhasMax) {
       L.senha = null;
+      L.opcoes = null;
       L.chave = null;
       L.convite = null;
       fechar(L, "queimado");
@@ -394,6 +416,7 @@ function criarSalaMestre(aoMudar = () => {}) {
     persistir();
     L.ultimaFalha = motivo;
     L.senha = null;
+    L.opcoes = null;
     L.chave = null;
     L.convite = null;
     fechar(L, "livre");
@@ -417,6 +440,7 @@ function criarSalaMestre(aoMudar = () => {}) {
     },
     lugares,
     criarConvite,
+    escolherSenha,
     receberResposta,
     aprovar,
     recusar,

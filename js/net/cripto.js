@@ -1,7 +1,8 @@
 /**
  * Criptografia da Mesa online, só com a WebCrypto do navegador (nenhuma biblioteca externa).
  *
- * - Contrassenha: 4 palavras sorteadas de 256 (32 bits) + 2 dígitos, com getRandomValues.
+ * - Contrassenha: 5 palavras sorteadas de 256 (40 bits) + 2 dígitos (cerca de 46,6 bits), com
+ *   getRandomValues. O mestre recebe 5 opções por lugar e escolhe uma; só ela vale.
  * - Chave: PBKDF2-SHA-256 (310 000 iterações) da contrassenha normalizada, com sal aleatório
  *   de 16 bytes que viaja no convite. A contrassenha nunca viaja.
  * - Provas: HMAC-SHA-256, conferidas em tempo constante.
@@ -271,6 +272,10 @@ const PALAVRAS_SENHA = Object.freeze([
 ]);
 
 const PBKDF2_ITERACOES = 310000;
+/** Palavras em cada contrassenha. */
+const PALAVRAS_POR_SENHA = 5;
+/** Quantas contrassenhas o mestre vê para escolher, em cada lugar. */
+const OPCOES_DE_SENHA = 5;
 /** Tamanho máximo de um código (convite ou resposta), comprimido e descomprimido. */
 const CODIGO_MAX = 8192;
 
@@ -291,10 +296,20 @@ const NET = (() => {
     return u[0] % max;
   }
 
-  /** Contrassenha nova: quatro palavras e dois dígitos, por exemplo "lobo-cardo-nevoa-ponte-71". */
+  /** Contrassenha nova: cinco palavras e dois dígitos, por exemplo "lobo-cardo-nevoa-ponte-urze-71". */
   function novaContrassenha() {
-    const palavras = Array.from({ length: 4 }, () => PALAVRAS_SENHA[sorteio(PALAVRAS_SENHA.length)]);
+    const palavras = Array.from(
+      { length: PALAVRAS_POR_SENHA },
+      () => PALAVRAS_SENHA[sorteio(PALAVRAS_SENHA.length)],
+    );
     return `${palavras.join("-")}-${String(sorteio(100)).padStart(2, "0")}`;
+  }
+
+  /** Cinco contrassenhas diferentes entre si, para o mestre escolher uma. */
+  function opcoesDeContrassenha() {
+    const out = new Set();
+    while (out.size < OPCOES_DE_SENHA) out.add(novaContrassenha());
+    return [...out];
   }
 
   /** Normaliza o que a pessoa digitou: minúsculas, sem acentos e com hífens entre as partes. */
@@ -418,6 +433,7 @@ const NET = (() => {
     aleatorios,
     novaContrassenha,
     normalizarSenha,
+    opcoesDeContrassenha,
     paraB64,
     deB64,
     empacotar,

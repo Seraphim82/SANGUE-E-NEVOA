@@ -105,7 +105,7 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 
 Conexão direta entre navegadores por WebRTC, sem servidor do jogo. Protocolo e modelo de ameaças completos em [MULTIPLAYER.md](MULTIPLAYER.md).
 
-- `js/net/cripto.js` (`NET`): só WebCrypto. Contrassenha aleatória (4 palavras de `PALAVRAS_SENHA` + 2 dígitos), `derivarChave` com PBKDF2-SHA-256 de 310.000 iterações, HMAC, SHA-256, comparação em tempo constante e `empacotar`/`desempacotar` dos códigos `SENM1.`/`SENR1.` (comprimidos, no máximo 8 KB, leitura abortada além disso).
+- `js/net/cripto.js` (`NET`): só WebCrypto. Contrassenha aleatória (5 palavras de `PALAVRAS_SENHA` + 2 dígitos; `opcoesDeContrassenha()` sorteia as 5 opções do mestre, e `escolherSenha()` na sala deriva a chave só da escolhida), `derivarChave` com PBKDF2-SHA-256 de 310.000 iterações, HMAC, SHA-256, comparação em tempo constante e `empacotar`/`desempacotar` dos códigos `SENM1.`/`SENR1.` (comprimidos, no máximo 8 KB, leitura abortada além disso).
 - `js/net/conexao.js`: `MESA_NET` guarda os limites. `criarSalaMestre()` cuida dos 3 lugares (convite, autenticação, aprovação, remoção, fichas); `criarJogador()` é o lado de quem entra. Toda mensagem passa por `lerMensagem` (JSON, 16 KB, esquema por tipo, só os tipos permitidos naquele momento) e pelo limite de 20/s e 300/min.
 - `js/ui/sala.js`: tela de privacidade (`PRIVACIDADE`), sala do mestre e entrada do jogador. Todo texto vindo da rede passa por `esc()`.
 - O mestre guarda só o SHA-256 das fichas (`sen-mesa-mestre`); o jogador guarda a própria ficha (`sen-mesa-ficha`). Contrassenhas e chaves ficam só na memória.

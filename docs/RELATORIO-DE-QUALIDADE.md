@@ -14,7 +14,7 @@ Este relatório documenta a revisão de código e os testes de sabotagem, stress
 | Testes de stress | 5 casos. 1 bug encontrado (limite de partículas) e corrigido; hoje 5 de 5 passam |
 | Testes de segurança | 16 casos, 16 de 16 passam. 9 problemas de segurança encontrados na revisão e corrigidos |
 | Testes rigorosos (1.3.2) | 14 casos com toques reais num iPhone emulado e o jogo servido por HTTP. **3 bugs reais encontrados** e corrigidos; hoje 14 de 14 passam (seção 7) |
-| Mesa online (1.6.0) | 14 casos com vários navegadores conectados por WebRTC: contrassenha, uso único, repetição, intermediário falso, códigos hostis, inundação, banimento. **1 bug encontrado** e corrigido; hoje 14 de 14 passam (seção 8) |
+| Mesa online (1.6.0) | 20 casos com vários navegadores conectados por WebRTC: contrassenha, uso único, repetição, intermediário falso, códigos hostis, inundação, banimento. **1 bug encontrado** e corrigido; hoje 14 de 14 passam (seção 8) |
 | Dependências (`npm audit`) | 4 alertas moderados corrigidos. Zero vulnerabilidades |
 | Ferramentas em Python (Bandit) | 2 alertas médios e 2 baixos corrigidos. Nenhum problema restante |
 | Integração contínua | GitHub Actions roda formatação, lint, testes, auditoria e stress a cada envio |
@@ -273,6 +273,12 @@ A conexão entre aparelhos é a parte mais sensível do jogo: pela primeira vez,
 | 12 | Sem "Li e autorizo" | Nenhum botão da sala funciona, nem forçado pela página |
 | 13 | Contrassenha no convite, na resposta ou no armazenamento | Nunca aparece |
 | 14 | Fluxo completo pela tela, com a contrassenha digitada em maiúsculas e com espaços | Entra |
+| 15 | Cinco opções de contrassenha | Diferentes entre si, cada uma com 5 palavras + 2 dígitos, nenhuma no convite |
+| 16 | Resposta colada antes de o mestre escolher a contrassenha | Recusada |
+| 17 | Jogador usa uma das quatro opções descartadas | Recusado e contado como tentativa |
+| 18 | Contrassenha escondida na tela do mestre | Fora do HTML da página até "Mostrar"; sai de novo em "Esconder" |
+| 19 | Tentativas erradas | O mestre vê "Alguém tentou entrar… (tentativa X de 3)" e "queimado" na terceira |
+| 20 | Pedido de entrada | Só aparece depois da prova, com o selo "✓ contrassenha confirmada" |
 
 ### 8.2 Bug encontrado e corrigido
 

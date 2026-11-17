@@ -50,7 +50,23 @@ async function caso(nome, fn) {
 // ---------------------------------------------------------------- ajudantes (API do jogo)
 
 const criarMestre = (p) => p.evaluate(() => (window.S = criarSalaMestre()) && S.mesaId);
-const convite = (p, n) => p.evaluate((n) => S.criarConvite(n), n);
+/** Cria o convite do lugar n e escolhe a primeira das cinco contrassenhas (como o mestre faria). */
+const convite = (p, n, escolha = 0) =>
+  p.evaluate(
+    async ([n, i]) => {
+      const c = await S.criarConvite(n);
+      const senha = await S.escolherSenha(n, i);
+      return { convite: c.convite, opcoes: c.opcoes, senha };
+    },
+    [n, escolha],
+  );
+/** Na tela do mestre: escolhe uma das cinco contrassenhas, pede para mostrar e lê a escolhida. */
+async function escolherNaTela(page, n, i = 0) {
+  await page.click(`[data-acao="escolher"][data-n="${n}"][data-i="${i}"]`);
+  await page.waitForSelector(`[data-acao="mostrar-senha"][data-n="${n}"]`);
+  await page.click(`[data-acao="mostrar-senha"][data-n="${n}"]`);
+  return page.locator(`[data-senha="${n}"]`).textContent();
+}
 const novoJogador = (p) => p.evaluate(() => (window.J = criarJogador()) && true);
 const responder = (p, c, senha, nome = "Ailsa", autorizado = true) =>
   p.evaluate(([c, s, n, a]) => J.responder(c, s, n, a), [c, senha, nome, autorizado]);
@@ -271,9 +287,9 @@ await caso("nome hostil no pedido de entrada aparece como texto na tela do mestr
     document.getElementById("salaMestre").click();
   });
   await m.page.click('[data-acao="convite"][data-n="1"]');
-  await m.page.waitForSelector('[data-senha="1"]');
+  await m.page.waitForSelector('[data-acao="escolher"][data-n="1"]');
   const c = await m.page.evaluate(() => SALA.lugares[1].convite);
-  const senha = await m.page.locator('[data-senha="1"]').textContent();
+  const senha = await escolherNaTela(m.page, 1);
   const j = await aparelho();
   await novoJogador(j.page);
   const hostil = `<img src=x onerror="window.__xss=1">`;
@@ -439,7 +455,7 @@ await caso(
     );
     const partes = senha.split("-");
     verificar(
-      !conteudo.includes(senha) && !partes.slice(0, 4).some((p) => conteudo.includes(`"${p}`)),
+      !conteudo.includes(senha) && !partes.slice(0, 5).some((p) => conteudo.includes(`"${p}`)),
       "a contrassenha foi no convite",
     );
     const j = await aparelho();
@@ -457,7 +473,7 @@ await caso(
         () => JSON.stringify({ ...localStorage }) + JSON.stringify({ ...sessionStorage }),
       );
       verificar(
-        !armazenado.includes(senha) && !armazenado.includes(partes.slice(0, 4).join("-")),
+        !armazenado.includes(senha) && !armazenado.includes(partes.slice(0, 5).join("-")),
         "a contrassenha foi parar no armazenamento",
       );
     }
@@ -476,7 +492,7 @@ await caso("a interface completa: mestre gera convite, jogador entra pela tela e
   await m.page.click('[data-acao="convite"][data-n="2"]');
   await m.page.waitForSelector('textarea[data-conv="2"]');
   const c = await m.page.locator('textarea[data-conv="2"]').inputValue();
-  const senha = await m.page.locator('[data-senha="2"]').textContent();
+  const senha = await escolherNaTela(m.page, 2, 3);
   const j = await aparelho();
   await j.page.click("#bOnline");
   await j.page.check("#privOk");
@@ -497,6 +513,151 @@ await caso("a interface completa: mestre gera convite, jogador entra pela tela e
     { timeout: 20000 },
   );
   verificar(!m.erros.length && !j.erros.length, `erro de execução: ${m.erros[0] || j.erros[0]}`);
+});
+
+// ---------------------------------------------------------------- cinco opções para o mestre
+
+await caso("o mestre recebe 5 contrassenhas diferentes, cada uma com 5 palavras e 2 dígitos", async () => {
+  const m = await aparelho();
+  await criarMestre(m.page);
+  const opcoes = await m.page.evaluate(async () => (await S.criarConvite(1)).opcoes);
+  verificar(opcoes.length === 5 && new Set(opcoes).size === 5, `opções: ${opcoes.join(" | ")}`);
+  for (const o of opcoes)
+    verificar(/^([a-z]+-){5}\d{2}$/.test(o), `contrassenha fora do formato (5 palavras + 2 dígitos): ${o}`);
+  const convite = await m.page.evaluate(() => S.lugares[1].convite);
+  const conteudo = await m.page.evaluate(
+    (c) => NET.desempacotar("SENM1", c).then((o) => JSON.stringify(o)),
+    convite,
+  );
+  verificar(
+    opcoes.every((o) => !conteudo.includes(o)),
+    "uma opção de contrassenha foi parar no convite",
+  );
+  return opcoes[0];
+});
+
+await caso("resposta colada antes de o mestre escolher a contrassenha é recusada", async () => {
+  const m = await aparelho();
+  await criarMestre(m.page);
+  const { convite: c, opcoes } = await m.page.evaluate(async () => S.criarConvite(1));
+  const j = await aparelho();
+  await novoJogador(j.page);
+  const r = await responder(j.page, c, opcoes[0]);
+  verificar(r.resposta, `o jogador não gerou resposta: ${r.erro}`);
+  const erro = await colar(m.page, 1, r.resposta);
+  verificar(/Escolha primeiro/.test(erro), `o lugar sem contrassenha escolhida aceitou resposta: "${erro}"`);
+  verificar(
+    (await estadoLugar(m.page, 1)) === "convite",
+    "o lugar mudou de estado sem contrassenha escolhida",
+  );
+});
+
+await caso("usar uma das quatro contrassenhas descartadas falha e conta como tentativa", async () => {
+  const m = await aparelho();
+  await criarMestre(m.page);
+  const { convite: c, opcoes, senha } = await convite(m.page, 1, 2);
+  verificar(senha === opcoes[2], "a contrassenha escolhida não é a opção tocada");
+  verificar(
+    (await m.page.evaluate(() => S.lugares[1].opcoes)) === null,
+    "as outras opções continuaram na memória",
+  );
+  const descartada = opcoes[0];
+  const j = await aparelho();
+  await novoJogador(j.page);
+  const r = await responder(j.page, c, descartada);
+  await colar(m.page, 1, r.resposta);
+  await esperarJogador(j.page, "recusado");
+  await m.page.waitForFunction(() => S.lugares[1].falhas === 1, null, { timeout: 15000 });
+  verificar(
+    (await m.page.evaluate(() => S.lugares[1].ultimaFalha)) === "contrassenha errada",
+    "a falha não foi registrada",
+  );
+});
+
+await caso("a contrassenha escolhida fica fora da página até o mestre tocar em mostrar", async () => {
+  const m = await aparelho();
+  await m.page.evaluate(() => {
+    openMesaOnline();
+    document.getElementById("privOk").click();
+    document.getElementById("salaMestre").click();
+  });
+  await m.page.click('[data-acao="convite"][data-n="1"]');
+  await m.page.waitForSelector('[data-acao="escolher"][data-n="1"]');
+  await m.page.click('[data-acao="escolher"][data-n="1"][data-i="1"]');
+  // A escolha deriva a chave (PBKDF2), o que leva uma fração de segundo.
+  await m.page.waitForFunction(() => !!SALA.lugares[1].senha && !!document.querySelector('[data-senha="1"]'));
+  const senha = await m.page.evaluate(() => SALA.lugares[1].senha);
+  const pagina = () => m.page.evaluate(() => document.documentElement.outerHTML);
+  verificar(!(await pagina()).includes(senha), "a contrassenha escondida está no HTML da página");
+  verificar(
+    !(await pagina()).includes(senha.split("-").slice(0, 3).join("-")),
+    "um pedaço da contrassenha escondida está na página",
+  );
+  await m.page.click('[data-acao="mostrar-senha"][data-n="1"]');
+  verificar(
+    (await m.page.locator('[data-senha="1"]').textContent()) === senha,
+    "mostrar não exibiu a contrassenha",
+  );
+  await m.page.click('[data-acao="mostrar-senha"][data-n="1"]');
+  verificar(!(await pagina()).includes(senha), "esconder não tirou a contrassenha da página");
+});
+
+await caso(
+  "o mestre vê o aviso de tentativa errada com o contador e o convite queimado na terceira",
+  async () => {
+    const m = await aparelho();
+    await m.page.evaluate(() => {
+      openMesaOnline();
+      document.getElementById("privOk").click();
+      document.getElementById("salaMestre").click();
+    });
+    await m.page.click('[data-acao="convite"][data-n="1"]');
+    await m.page.waitForSelector('[data-acao="escolher"][data-n="1"]');
+    await escolherNaTela(m.page, 1);
+    for (let t = 1; t <= 3; t++) {
+      const c = await m.page.evaluate(() => SALA.lugares[1].convite);
+      const j = await aparelho();
+      await novoJogador(j.page);
+      const r = await responder(j.page, c, "lobo-cardo-nevoa-ponte-urze-00");
+      await m.page.evaluate(([r]) => SALA.receberResposta(1, r), [r.resposta]);
+      await m.page.waitForFunction((t) => SALA.lugares[1].falhas === t, t, { timeout: 15000 });
+      if (t < 3) {
+        await m.page.waitForFunction(() => SALA.lugares[1].estado === "convite", null, { timeout: 15000 });
+        const aviso = await m.page.locator('.lugar[data-lugar="1"] .aviso').textContent();
+        verificar(
+          aviso.includes("Alguém tentou entrar no lugar 1 com a contrassenha errada") &&
+            aviso.includes(`tentativa ${t} de 3`),
+          `aviso da tentativa ${t}: "${aviso}"`,
+        );
+      }
+    }
+    await m.page.waitForFunction(() => SALA.lugares[1].estado === "queimado", null, { timeout: 15000 });
+    const final = await m.page.locator('.lugar[data-lugar="1"] .aviso').textContent();
+    verificar(/queimado/i.test(final), `sem aviso de convite queimado: "${final}"`);
+  },
+);
+
+await caso("o pedido de entrada só aparece com a contrassenha confirmada e mostra o selo", async () => {
+  const m = await aparelho();
+  await m.page.evaluate(() => {
+    openMesaOnline();
+    document.getElementById("privOk").click();
+    document.getElementById("salaMestre").click();
+  });
+  await m.page.click('[data-acao="convite"][data-n="1"]');
+  await m.page.waitForSelector('[data-acao="escolher"][data-n="1"]');
+  const senha = await escolherNaTela(m.page, 1, 4);
+  const c = await m.page.evaluate(() => SALA.lugares[1].convite);
+  const j = await aparelho();
+  await novoJogador(j.page);
+  const r = await responder(j.page, c, senha, "Mairi");
+  await m.page.fill('textarea[data-resp="1"]', r.resposta);
+  await m.page.click('[data-acao="conectar"][data-n="1"]');
+  await m.page.waitForSelector('[data-acao="aprovar"][data-n="1"]', { timeout: 20000 });
+  const selo = await m.page.locator('.lugar[data-lugar="1"] .selo-ok').textContent();
+  verificar(selo.includes("✓ contrassenha confirmada"), `sem o selo: "${selo}"`);
+  await m.page.click('[data-acao="aprovar"][data-n="1"]');
+  await esperarJogador(j.page, "conectado");
 });
 
 await browser.close();

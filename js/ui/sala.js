@@ -8,6 +8,8 @@
 
 let SALA = null;
 let JOGADOR = null;
+/** Lugares cuja contrassenha o mestre pediu para ver. Escondida, ela não fica na página. */
+const SENHA_VISIVEL = new Set();
 
 /** O que será compartilhado. O mestre e cada jogador precisam ler e autorizar antes de seguir. */
 const PRIVACIDADE = [
@@ -41,6 +43,7 @@ function copiarTexto(texto, aviso) {
 }
 
 function encerrarSala() {
+  SENHA_VISIVEL.clear();
   SALA?.encerrar();
   JOGADOR?.sair();
   SALA = null;
@@ -81,6 +84,18 @@ function abrirSalaMestre() {
   renderSalaMestre();
 }
 
+/** O aviso de tentativa errada para o mestre, com o contador, ou o de convite queimado. */
+function avisoTentativa(L) {
+  if (L.estado === "conectado" || !L.ultimaFalha) return "";
+  if (L.estado === "queimado")
+    return `<div class="slot-sub aviso">Convite queimado depois de ${MESA_NET.falhasMax} tentativas erradas. Gere um convite novo.</div>`;
+  if (!L.falhas) return `<div class="slot-sub aviso">Último aviso: ${esc(L.ultimaFalha)}</div>`;
+  const tent = `(tentativa ${L.falhas} de ${MESA_NET.falhasMax})`;
+  return L.ultimaFalha === "contrassenha errada"
+    ? `<div class="slot-sub aviso">Alguém tentou entrar no lugar ${L.n} com a contrassenha errada ${tent}.</div>`
+    : `<div class="slot-sub aviso">Uma tentativa de entrar no lugar ${L.n} falhou: ${esc(L.ultimaFalha)} ${tent}.</div>`;
+}
+
 function renderSalaMestre() {
   if (!SALA) return;
   // Guarda o que a pessoa está colando, para o redesenho não apagar.
@@ -91,22 +106,28 @@ function renderSalaMestre() {
     let corpo = "";
     if (["livre", "queimado", "desconectado"].includes(L.estado))
       corpo = `<button class="btn primary" data-acao="convite" data-n="${n}">Gerar convite com contrassenha</button>`;
+    else if (L.estado === "convite" && Array.isArray(L.opcoes))
+      // Cinco opções: o mestre escolhe a que vai mandar; só ela passa a valer.
+      corpo = `<label class="field">Convite (mande no privado)<textarea readonly rows="3" data-conv="${n}">${esc(L.convite || "")}</textarea></label>
+      <button class="btn" data-acao="copiar-convite" data-n="${n}">Copiar convite</button>
+      <div class="senha-box"><div class="senha-rot">Escolha a contrassenha deste jogador. Só a escolhida vale; as outras são descartadas.</div>
+      ${L.opcoes.map((o, i) => `<div class="senha-opcao"><span class="senha" data-opcao="${n}-${i}">${esc(o)}</span><button class="btn" data-acao="escolher" data-n="${n}" data-i="${i}">Usar esta</button></div>`).join("")}</div>`;
     else if (L.estado === "convite")
       corpo = `<label class="field">Convite (mande no privado)<textarea readonly rows="3" data-conv="${n}">${esc(L.convite || "")}</textarea></label>
       <button class="btn" data-acao="copiar-convite" data-n="${n}">Copiar convite</button>
-      <div class="senha-box"><div class="senha-rot">Contrassenha · mande por outro caminho</div><div class="senha" data-senha="${n}">${esc(L.senha || "")}</div>
-      <button class="btn" data-acao="copiar-senha" data-n="${n}">Copiar contrassenha</button></div>
+      <div class="senha-box"><div class="senha-rot">Contrassenha · mande por outro caminho</div><div class="senha" data-senha="${n}">•••••</div>
+      <button class="btn" data-acao="mostrar-senha" data-n="${n}">${SENHA_VISIVEL.has(n) ? "Esconder" : "Mostrar"}</button><button class="btn" data-acao="copiar-senha" data-n="${n}">Copiar contrassenha</button></div>
       <label class="field">Cole aqui a resposta do jogador<textarea rows="3" data-resp="${n}" maxlength="${CODIGO_MAX * 2}" spellcheck="false" autocomplete="off"></textarea></label>
       <button class="btn primary" data-acao="conectar" data-n="${n}">Conectar</button>`;
     else if (L.estado === "pendente")
-      corpo = `<p class="pedido"><b>${esc(L.nome)}</b> quer entrar.${L.recupera ? " A ficha confere: é o mesmo jogador que já estava neste lugar." : L.fichaApresentada ? " Atenção: a ficha apresentada não é a deste lugar." : ""}</p>
+      corpo = `<p class="selo-ok">✓ contrassenha confirmada</p><p class="pedido"><b>${esc(L.nome)}</b> quer entrar.${L.recupera ? " A ficha confere: é o mesmo jogador que já estava neste lugar." : L.fichaApresentada ? " Atenção: a ficha apresentada não é a deste lugar." : ""}</p>
       <button class="btn primary" data-acao="aprovar" data-n="${n}">Aprovar</button><button class="btn" data-acao="recusar" data-n="${n}">Recusar</button>`;
     else if (L.estado === "conectado")
       corpo = `<p><b>${esc(L.nome)}</b> está na mesa.${L.ping !== null ? ` Ping: ${L.ping} ms.` : ""}</p>
       <button class="btn" data-acao="ping" data-n="${n}">Testar ping</button><button class="btn perigo" data-acao="remover" data-n="${n}">Remover da mesa</button>`;
     return `<div class="slot lugar" data-lugar="${n}"><div class="slot-n">Lugar ${n}</div>
       <div class="slot-sub" data-estado="${n}">${ESTADO_LUGAR[L.estado] || ""}${L.falhas ? ` · ${L.falhas} tentativa(s) errada(s)` : ""}</div>
-      ${L.ultimaFalha && L.estado !== "conectado" ? `<div class="slot-sub aviso">Último aviso: ${esc(L.ultimaFalha)}</div>` : ""}
+      ${avisoTentativa(L)}
       <div class="slot-acoes">${corpo}</div><p class="note" data-msg="${n}" role="status"></p></div>`;
   };
   app.innerHTML = `<section class="hero sala">
@@ -119,6 +140,12 @@ function renderSalaMestre() {
   for (const [n, v] of Object.entries(rascunho)) {
     const t = app.querySelector(`textarea[data-resp="${n}"]`);
     if (t) t.value = v;
+  }
+  // A contrassenha só entra na página quando o mestre pede para ver, e por textContent.
+  for (const n of SENHA_VISIVEL) {
+    const el = app.querySelector(`[data-senha="${n}"]`);
+    const L = SALA.lugares[n];
+    if (el && L?.senha) el.textContent = L.senha;
   }
   app.querySelectorAll("[data-acao]").forEach((b) => {
     const n = Number(b.dataset.n);
@@ -140,7 +167,13 @@ async function acaoMestre(acao, n, botao) {
   if (acao === "convite") {
     botao.disabled = true;
     msg("Preparando o convite…");
+    SENHA_VISIVEL.delete(n);
     await SALA.criarConvite(n);
+  } else if (acao === "escolher") await SALA.escolherSenha(n, Number(botao.dataset.i));
+  else if (acao === "mostrar-senha") {
+    if (SENHA_VISIVEL.has(n)) SENHA_VISIVEL.delete(n);
+    else SENHA_VISIVEL.add(n);
+    renderSalaMestre();
   } else if (acao === "copiar-convite") copiarTexto(L.convite || "", "Convite copiado. Mande no privado.");
   else if (acao === "copiar-senha")
     copiarTexto(L.senha || "", "Contrassenha copiada. Mande por outro caminho.");

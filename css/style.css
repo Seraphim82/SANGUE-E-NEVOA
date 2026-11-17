@@ -1856,3 +1856,20 @@ button,
 .slot-sub.aviso {
   color: #e8b765;
 }
+
+/* Sala: as cinco opções de contrassenha e o selo de contrassenha confirmada */
+.senha-opcao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+.selo-ok {
+  margin: 0 0 4px;
+  color: #9fd08a;
+  font-family: var(--f-label);
+  letter-spacing: 0.04em;
+}
