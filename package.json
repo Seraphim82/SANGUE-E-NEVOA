@@ -9,7 +9,7 @@
     "lint": "node tools/globais.mjs && eslint js tests tools eslint.config.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run lint && npm run test:story && npm run test:sabotage && npm run test:security && npm run test:cinema && npm run test:progresso && npm run test:mesa",
+    "test": "npm run lint && npm run test:story && npm run test:sabotage && npm run test:security && npm run test:cinema && npm run test:progresso && npm run test:mesa && npm run test:conexao",
     "test:story": "node tests/playthrough.mjs",
     "test:sabotage": "node tests/sabotage.mjs",
     "test:security": "node tests/security.mjs",

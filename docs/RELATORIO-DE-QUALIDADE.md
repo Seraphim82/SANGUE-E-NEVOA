@@ -14,6 +14,7 @@ Este relatório documenta a revisão de código e os testes de sabotagem, stress
 | Testes de stress | 5 casos. 1 bug encontrado (limite de partículas) e corrigido; hoje 5 de 5 passam |
 | Testes de segurança | 16 casos, 16 de 16 passam. 9 problemas de segurança encontrados na revisão e corrigidos |
 | Testes rigorosos (1.3.2) | 14 casos com toques reais num iPhone emulado e o jogo servido por HTTP. **3 bugs reais encontrados** e corrigidos; hoje 14 de 14 passam (seção 7) |
+| Mesa online (1.6.0) | 14 casos com vários navegadores conectados por WebRTC: contrassenha, uso único, repetição, intermediário falso, códigos hostis, inundação, banimento. **1 bug encontrado** e corrigido; hoje 14 de 14 passam (seção 8) |
 | Dependências (`npm audit`) | 4 alertas moderados corrigidos. Zero vulnerabilidades |
 | Ferramentas em Python (Bandit) | 2 alertas médios e 2 baixos corrigidos. Nenhum problema restante |
 | Integração contínua | GitHub Actions roda formatação, lint, testes, auditoria e stress a cada envio |
@@ -249,6 +250,39 @@ Um bug no iPhone ("Partir em missão" preso na loja do Capítulo III) passou por
 | 2 | **Toque que atravessa o cinema** | O filme sumia no começo do toque, e o fim dele caía no botão de ataque por baixo, atacando de novo sem querer (3 de 6 tentativas) | Uma película invisível segura o resto do toque por 450 ms |
 | 3 | Texto desatualizado | O fim do Capítulo I dizia que o Capítulo II estava "em preparação" | Texto corrigido |
 | 4 | Ícone da aba ausente | O navegador pedia `favicon` e recebia erro 404 | Ícone criado a partir do retrato do kelpie |
+
+## 8. Mesa online, sala de espera (versão 1.6.0)
+
+A conexão entre aparelhos é a parte mais sensível do jogo: pela primeira vez, dados saem do aparelho de quem joga. Por isso os testes de `tests/conexao.mjs` abrem vários navegadores Chromium de verdade, conectados por WebRTC, e atacam a sala por fora e por dentro. Protocolo e modelo de ameaças: [MULTIPLAYER.md](MULTIPLAYER.md).
+
+### 8.1 O que é testado
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | Três jogadores conectam, são aprovados e medem o ping | Os 3 lugares conectados |
+| 2 | Contrassenha errada | Recusada, a tentativa é contada, o convite é refeito com a mesma contrassenha |
+| 3 | Convite de uso único | O segundo aparelho com o mesmo convite não entra |
+| 4 | Repetição de uma resposta antiga | Recusada |
+| 5 | Intermediário: resposta de um atacante e mestre falso que aceita qualquer prova | Mestre recusa; jogador rejeita o mestre que "não provou" |
+| 6 | 11 códigos malformados, gigantes e uma bomba de compressão | Todos recusados sem travar |
+| 7 | Três tentativas erradas | Convite queimado |
+| 8 | Nome com HTML | Mostrado como texto |
+| 9 | Inundação de mensagens | Jogador desconectado e avisado |
+| 10 | Mensagens gigantes, quebradas e de tipo desconhecido | Descartadas; insistir desconecta |
+| 11 | Banimento e volta com ficha | Ficha revogada não entra; ficha certa recupera o lugar; ficha adulterada não |
+| 12 | Sem "Li e autorizo" | Nenhum botão da sala funciona, nem forçado pela página |
+| 13 | Contrassenha no convite, na resposta ou no armazenamento | Nunca aparece |
+| 14 | Fluxo completo pela tela, com a contrassenha digitada em maiúsculas e com espaços | Entra |
+
+### 8.2 Bug encontrado e corrigido
+
+| Bug | Como aparecia | Correção |
+|---|---|---|
+| Aviso de remoção descartado | Na inundação, o próprio limite de mensagens do jogador descartava o aviso "removido" do mestre, e ele via só "desconectado" | Avisos de recusa e remoção passam sempre, mesmo acima do limite |
+
+### 8.3 Limitações
+
+Os aparelhos veem o IP um do outro (o jogo avisa e pede autorização). Sem servidor TURN, redes com NAT simétrico e alguns planos de 4G não conectam. Recarregar a página do mestre fecha a sala; as fichas continuam valendo.
 
 ---
 

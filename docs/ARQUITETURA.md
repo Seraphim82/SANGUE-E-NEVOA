@@ -101,6 +101,16 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 - `sanitizeMesa()` valida a mesa do save: 2 a 4 heróis, cada um pela mesma `sanitizeSave`; qualquer problema descarta a mesa e o jogo segue com o herói ativo.
 - Todo código da Mesa fica atrás de `inMesa()`: o jogo de um herói não muda.
 
+## Mesa online (beta)
+
+Conexão direta entre navegadores por WebRTC, sem servidor do jogo. Protocolo e modelo de ameaças completos em [MULTIPLAYER.md](MULTIPLAYER.md).
+
+- `js/net/cripto.js` (`NET`): só WebCrypto. Contrassenha aleatória (4 palavras de `PALAVRAS_SENHA` + 2 dígitos), `derivarChave` com PBKDF2-SHA-256 de 310.000 iterações, HMAC, SHA-256, comparação em tempo constante e `empacotar`/`desempacotar` dos códigos `SENM1.`/`SENR1.` (comprimidos, no máximo 8 KB, leitura abortada além disso).
+- `js/net/conexao.js`: `MESA_NET` guarda os limites. `criarSalaMestre()` cuida dos 3 lugares (convite, autenticação, aprovação, remoção, fichas); `criarJogador()` é o lado de quem entra. Toda mensagem passa por `lerMensagem` (JSON, 16 KB, esquema por tipo, só os tipos permitidos naquele momento) e pelo limite de 20/s e 300/min.
+- `js/ui/sala.js`: tela de privacidade (`PRIVACIDADE`), sala do mestre e entrada do jogador. Todo texto vindo da rede passa por `esc()`.
+- O mestre guarda só o SHA-256 das fichas (`sen-mesa-mestre`); o jogador guarda a própria ficha (`sen-mesa-ficha`). Contrassenhas e chaves ficam só na memória.
+- WebRTC não passa pela diretiva `connect-src` da CSP, que continua `'none'`.
+
 ## Narração
 
 `js/audio/narration.js` divide o texto da cena em parágrafos (`narrationParagraphs()`), com o nome do herói trocado por um marcador e contornado, e números que mudam a cada partida (moedas, pontos) tirados da voz. Cada parágrafo tem uma chave (`narrationKey()`, dois FNV-1a de 32 bits) e um MP3 em `audio/narracao/<chave>.mp3`. Só as chaves listadas em `NARRATION_CLIPS` são pedidas. `NARRATOR.onScene()` toca a cena em sequência quando ela muda; `AUD.narrating()` abaixa a trilha, que continua tocando. As ferramentas `coletar_narracao.mjs`, `gerar_narracao.py` e `listar_narracao.mjs` usam essas mesmas funções, rodando o jogo no navegador.
@@ -146,6 +156,7 @@ Como os scripts compartilham o escopo global, `tools/globais.mjs` lê o `index.h
 | `tests/security.mjs` | XSS pelo nome e pelo save, poluição de protótipo, CSP, tráfego de rede e varredura do código |
 | `tests/rigor.mjs` | O jogo servido por HTTP e jogado por toques num iPhone emulado: toda escolha de toda cena responde a um toque, partidas inteiras até o epílogo, tela do personagem, cinema com todos os inimigos, toque que atravessa o cinema, telas de 320 px, 3.000 saves corrompidos, arquivos faltando |
 | `tests/cinema.mjs` | Cinema abre, fecha e pode ser pulado; todas as ações e magias encenadas sem erro; modos do menu; movimento reduzido; cartela de capítulo; aparência e galeria, inclusive adulteradas no save |
+| `tests/conexao.mjs` | Mesa online com vários navegadores: conexão, contrassenha, uso único, repetição, intermediário falso, códigos e mensagens hostis, inundação, banimento, fichas, privacidade e fluxo pela tela |
 | `tests/stress.mjs` | Volume de partidas, sessão longa e memória, desempenho da animação, combate em massa, limite de partículas |
 
 Rode `npm test` sempre depois de mexer no código, e `npm run test:stress` se a mudança tocar em combate, animação ou desempenho.

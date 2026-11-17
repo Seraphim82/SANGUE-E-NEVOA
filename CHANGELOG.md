@@ -8,13 +8,18 @@
 - **Narração:** um narrador de voz grave e épica lê cada cena, no estilo dos narradores de anime clássico, com a trilha sonora continuando por baixo, mais baixa. Tocar numa escolha interrompe. Pode ser desligada no menu.
 - **Conquistas:** 25 medalhas em cinco grupos (jornada, finais, mistérios, companheiros e combate) e uma tela de estatísticas: partidas, finais vistos, inimigos e criaturas feéricas derrotados, quedas e mortes. Valem para todas as partidas.
 - **Jornadas salvas:** três espaços de jornada. Uma jornada pode ser exportada como arquivo ou como código (para colar no WhatsApp e continuar em outro aparelho) e importada de volta. O save antigo continua no espaço 1.
+- **Mesa online (beta), sala de espera:** o mestre abre uma sala com 3 lugares e gera, para cada um, um convite de uso único e uma contrassenha aleatória, que deve ir por outro canal. O jogador cola o convite, digita a contrassenha e devolve um código de resposta. O mestre aprova ou recusa quem pediu para entrar, vê o ping e pode remover alguém a qualquer momento. Sem servidor do jogo: a conexão é direta entre os navegadores.
+- **Privacidade da Mesa online:** antes de abrir ou entrar numa sala, o jogo lista tudo o que é compartilhado, inclusive o aviso de que os aparelhos veem o IP um do outro, e só libera os botões com o "Li e autorizo".
 
 ### Segurança
+- Mesa online: contrassenha derivada com PBKDF2-SHA-256 (310.000 iterações) e prova mútua por HMAC ligada às impressões digitais da conexão, o que barra repetição de códigos e intermediários. Três tentativas erradas queimam o convite. Quem já entrou recebe uma ficha; o mestre guarda só o resumo SHA-256 dela, e remover alguém revoga a ficha. Mensagens têm esquema, tamanho máximo de 16 KB e limite de 20 por segundo e 300 por minuto; quem estoura três vezes é desconectado. A contrassenha nunca vai no convite, na resposta nem no armazenamento.
+- Encontrado e corrigido nos testes: quem era removido por inundação podia não ver o aviso de remoção, porque o próprio limite de mensagens do jogador descartava o aviso; avisos de recusa e remoção agora sempre passam.
 - Bateria de ataques da Mesa: nomes hostis em todas as telas, saves e códigos de importação adulterados, botões falsificados na página, preferências adulteradas e 2.000 saves corrompidos ao acaso. Encontrado e corrigido: um voto salvo com texto especial era aceito; agora só valem votos com o texto de uma escolha real da cena.
 - Jornadas importadas e o perfil de conquistas passam pela mesma validação do save: só entram campos e valores conhecidos, com tamanho máximo.
 
 ### Testes
 - `npm run test:mesa`: criação da mesa, votação com maioria e voto de minerva, teste em grupo, compras individuais, turnos no combate, derrota só quando todos caem, recompensas para todos, save, exportar e importar, mesa adulterada no save e uma partida de mesa por toques num iPhone até o fim do Capítulo I.
+- `npm run test:conexao`: 14 casos com vários navegadores, de três jogadores conectados a ataques de repetição, intermediário falso, códigos malformados e compressão explosiva, inundação, banimento e fluxo completo pela tela.
 - `npm run test:progresso`: conquistas, perfil adulterado, espaços, exportar e importar entre aparelhos, importação de lixo e HTML, apagar com dois toques, narração com a trilha por baixo.
 
 ## 1.5.0 · Primeiro retorno de jogadores
