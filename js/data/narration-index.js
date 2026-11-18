@@ -26,6 +26,7 @@ const NARRATION_CLIPS = new Set([
   "44da34ba9665ef88",
   "48a4e8958c7da617",
   "4a49e6e9de18332b",
+  "4c19b67f745961b9",
   "4d07d4403b273e66",
   "4e1076732edb26b1",
   "4f5e4348bf9e6c92",
