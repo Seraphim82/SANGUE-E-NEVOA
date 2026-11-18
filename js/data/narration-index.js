@@ -5,6 +5,7 @@
 "use strict";
 
 const NARRATION_CLIPS = new Set([
+  "00183709ccb55b47",
   "07a71d1dbbf4499b",
   "07d7f59a6c79194c",
   "083d2d6817369422",
