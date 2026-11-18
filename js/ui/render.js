@@ -211,10 +211,15 @@ function renderSheet() {
     hb.onclick = () => {
       state.inv.ervas--;
       const t = healHerbs();
-      state.banner = { roll: null, lines: [{ t: t.replace(/<[^>]+>/g, ""), cls: "gain" }] };
+      state.banner = { roll: null, lines: [{ t: textoPuro(t), cls: "gain" }] };
       save();
       render();
     };
+}
+// Tira as marcas HTML de um texto interno lendo-o como página inerte (nada é executado).
+// Evita a regex de "remover <tags>", que deixa passar casos como "<<b>b>".
+function textoPuro(html) {
+  return new DOMParser().parseFromString(html, "text/html").body.textContent || "";
 }
 function renderDeath() {
   app.innerHTML = `<section class="hero">${artBox}<div class="tag">Fim da linha</div><h1>A névoa te levou</h1>
