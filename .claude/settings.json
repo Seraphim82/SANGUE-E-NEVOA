@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm ci)",
+      "Bash(npm test)",
+      "Bash(npm run test:rigor)",
+      "Bash(GEMINI_API_KEY=placeholder python3 tools/gerar_narracao.py*)",
+      "Bash(node tools/listar_narracao.mjs)",
+      "Bash(npx prettier --write js/data/narration-index.js)",
+      "Bash(ffprobe *)",
+      "Bash(git -c http.version=HTTP/1.1 push --dry-run origin narracao)",
+      "Bash(git -c http.version=HTTP/1.1 push origin narracao)"
+    ]
+  }
+}
