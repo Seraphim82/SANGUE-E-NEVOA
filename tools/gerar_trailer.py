@@ -47,7 +47,8 @@ PLANOS = [
      6.5, "Escócia, no ano de mil duzentos e noventa e seis.", "ESCÓCIA · 1296"),
     ("fogo", "img/scenes/fogo.jpg",
      "English soldiers set the thatched cottages ablaze at night, roaring flames and sparks fly, villagers flee, "
-     "smoke swirls, handheld camera moving fast. Fire roaring, screams.",
+     "smoke swirls, handheld camera moving fast. Every rider sits upright in the saddle facing the same way as "
+     "his horse, and the horses only walk or trot forward, head first, with natural anatomy. Fire roaring, screams.",
      5.5, "O rei Eduardo levou a Pedra do Destino. E trouxe o fogo.", ""),
     ("kelpie", "img/scenes/kelpie_rio.jpg",
      "The ghostly water horse rises out of the dark river, its seaweed mane whipping, water cascading, its eyes "
@@ -59,7 +60,8 @@ PLANOS = [
      4.5, "", ""),
     ("ponte", "img/scenes/ponte.jpg",
      "The wooden bridge collapses under the weight of armoured knights, timber splintering, men and horses fall "
-     "into the river, spray and mist, dramatic slow camera push-in. Epic battle sound.",
+     "into the river, spray and mist, dramatic slow camera push-in. Horses never move backwards: any horse still "
+     "on the bridge moves forward head first or falls with the timbers, with natural anatomy. Epic battle sound.",
      6.5, "Em Stirling, a ponte caiu.", "STIRLING · 1297"),
     ("flechas", "img/scenes/chuva_flechas.jpg",
      "A storm of arrows darkens the sky and rains down on the Scottish spearmen, shields raised, men falling, "
