@@ -249,3 +249,24 @@ ITENS = {
  "pedra": "an adder stone: a smooth grey river pebble with a natural hole through the middle, on a leather thong; through the "
           "hole a faint vision of misty hills glows.",
 }
+
+# Capa da tela inicial: os quatro rostos do herói lado a lado, a Pedra do Destino atrás e o título pintado.
+CAPA_HEROIS = ["ruivo_malha", "ruiva_tartan", "moreno_couro", "morena_peles"]
+CAPA = ("Epic cinematic key-art cover for a dark historical-fantasy role-playing game set in Scotland in 1296, "
+        "painterly oil-painting texture, rich detail, dramatic lighting, a dense and full composition like a fantasy game poster. "
+        "In the foreground, the four young heroes from the reference images stand side by side as one party, ready for battle: "
+        "low wide combat stances, weapons raised and drawn (a sword held high, a quarterstaff braced, a bow drawn with an "
+        "arrow nocked, an axe gripped in both hands), leaning forward, fierce determined faces, cloaks and hair blown by the wind; "
+        "each keeps exactly the same face, hair and clothing as in their reference image. Behind them, towering on a misty "
+        "Highland hill inside a ring of ancient standing stones, the Stone of Destiny: a huge block of black carved stone with "
+        "Pictish carvings glowing an eerie blue, frost spreading from it. Filling the sky above and around the Stone, figures "
+        "and scenes from the story emerge from swirling storm clouds and mist, like visions painted into the clouds: an ancient "
+        "blue-skinned one-eyed hag goddess of winter with long white hair and a holly staff; a ghostly water horse with a "
+        "dripping seaweed mane rising from a river; a squat goblin in a blood-red cap with an iron pike; a flock of shadowy "
+        "flying dead spirits; English knights in great helms charging on warhorses; a red-bearded outlaw in plaid with a "
+        "quarterstaff; a tall Scottish warrior leader with a greatsword before a burning stone castle; a stone bridge over a "
+        "river. These visions fade softly into the clouds at their edges. Palette of slate blue, peat brown, blood red and "
+        "ember gold, a pale moon. In the lower third, centred over the heroes' feet, the game title painted as ornate shining "
+        "gold metallic lettering in a medieval Celtic uncial style with a subtle glow, written exactly as: Sangue e Névoa  "
+        "(spelled S-a-n-g-u-e, e, N-é-v-o-a, with the acute accent on the first e of Névoa). No other text, no letters other "
+        "than the title, no logos, no borders, no modern objects.")

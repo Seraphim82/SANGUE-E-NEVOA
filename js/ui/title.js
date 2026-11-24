@@ -14,13 +14,13 @@ function showTitle(fresh) {
   document.getElementById("barSub").textContent = "Escócia · 1296";
   app.innerHTML = `<section class="hero">${artBox}
    <div class="tag">Crônicas das Terras Altas</div>
-   <h1>Sangue e Névoa</h1>
+   <h1 class="sr-only">Sangue e Névoa</h1>
    <p class="lede">1296. O rei Eduardo levou a Pedra do Destino para Londres. Os padres dizem que foi um insulto. Os velhos sussurram que a Pedra era um selo, e que desde que ela partiu, as coisas antigas voltaram a andar pela Escócia.</p>
    <p>Você não é cavaleiro nem lorde. É gente comum de uma aldeia às margens do Clyde. Comece com quase nada e ganhe experiência, atributos e o poder que dorme no seu sangue.</p>
    <div class="cta"><button class="btn primary" id="bNew">Nova jornada</button><button class="btn" id="bSlots">Jornadas salvas</button><button class="btn" id="bAch">Conquistas</button>${saved && !fresh ? `<button class="btn" id="bCont">Continuar: ${esc(saved.name)}, ${title(saved)}</button>` : saved ? `<button class="btn" id="bCont">Continuar jornada salva</button>` : ""}</div>
    <p class="note">Sistema de 3d6: role igual ou abaixo do seu nível para ter sucesso. O progresso fica salvo neste navegador.</p>
   </section>`;
-  ART.show("titulo");
+  ART.show("capa");
   AUD.mood("tema");
   // A jornada nova vai para um espaço vazio; se não houver, a pessoa escolhe qual substituir.
   document.getElementById("bNew").onclick = () => {

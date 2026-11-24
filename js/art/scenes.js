@@ -1359,6 +1359,7 @@ const ART = (() => {
     "cachoeira",
     "alvorada",
     "morte",
+    "capa",
   ];
   const IMGS = {};
   PAINT.forEach((k) => {
@@ -1523,6 +1524,7 @@ const ART = (() => {
     im.src = "img/portraits/" + k + ".jpg";
   });
   const FALLBACK = {
+    capa: "titulo",
     guardiao: "taverna",
     schiltron: "rochedos",
     terra_queimada: "fogo",
