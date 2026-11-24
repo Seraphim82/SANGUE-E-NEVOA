@@ -75,7 +75,7 @@ PLANOS = [
     ("bannockburn", "img/scenes/bannock.jpg",
      "Two great armies charge across the field at dawn, banners streaming, cavalry crashing into spear walls, "
      "dust and mud flying, sweeping camera. Thunder of hooves, battle roar.",
-     6.5, "Mil trezentos e catorze. Bannockburn. Uma última manhã.", "BANNOCKBURN · 1314"),
+     6.5, "Mil trezentos e catorze, em Bannockburn. Dois exércitos, e uma última manhã.", "BANNOCKBURN · 1314"),
     ("capa", "img/scenes/capa.jpg",
      "The four heroes stand ready for battle as storm clouds swirl behind them, the carved Stone glows brighter "
      "blue, mist flows around their feet, their cloaks move in the wind; the golden title at the bottom stays "
@@ -181,9 +181,15 @@ def montar():
         entradas += ["-i", str(clipe)]
         cadeia = (f"[{i}:v]trim=0:{usar},setpts=PTS-STARTPTS,scale=1920:1080:flags=lanczos,"
                   f"fps=24,format=yuv420p,setsar=1")
+        # Faixas pretas de cinema (2,39:1) em todos os planos, menos no último: lá o título da capa
+        # fica embaixo e seria coberto.
+        if i < len(PLANOS) - 1:
+            barra = round((1080 - 1920 / 2.39) / 2)
+            cadeia += (f",drawbox=x=0:y=0:w=iw:h={barra}:color=black:t=fill,"
+                       f"drawbox=x=0:y=ih-{barra}:w=iw:h={barra}:color=black:t=fill")
         if letreiro:
             cadeia += (f",drawtext=fontfile={FONTE}:text='{texto_ffmpeg(letreiro)}':fontcolor=0xE8C46A:"
-                       f"fontsize=64:x=(w-tw)/2:y=h-200:shadowcolor=black@0.8:shadowx=3:shadowy=3:"
+                       f"fontsize=60:x=(w-tw)/2:y=h-230:shadowcolor=black@0.8:shadowx=3:shadowy=3:"
                        f"alpha='if(lt(t,0.6),t/0.6,if(lt(t,{usar - 0.8}),1,max(0,({usar}-t)/0.8)))'")
         filtros.append(cadeia + f"[v{i}]")
         rotulos.append((f"v{i}", usar))
@@ -196,11 +202,7 @@ def montar():
         filtros.append(f"[{atual}][{rotulo}]xfade=transition=fade:duration={TRANSICAO}:offset={fim - TRANSICAO}[{saida}]")
         atual, fim = saida, fim + usar - TRANSICAO
     total = fim
-    # Faixas pretas de cinema (2,39:1) e fade de entrada e saída.
-    barra = round((1080 - 1920 / 2.39) / 2)
-    filtros.append(f"[{atual}]drawbox=x=0:y=0:w=iw:h={barra}:color=black:t=fill,"
-                   f"drawbox=x=0:y=ih-{barra}:w=iw:h={barra}:color=black:t=fill,"
-                   f"fade=t=in:st=0:d=1,fade=t=out:st={total - 1.5}:d=1.5[video]")
+    filtros.append(f"[{atual}]fade=t=in:st=0:d=1,fade=t=out:st={total - 1.5}:d=1.5[video]")
 
     # Áudio: som dos clipes baixo, trilha do jogo e falas por cima.
     audios = []
