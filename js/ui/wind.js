@@ -148,6 +148,7 @@ function unfocusChoice(btn) {
 function commitChoice(btn, i) {
   if (committing) return;
   committing = true;
+  NARRATOR.stop();
   focusChoice(btn);
   btn.classList.add("go");
   WIND.point(btn);

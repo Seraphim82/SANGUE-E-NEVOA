@@ -91,6 +91,16 @@ Cada cena aponta para uma chave de imagem em `META`. Se `img/scenes/<chave>.jpg`
 - `CINEMA.finale(final)` toca o trailer do final: 13 quadros de 4,6 s com fusão, montados por `finaleSlides()` a partir das marcas da história. A cena `c6_creditos` o toca ao entrar, e a ação de escolha `act: "filme"` o repete. Ele roda mesmo com as cenas de luta desligadas; com "reduzir movimento", os quadros ficam parados.
 - `CINEMA.titleCard()` abre os capítulos. `go()` chama essa função ao entrar pela primeira vez numa cena `cN_inicio`, e também registra o herói na galeria da jornada (`recordJourney()`).
 
+## Narração
+
+`js/audio/narration.js` divide o texto da cena em parágrafos (`narrationParagraphs()`), com o nome do herói trocado por um marcador e contornado, e números que mudam a cada partida (moedas, pontos) tirados da voz. Cada parágrafo tem uma chave (`narrationKey()`, dois FNV-1a de 32 bits) e um MP3 em `audio/narracao/<chave>.mp3`. Só as chaves listadas em `NARRATION_CLIPS` são pedidas. `NARRATOR.onScene()` toca a cena em sequência quando ela muda; `AUD.narrating()` abaixa a trilha, que continua tocando. As ferramentas `coletar_narracao.mjs`, `gerar_narracao.py` e `listar_narracao.mjs` usam essas mesmas funções, rodando o jogo no navegador.
+
+## Conquistas e jornadas salvas
+
+`js/core/achievements.js` define `ACHIEVEMENTS` (nome, descrição, grupo e condição) e o perfil `sen-perfil`, separado do save e validado ao ler. `ACH.check()` roda a cada cena e no fim dos combates; `ACH.count()` soma estatísticas com teto.
+
+`js/core/state.js` tem três espaços de jornada (`SAVE_SLOTS`); o espaço 1 usa a chave antiga. `exportCode()` gera `SEN1.<base64url do JSON>`; `importSave()` aceita o código ou o arquivo, recusa conteúdo acima de `IMPORT_MAX` e passa o save por `sanitizeSave()`. A tela fica em `js/ui/slots.js`.
+
 ## Dicas para novatos
 
 `js/ui/tips.js` mostra no topo da cena uma dica por vez: primeiro a dos pontos (quando a pessoa já ganhou pontos e tem algum para gastar), depois a da forja (quando a arma ou a roupa em uso pode ser melhorada). Cada dica grava uma marca em `state.flags` (`dica_pontos`, `dica_forja`) e não volta. `fightHint()` acrescenta um aviso às escolhas com `fight` quando há 3 pontos ou mais para gastar ou uma melhoria pronta, e `updatePersonagemButton()` faz o botão Personagem pulsar ou ganhar a marca da forja.

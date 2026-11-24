@@ -259,8 +259,13 @@ casos.push(
       if (/\bsk-(ant-)?[A-Za-z0-9_-]{20,}/.test(historico)) achados.push("chave de API");
       if (/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(historico)) achados.push("chave privada");
       const emails = new Set(autores.split("\n").filter(Boolean));
+      // O noreply do github.com é o endereço genérico do próprio GitHub: assina o commit de merge
+      // que o CI testa num pull request e as edições feitas pelo site. Não é e-mail de ninguém.
       for (const e of emails)
-        if (!/@(example\.com|anthropic\.com|users\.noreply\.github\.com)$/.test(e))
+        if (
+          !/^noreply@github\.com$/.test(e) &&
+          !/@(example\.com|anthropic\.com|users\.noreply\.github\.com)$/.test(e)
+        )
           achados.push(`autor ${e}`);
       verificar(!achados.length, `encontrado no histórico: ${achados.join(", ")}`);
       return `${historico.split("\ncommit ").length} commits verificados`;
@@ -376,7 +381,7 @@ casos.push(
       await context.close();
       await servidor.fechar();
       const permitido =
-        /^\/(index\.html|css\/|js\/|img\/(scenes|portraits|heroes|action|items)\/[a-z0-9_]+\.jpg$|img\/favicon\.png$|audio\/[a-z_]+\.mp3$)/;
+        /^\/(index\.html|css\/|js\/|img\/(scenes|portraits|heroes|action|items)\/[a-z0-9_]+\.jpg$|img\/favicon\.png$|audio\/[a-z_]+\.mp3$|audio\/narracao\/[0-9a-f]{16}\.mp3$)/;
       const estranhos = pedidos.filter((p) => p.startsWith("/") && p !== "/" && !permitido.test(p));
       verificar(!r.xss, "um campo do save executou código");
       verificar(r.look === "ruivo", `aparência adulterada aceita: ${r.look}`);

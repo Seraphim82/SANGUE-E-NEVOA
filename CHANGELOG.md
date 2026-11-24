@@ -1,5 +1,20 @@
 # Histórico de versões
 
+## 1.6.0 · Narração, conquistas e jornadas salvas
+
+### Novidades
+- **Narração:** um narrador de voz grave e épica lê cada cena, no estilo dos narradores de anime clássico, com a trilha sonora continuando por baixo, mais baixa. Tocar numa escolha interrompe. Pode ser desligada no menu. Os 939 parágrafos do jogo estão narrados.
+- **Nova capa:** a tela inicial mostra as quatro aparências do herói prontas para a batalha diante da Pedra do Destino, com cenas da história nas nuvens e o título em dourado.
+- **Conquistas:** 25 medalhas em cinco grupos (jornada, finais, mistérios, companheiros e combate) e uma tela de estatísticas: partidas, finais vistos, inimigos e criaturas feéricas derrotados, quedas e mortes. Valem para todas as partidas.
+- **Jornadas salvas:** três espaços de jornada. Uma jornada pode ser exportada como arquivo ou como código (para colar no WhatsApp e continuar em outro aparelho) e importada de volta. O save antigo continua no espaço 1.
+
+### Segurança
+- Jornadas importadas e o perfil de conquistas passam pela mesma validação do save: só entram campos e valores conhecidos, com tamanho máximo.
+
+### Testes
+- Os testes de segurança aceitam os áudios da narração e o commit de mesclagem que o CI testa num pull request.
+- `npm run test:progresso`: conquistas, perfil adulterado, espaços, exportar e importar entre aparelhos, importação de lixo e HTML, apagar com dois toques, narração com a trilha por baixo.
+
 ## 1.5.0 · Primeiro retorno de jogadores
 
 ### Novidades

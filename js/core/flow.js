@@ -20,6 +20,11 @@ function go(id, keepBanner) {
     sc.enter();
   }
   state.visited[id] = 1;
+  if (id === "c6_epilogo" && !hasFlag("contou_fim")) {
+    state.flags.contou_fim = 1;
+    ACH.count("terminadas");
+  }
+  ACH.check();
   CHECK = JSON.stringify({ ...state, banner: null });
   save();
   render();

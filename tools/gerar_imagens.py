@@ -28,6 +28,8 @@ from prompts import (  # noqa: E402
     ACAO_GERAIS,
     ACAO_HEROI,
     ACAO_INIMIGO,
+    CAPA,
+    CAPA_HEROIS,
     CENAS,
     ESTILO_ACAO,
     ESTILO_ARMA_APARO,
@@ -140,7 +142,18 @@ def salvar(chave, img, largura):
     return saida
 
 
+def partes_capa():
+    """Capa da tela inicial: os retratos do herói entram como referência de rosto e roupa."""
+    partes = []
+    for nome in CAPA_HEROIS:
+        dados = base64.b64encode(destino(f"heroi:{nome}").read_bytes()).decode()
+        partes.append({"inlineData": {"mimeType": "image/jpeg", "data": dados}})
+    return partes + [{"text": CAPA}]
+
+
 def gerar(chave):
+    if chave == "capa":
+        return salvar(chave, pedir(partes_capa(), "21:9"), 1600)
     if chave.startswith("item:"):
         return salvar(chave, pedir([{"text": ESTILO_ITEM + ITENS[chave[5:]]}], "21:9"), 1600)
     if chave.startswith("acao:"):
