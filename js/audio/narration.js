@@ -20,10 +20,15 @@ const NAME_MARK = "§NOME§";
  * texto já montado (com NAME_MARK no lugar do nome) e o título da cena.
  */
 function narrationParagraphs(title, text) {
-  const plain = String(text)
+  let semMarcas = String(text)
     .replace(/<li>/g, "\n\n")
-    .replace(/<\/li>/g, "\n\n")
-    .replace(/<[^>]+>/g, " ")
+    .replace(/<\/li>/g, "\n\n");
+  // Repete até não sobrar marca: uma passada só deixaria casos como "<<b>b>".
+  for (let antes = ""; antes !== semMarcas; ) {
+    antes = semMarcas;
+    semMarcas = semMarcas.replace(/<[^>]+>/g, " ");
+  }
+  const plain = semMarcas
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
