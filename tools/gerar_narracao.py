@@ -18,6 +18,7 @@ import re
 import subprocess  # nosec B404: só chama o ffmpeg com argumentos fixos
 import sys
 import tempfile
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -85,6 +86,31 @@ def gravar(chave, audio, taxa, tipo):
     return destino
 
 
+# O plano pago aceita 10 pedidos por minuto neste modelo: um pedido a cada 6,5 s fica abaixo disso.
+INTERVALO = 6.5
+_trava = threading.Lock()
+_ultimo = [0.0]
+
+
+def esperar_vez():
+    """Espaça o início dos pedidos para não estourar o limite por minuto."""
+    with _trava:
+        agora = time.monotonic()
+        espera = _ultimo[0] + INTERVALO - agora
+        if espera > 0:
+            time.sleep(espera)
+        _ultimo[0] = time.monotonic()
+
+
+def limites_estourados(corpo):
+    """Lê do erro 429 quais limites estouraram (por minuto, por dia...)."""
+    try:
+        detalhes = json.loads(corpo).get("error", {}).get("details", [])
+    except ValueError:
+        return []
+    return [v.get("quotaId", "") for d in detalhes for v in d.get("violations", [])]
+
+
 class CotaDoDia(Exception):
     """O Google avisou que a cota de pedidos do dia acabou: só amanhã."""
 
@@ -99,15 +125,18 @@ def gerar(item):
     espera = 20
     for _ in range(10):
         try:
+            esperar_vez()
             audio, taxa, tipo = pedir(texto)
             gravar(chave, audio, taxa, tipo)
             return f"{chave}: ok ({item['cena']})"
         except urllib.error.HTTPError as erro:
-            corpo = erro.read().decode()[:1200]
+            corpo = erro.read().decode()
             if erro.code == 402:
                 raise SystemExit("Os créditos da chave do Gemini acabaram.") from erro
-            if erro.code == 429 and "per_day" in corpo + erro.headers.get("x-quota", ""):
+            # Só para de vez quando o limite estourado é o do dia; o por minuto passa com uma pausa.
+            if erro.code == 429 and any("PerDay" in q for q in limites_estourados(corpo)):
                 raise CotaDoDia() from erro
+            corpo = corpo[:300]
             if erro.code not in (429, 500, 502, 503):
                 return f"{chave}: erro HTTP {erro.code} {corpo}"
         except Exception as erro:  # rede instável: tenta de novo
@@ -124,16 +153,16 @@ def main():
     itens = [i for i in itens if i["cena"].startswith(filtro)]
     faltam = [i for i in itens if not (PASTA / f"{i['chave']}.mp3").exists()]
     print(f"{len(itens)} parágrafos, {len(faltam)} sem áudio", flush=True)
-    feitos = 0
     try:
         with ThreadPoolExecutor(max_workers=2) as pool:
             for resultado in pool.map(gerar, faltam):
                 if resultado:
-                    feitos += resultado.endswith(")")
                     print(resultado, flush=True)
     except CotaDoDia:
         print("Cota de pedidos do dia esgotada: a geração continua amanhã.", flush=True)
     restam = sum(1 for i in itens if not (PASTA / f"{i['chave']}.mp3").exists())
+    # Conta pelos arquivos: um pedido que termina depois do aviso de cota também entra na conta.
+    feitos = len(faltam) - restam
     print(f"RESUMO: {feitos} gravados agora, {restam} ainda sem áudio", flush=True)
 
 
