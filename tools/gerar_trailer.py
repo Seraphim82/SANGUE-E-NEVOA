@@ -43,15 +43,15 @@ PLANOS = [
     ("abertura", "img/scenes/titulo.jpg",
      "Mist slowly rolls between the ancient standing stones under the moon, faint blue fairy lights drift, the lone "
      "traveller's cloak moves in the wind, very slow camera push-in. Quiet eerie wind.",
-     6.5, "Mil duzentos e noventa e seis. O rei Eduardo levou a Pedra do Destino para Londres.", "ESCÓCIA · 1296"),
+     6.5, "Escócia, no ano de mil duzentos e noventa e seis.", "ESCÓCIA · 1296"),
     ("fogo", "img/scenes/fogo.jpg",
      "English soldiers set the thatched cottages ablaze at night, roaring flames and sparks fly, villagers flee, "
      "smoke swirls, handheld camera moving fast. Fire roaring, screams.",
-     5.5, "Os ingleses trouxeram o fogo.", ""),
+     5.5, "O rei Eduardo levou a Pedra do Destino. E trouxe o fogo.", ""),
     ("kelpie", "img/scenes/kelpie_rio.jpg",
      "The ghostly water horse rises out of the dark river, its seaweed mane whipping, water cascading, its eyes "
      "glowing, camera tilts up as it rears. Splashing water, an unearthly neigh.",
-     5.5, "E sem a Pedra, as coisas antigas acordaram.", ""),
+     5.5, "Sem a Pedra, as coisas antigas acordaram.", ""),
     ("sluagh", "img/scenes/sluagh_ceu.jpg",
      "A swarm of shadowy flying dead spirits sweeps across the stormy sky toward the camera, clouds churning, "
      "lightning flashes. Howling wind, ghostly shrieks.",
@@ -59,7 +59,7 @@ PLANOS = [
     ("ponte", "img/scenes/ponte.jpg",
      "The wooden bridge collapses under the weight of armoured knights, timber splintering, men and horses fall "
      "into the river, spray and mist, dramatic slow camera push-in. Epic battle sound.",
-     6.5, "Em Stirling, a ponte caiu. E o maior exército do mundo caiu com ela.", "STIRLING · 1297"),
+     6.5, "Em Stirling, a ponte caiu.", "STIRLING · 1297"),
     ("flechas", "img/scenes/chuva_flechas.jpg",
      "A storm of arrows darkens the sky and rains down on the Scottish spearmen, shields raised, men falling, "
      "fast camera shake. Whistling arrows, impacts, shouting.",
@@ -75,7 +75,7 @@ PLANOS = [
     ("bannockburn", "img/scenes/bannock.jpg",
      "Two great armies charge across the field at dawn, banners streaming, cavalry crashing into spear walls, "
      "dust and mud flying, sweeping camera. Thunder of hooves, battle roar.",
-     6.5, "Mil trezentos e catorze, em Bannockburn. Dois exércitos, e uma última manhã.", "BANNOCKBURN · 1314"),
+     6.5, "Bannockburn. A última manhã.", "BANNOCKBURN · 1314"),
     ("capa", "img/scenes/capa.jpg",
      "The four heroes stand ready for battle as storm clouds swirl behind them, the carved Stone glows brighter "
      "blue, mist flows around their feet, their cloaks move in the wind; the golden title at the bottom stays "
@@ -150,12 +150,22 @@ def gerar_fala(plano):
         "generationConfig": {"responseModalities": ["AUDIO"],
                              "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOZ}}}},
     }
-    resposta = com_tentativas(lambda: post(f"models/{MODELO_VOZ}:generateContent", corpo, 300), chave + " (voz)")
-    parte = resposta["candidates"][0]["content"]["parts"][0]["inlineData"]
+    # O modelo de voz às vezes devolve uma resposta vazia (finishReason OTHER) em frases curtas: tenta de novo.
+    for _ in range(6):
+        resposta = com_tentativas(lambda: post(f"models/{MODELO_VOZ}:generateContent", corpo, 300), chave + " (voz)")
+        partes = resposta.get("candidates", [{}])[0].get("content", {}).get("parts", [])
+        if partes and "inlineData" in partes[0]:
+            break
+        print(f"{chave}: resposta de voz vazia, nova tentativa", flush=True)
+    else:
+        raise RuntimeError(f"{chave}: o modelo de voz não devolveu áudio")
+    parte = partes[0]["inlineData"]
     bruto = PECAS / f"{chave}.pcm"
     bruto.write_bytes(base64.b64decode(parte["data"]))
+    sem_silencio = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+                    "silenceremove=start_periods=1:start_threshold=-45dB,areverse")
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "s16le", "-ar", "24000", "-ac", "1",  # nosec B603 B607
-                    "-i", str(bruto), str(destino)], check=True)
+                    "-i", str(bruto), "-af", sem_silencio, str(destino)], check=True)
     bruto.unlink()
     print(f"{chave}: fala pronta", flush=True)
 
@@ -177,7 +187,9 @@ def montar():
     inicio, momentos = 0.0, []
     for i, (chave, _, _, segundos, _, letreiro) in enumerate(PLANOS):
         clipe = PECAS / f"{chave}.mp4"
-        usar = min(segundos, duracao(clipe) - 0.1)
+        fala = PECAS / f"{chave}.wav"
+        precisa = duracao(fala) + 1.0 if PLANOS[i][4] and fala.exists() else 0
+        usar = min(max(segundos, precisa), duracao(clipe) - 0.1)
         entradas += ["-i", str(clipe)]
         cadeia = (f"[{i}:v]trim=0:{usar},setpts=PTS-STARTPTS,scale=1920:1080:flags=lanczos,"
                   f"fps=24,format=yuv420p,setsar=1")
@@ -220,12 +232,15 @@ def montar():
                        f"adelay={int(comeco * 1000)}:all=1[m{j}]")
         audios.append(f"[m{j}]")
         proximo += 1
+    livre = 0.0  # quando o narrador termina a fala anterior
     for i, plano in enumerate(PLANOS):
         fala = PECAS / f"{plano[0]}.wav"
         if not plano[4] or not fala.exists():
             continue
+        comeca = max(momentos[i] + 0.3, livre + 0.3)
+        livre = comeca + duracao(fala)
         entradas += ["-i", str(fala)]
-        filtros.append(f"[{proximo}:a]volume=1.6,adelay={int((momentos[i] + 0.4) * 1000)}:all=1[f{i}]")
+        filtros.append(f"[{proximo}:a]volume=1.6,adelay={int(comeca * 1000)}:all=1[f{i}]")
         audios.append(f"[f{i}]")
         proximo += 1
     filtros.append(f"{''.join(audios)}amix=inputs={len(audios)}:normalize=0,"
