@@ -345,16 +345,6 @@
     "cena": "c1_fim"
   },
   {
-    "chave": "e06d851cb8e606b2",
-    "texto": "O sargento Blackwood deve a vida a você e contou o segredo dos monges de Scone.",
-    "cena": "c1_fim"
-  },
-  {
-    "chave": "531ced1bdb8410dd",
-    "texto": "Seu título agora é Fugitivo.",
-    "cena": "c1_fim"
-  },
-  {
     "chave": "282cb269b521141b",
     "texto": "Mairi está viva e caminha com os rebeldes.",
     "cena": "c1_fim"
@@ -370,8 +360,8 @@
     "cena": "c1_fim"
   },
   {
-    "chave": "ab6cac8b3a0631d9",
-    "texto": "Os rebeldes viram você matar um homem ferido e desarmado. Tam não esqueceu.",
+    "chave": "531ced1bdb8410dd",
+    "texto": "Seu título agora é Fugitivo.",
     "cena": "c1_fim"
   },
   {
@@ -380,8 +370,18 @@
     "cena": "c1_fim"
   },
   {
+    "chave": "e06d851cb8e606b2",
+    "texto": "O sargento Blackwood deve a vida a você e contou o segredo dos monges de Scone.",
+    "cena": "c1_fim"
+  },
+  {
     "chave": "8072bbc7ae4ae1c1",
     "texto": "Você carrega o pique do Barrete Vermelho.",
+    "cena": "c1_fim"
+  },
+  {
+    "chave": "ab6cac8b3a0631d9",
+    "texto": "Os rebeldes viram você matar um homem ferido e desarmado. Tam não esqueceu.",
     "cena": "c1_fim"
   },
   {
@@ -1150,8 +1150,8 @@
     "cena": "c2_fim"
   },
   {
-    "chave": "a441affd7318c55b",
-    "texto": "Sir Osric Hale está morto.",
+    "chave": "481b642a9d0d8c1c",
+    "texto": "O kelpie ainda lhe deve um favor.",
     "cena": "c2_fim"
   },
   {
@@ -1160,18 +1160,18 @@
     "cena": "c2_fim"
   },
   {
-    "chave": "a52774cb509a72f9",
-    "texto": "Tam ainda não o perdoou pela torre.",
-    "cena": "c2_fim"
-  },
-  {
-    "chave": "481b642a9d0d8c1c",
-    "texto": "O kelpie ainda lhe deve um favor.",
+    "chave": "a441affd7318c55b",
+    "texto": "Sir Osric Hale está morto.",
     "cena": "c2_fim"
   },
   {
     "chave": "5b5b9985a692169b",
     "texto": "O favor do kelpie foi cobrado.",
+    "cena": "c2_fim"
+  },
+  {
+    "chave": "a52774cb509a72f9",
+    "texto": "Tam ainda não o perdoou pela torre.",
     "cena": "c2_fim"
   },
   {
@@ -1255,8 +1255,8 @@
     "cena": "c2_inicio"
   },
   {
-    "chave": "21b988177868f4b1",
-    "texto": "Um pastor que desceu de Perth trouxe notícias: um velho monge de Scone vive escondido na colina de Dunsinane, além do rio Tay, e fala sozinho com as pedras. Você se lembra das palavras de Blackwood: “Os monges riam.”",
+    "chave": "2c791a9cdf2d0962",
+    "texto": "Callum passou o inverno aprendendo a usar a funda com os rebeldes e já acerta um corvo a vinte passos. Mairi cuida dos doentes com ervas secas e reza baixinho para santos que a Igreja nunca conheceu.",
     "cena": "c2_inicio"
   },
   {
@@ -1270,8 +1270,8 @@
     "cena": "c2_inicio"
   },
   {
-    "chave": "2c791a9cdf2d0962",
-    "texto": "Callum passou o inverno aprendendo a usar a funda com os rebeldes e já acerta um corvo a vinte passos. Mairi cuida dos doentes com ervas secas e reza baixinho para santos que a Igreja nunca conheceu.",
+    "chave": "21b988177868f4b1",
+    "texto": "Um pastor que desceu de Perth trouxe notícias: um velho monge de Scone vive escondido na colina de Dunsinane, além do rio Tay, e fala sozinho com as pedras. Você se lembra das palavras de Blackwood: “Os monges riam.”",
     "cena": "c2_inicio"
   },
   {
@@ -1445,13 +1445,13 @@
     "cena": "c2_partida"
   },
   {
-    "chave": "23fddf55bd10f25b",
-    "texto": "A neve vira lama, e é hora de partir. Callum fica com os rebeldes, e chora com raiva por não poder ir. Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”",
+    "chave": "59c9ced637cbada8",
+    "texto": "A neve vira lama, e é hora de partir. Callum fica com Mairi e os rebeldes, e chora com raiva por não poder ir. Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”",
     "cena": "c2_partida"
   },
   {
-    "chave": "59c9ced637cbada8",
-    "texto": "A neve vira lama, e é hora de partir. Callum fica com Mairi e os rebeldes, e chora com raiva por não poder ir. Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”",
+    "chave": "23fddf55bd10f25b",
+    "texto": "A neve vira lama, e é hora de partir. Callum fica com os rebeldes, e chora com raiva por não poder ir. Ailsa ajeita a aljava no ombro. “Até Dunsinane são seis dias. Se não morrermos antes.”",
     "cena": "c2_partida"
   },
   {
@@ -1880,13 +1880,13 @@
     "cena": "c3_cabeca"
   },
   {
-    "chave": "1a1531ced94ec9cc",
-    "texto": "Então o rio congela. Num instante, o Forth vira uma placa branca, e os cavalos que fogem pela margem escorregam e quebram o gelo. Os gritos são terríveis. Os escoceses comemoram. Você não consegue comemorar.",
+    "chave": "f9d0c936acf49a18",
+    "texto": "Os cavaleiros que caem no rio não sobem de novo. Por um instante, entre a espuma, você vê crinas negras e algas, e cavalos que não são cavalos puxando armaduras para o fundo.",
     "cena": "c3_cabeca"
   },
   {
-    "chave": "f9d0c936acf49a18",
-    "texto": "Os cavaleiros que caem no rio não sobem de novo. Por um instante, entre a espuma, você vê crinas negras e algas, e cavalos que não são cavalos puxando armaduras para o fundo.",
+    "chave": "1a1531ced94ec9cc",
+    "texto": "Então o rio congela. Num instante, o Forth vira uma placa branca, e os cavalos que fogem pela margem escorregam e quebram o gelo. Os gritos são terríveis. Os escoceses comemoram. Você não consegue comemorar.",
     "cena": "c3_cabeca"
   },
   {
@@ -2085,28 +2085,8 @@
     "cena": "c3_fim"
   },
   {
-    "chave": "a5caef40a1e5d792",
-    "texto": "Você puxou o pino, e a ponte de Stirling caiu no Forth.",
-    "cena": "c3_fim"
-  },
-  {
-    "chave": "2f0e35543f2c5e1e",
-    "texto": "Você fez um pacto com a Cailleach. Ela vai cobrar.",
-    "cena": "c3_fim"
-  },
-  {
-    "chave": "3b90a715afc41ce3",
-    "texto": "Você deixou Blackwood se afogar no Forth.",
-    "cena": "c3_fim"
-  },
-  {
     "chave": "ddc99ab861c77a0a",
     "texto": "Wallace e Moray passam a assinar cartas como comandantes do exército do reino da Escócia. Wallace manda chamar você e põe na sua mão uma espada de guerra, de bom aço escocês. “Ganhaste isto na ponte.” O intendente entrega a todos os que lutaram na ponta da ponte um gibão acolchoado azul com a cruz de Santo André costurada no peito.",
-    "cena": "c3_fim"
-  },
-  {
-    "chave": "57119f374819c825",
-    "texto": "O vau rio acima estava bloqueado, e o flanco escocês ficou seguro.",
     "cena": "c3_fim"
   },
   {
@@ -2115,18 +2095,38 @@
     "cena": "c3_fim"
   },
   {
-    "chave": "733643e7f2bc6fc9",
-    "texto": "Callum levou recados durante toda a batalha e voltou sem um arranhão.",
-    "cena": "c3_fim"
-  },
-  {
     "chave": "0b7e31a5c8d92177",
     "texto": "Os cavalos-d'água do Forth lutaram por você. O favor do kelpie está pago.",
     "cena": "c3_fim"
   },
   {
+    "chave": "3b90a715afc41ce3",
+    "texto": "Você deixou Blackwood se afogar no Forth.",
+    "cena": "c3_fim"
+  },
+  {
     "chave": "9499f7689fff00c6",
     "texto": "Você salvou Blackwood pela terceira vez. Ele foi criar ovelhas em Yorkshire.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "733643e7f2bc6fc9",
+    "texto": "Callum levou recados durante toda a batalha e voltou sem um arranhão.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "2f0e35543f2c5e1e",
+    "texto": "Você fez um pacto com a Cailleach. Ela vai cobrar.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "57119f374819c825",
+    "texto": "O vau rio acima estava bloqueado, e o flanco escocês ficou seguro.",
+    "cena": "c3_fim"
+  },
+  {
+    "chave": "a5caef40a1e5d792",
+    "texto": "Você puxou o pino, e a ponte de Stirling caiu no Forth.",
     "cena": "c3_fim"
   },
   {
@@ -2730,6 +2730,11 @@
     "cena": "c4_arqueiros_luta"
   },
   {
+    "chave": "3b947860119db56e",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Graças ao aviso, Wallace pôs vocês perto do bosque.",
+    "cena": "c4_arqueiros_luta"
+  },
+  {
     "chave": "4ca5339ca9b39eee",
     "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Callum está duas fileiras atrás, com as mãos tremendo no arco. Vocês estão no meio do campo aberto, entre os schiltrons.",
     "cena": "c4_arqueiros_luta"
@@ -2740,18 +2745,13 @@
     "cena": "c4_arqueiros_luta"
   },
   {
-    "chave": "3b947860119db56e",
-    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Graças ao aviso, Wallace pôs vocês perto do bosque.",
+    "chave": "2931bd2ffcd0af49",
+    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Vocês estão no meio do campo aberto, entre os schiltrons.",
     "cena": "c4_arqueiros_luta"
   },
   {
     "chave": "3361d3ab7b50ce81",
     "texto": "Você se posiciona entre os arqueiros de Selkirk. Callum está duas fileiras atrás, com as mãos tremendo no arco. Vocês estão no meio do campo aberto, entre os schiltrons.",
-    "cena": "c4_arqueiros_luta"
-  },
-  {
-    "chave": "2931bd2ffcd0af49",
-    "texto": "Você se posiciona entre os arqueiros de Selkirk, ao lado de Ailsa. Vocês estão no meio do campo aberto, entre os schiltrons.",
     "cena": "c4_arqueiros_luta"
   },
   {
@@ -2775,13 +2775,13 @@
     "cena": "c4_arqueiros_perdidos"
   },
   {
-    "chave": "98b96b7c4493cdfe",
-    "texto": "Você encontra Ailsa caída com o arco ainda na mão, e uma flecha ainda na corda. Ela nunca desperdiçou uma flecha. Callum está vivo, ferido na perna, escondido embaixo do corpo de um cavalo. Ele não chora. Não consegue.",
+    "chave": "bde5acdb590e648d",
+    "texto": "Você encontra Ailsa caída com o arco ainda na mão, e uma flecha ainda na corda. Ela nunca desperdiçou uma flecha.",
     "cena": "c4_arqueiros_perdidos"
   },
   {
-    "chave": "bde5acdb590e648d",
-    "texto": "Você encontra Ailsa caída com o arco ainda na mão, e uma flecha ainda na corda. Ela nunca desperdiçou uma flecha.",
+    "chave": "98b96b7c4493cdfe",
+    "texto": "Você encontra Ailsa caída com o arco ainda na mão, e uma flecha ainda na corda. Ela nunca desperdiçou uma flecha. Callum está vivo, ferido na perna, escondido embaixo do corpo de um cavalo. Ele não chora. Não consegue.",
     "cena": "c4_arqueiros_perdidos"
   },
   {
@@ -2812,6 +2812,11 @@
   {
     "chave": "b999c028274868be",
     "texto": "Os cavaleiros recuam por um instante, e é o bastante. Você grita, e os arqueiros que sobraram correm para o bosque, com Ailsa por último, cobrindo a retirada. Callum passa por você correndo, vivo, com um corte no braço e os olhos arregalados.",
+    "cena": "c4_arqueiros_salvos"
+  },
+  {
+    "chave": "11592218f317ed7e",
+    "texto": "Os cavaleiros recuam por um instante, e é o bastante. Você grita, e os arqueiros que sobraram correm para o bosque. Callum passa por você correndo, vivo, com um corte no braço e os olhos arregalados.",
     "cena": "c4_arqueiros_salvos"
   },
   {
@@ -3075,6 +3080,11 @@
     "cena": "c4_noite"
   },
   {
+    "chave": "ed8f25d2669f9238",
+    "texto": "“Amanhã o rei vence”, diz ela, sem rodeios. “Isso já está escrito, e não podes apagar. Mas podes escolher quem salvar.” Ela olha para Ailsa, que dorme abraçada ao arco, e depois para Tam, que ronca perto do fogo. “Escolhe bem.”",
+    "cena": "c4_noite"
+  },
+  {
     "chave": "ad2156395d0acd9f",
     "texto": "Na noite antes da batalha começa a nevar. Em julho.",
     "cena": "c4_noite"
@@ -3087,11 +3097,6 @@
   {
     "chave": "17691e105456dd16",
     "texto": "“Amanhã os teus perdem, criança. Eu sei, porque o inverno vê longe. Por isso venho cobrar antes que morras: leva-me à Pedra. Agora.”",
-    "cena": "c4_noite"
-  },
-  {
-    "chave": "ed8f25d2669f9238",
-    "texto": "“Amanhã o rei vence”, diz ela, sem rodeios. “Isso já está escrito, e não podes apagar. Mas podes escolher quem salvar.” Ela olha para Ailsa, que dorme abraçada ao arco, e depois para Tam, que ronca perto do fogo. “Escolhe bem.”",
     "cena": "c4_noite"
   },
   {
@@ -3185,13 +3190,13 @@
     "cena": "c4_renuncia"
   },
   {
-    "chave": "74d67a0eb0a04f5c",
-    "texto": "Ailsa sobreviveu a Falkirk.",
+    "chave": "6328774c45bec8a6",
+    "texto": "Ailsa morreu em Falkirk, entre os arqueiros de Selkirk.",
     "cena": "c4_renuncia"
   },
   {
-    "chave": "aec38c45e08d9e23",
-    "texto": "Você rompeu o pacto com a Cailleach. Os lobos dela caçam você.",
+    "chave": "f11eb094c165370a",
+    "texto": "Fergus Mór salvou Tam, ferido.",
     "cena": "c4_renuncia"
   },
   {
@@ -3200,23 +3205,13 @@
     "cena": "c4_renuncia"
   },
   {
-    "chave": "6328774c45bec8a6",
-    "texto": "Ailsa morreu em Falkirk, entre os arqueiros de Selkirk.",
-    "cena": "c4_renuncia"
-  },
-  {
     "chave": "301224fca27b9f06",
     "texto": "Callum foi ferido na perna e vai mancar pelo resto da vida.",
     "cena": "c4_renuncia"
   },
   {
-    "chave": "dca7ea9c25f321d2",
-    "texto": "A Cailleach aceitou esperar até o fim da guerra.",
-    "cena": "c4_renuncia"
-  },
-  {
-    "chave": "f11eb094c165370a",
-    "texto": "Fergus Mór salvou Tam, ferido.",
+    "chave": "aec38c45e08d9e23",
+    "texto": "Você rompeu o pacto com a Cailleach. Os lobos dela caçam você.",
     "cena": "c4_renuncia"
   },
   {
@@ -3227,6 +3222,16 @@
   {
     "chave": "e41f814fa9f058c5",
     "texto": "A Cailleach levou um pedaço do seu calor como garantia.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "74d67a0eb0a04f5c",
+    "texto": "Ailsa sobreviveu a Falkirk.",
+    "cena": "c4_renuncia"
+  },
+  {
+    "chave": "dca7ea9c25f321d2",
+    "texto": "A Cailleach aceitou esperar até o fim da guerra.",
     "cena": "c4_renuncia"
   },
   {
@@ -3370,13 +3375,13 @@
     "cena": "c4_templario"
   },
   {
-    "chave": "c0f77bf3b737ad95",
-    "texto": "E entre as árvores, olhos azuis de gelo. Os lobos da Velha cumprem a promessa.",
+    "chave": "14d0c9045da5a58e",
+    "texto": "Mais tarde você vai saber que Fergus Mór arrancou Tam do meio dos cavaleiros, ferido mas vivo.",
     "cena": "c4_templario"
   },
   {
-    "chave": "14d0c9045da5a58e",
-    "texto": "Mais tarde você vai saber que Fergus Mór arrancou Tam do meio dos cavaleiros, ferido mas vivo.",
+    "chave": "c0f77bf3b737ad95",
+    "texto": "E entre as árvores, olhos azuis de gelo. Os lobos da Velha cumprem a promessa.",
     "cena": "c4_templario"
   },
   {
@@ -3530,6 +3535,11 @@
     "cena": "c5_fim"
   },
   {
+    "chave": "e30436258e852a17",
+    "texto": "Você descobriu a traição de Menteith, mas Wallace escolheu não fugir.",
+    "cena": "c5_fim"
+  },
+  {
     "chave": "447f45e9269f7723",
     "texto": "Você recusou a oferta da Cailleach em Londres.",
     "cena": "c5_fim"
@@ -3542,11 +3552,6 @@
   {
     "chave": "ff10c136ed186ff8",
     "texto": "Você ofereceu a Pedra à Cailleach pela vida de Wallace. Ela tirou a dor dele, e o trato continua.",
-    "cena": "c5_fim"
-  },
-  {
-    "chave": "e30436258e852a17",
-    "texto": "Você descobriu a traição de Menteith, mas Wallace escolheu não fugir.",
     "cena": "c5_fim"
   },
   {
@@ -3625,38 +3630,8 @@
     "cena": "c5_inicio"
   },
   {
-    "chave": "749f85c3f8a3ea45",
-    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk. Ailsa também, mais calada do que nunca.",
-    "cena": "c5_inicio"
-  },
-  {
-    "chave": "0f8cfc460c404268",
-    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam está enterrado em Falkirk. Ailsa está enterrada em Falkirk.",
-    "cena": "c5_inicio"
-  },
-  {
-    "chave": "8932c2c8f85b45ee",
-    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk.",
-    "cena": "c5_inicio"
-  },
-  {
-    "chave": "4faedc185a17afd2",
-    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam, com a barba ficando grisalha, também. Ailsa está enterrada em Falkirk.",
-    "cena": "c5_inicio"
-  },
-  {
     "chave": "b18804994bfc1c8b",
     "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk. Ailsa está enterrada em Falkirk.",
-    "cena": "c5_inicio"
-  },
-  {
-    "chave": "08a6b925a7ad886f",
-    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam, com a barba ficando grisalha, também. Ailsa também, mais calada do que nunca.",
-    "cena": "c5_inicio"
-  },
-  {
-    "chave": "3338a8ed3df1922b",
-    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam está enterrado em Falkirk.",
     "cena": "c5_inicio"
   },
   {
@@ -3665,8 +3640,38 @@
     "cena": "c5_inicio"
   },
   {
+    "chave": "0f8cfc460c404268",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam está enterrado em Falkirk. Ailsa está enterrada em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "4faedc185a17afd2",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam, com a barba ficando grisalha, também. Ailsa está enterrada em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "08a6b925a7ad886f",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam, com a barba ficando grisalha, também. Ailsa também, mais calada do que nunca.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "749f85c3f8a3ea45",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk. Ailsa também, mais calada do que nunca.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "8932c2c8f85b45ee",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a mira mais certeira do bando, também. Tam está enterrado em Falkirk.",
+    "cena": "c5_inicio"
+  },
+  {
     "chave": "ee35ce5b19d9e7a9",
     "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam, com a barba ficando grisalha, também.",
+    "cena": "c5_inicio"
+  },
+  {
+    "chave": "3338a8ed3df1922b",
+    "texto": "Você ainda está com ele. Callum, com vinte anos e a perna que manca desde Falkirk, também. Tam está enterrado em Falkirk.",
     "cena": "c5_inicio"
   },
   {
@@ -4145,13 +4150,18 @@
     "cena": "c6_epilogo"
   },
   {
+    "chave": "9b2d609bf804c899",
+    "texto": "Mairi viveu até os noventa anos e morreu dormindo, numa noite de Samhain, com um galho de sorveira na mão.",
+    "cena": "c6_epilogo"
+  },
+  {
     "chave": "16bb582839697dfe",
     "texto": "Tam está enterrado em Falkirk, e todo ano alguém deixa um bordão de freixo no túmulo dele.",
     "cena": "c6_epilogo"
   },
   {
-    "chave": "cfb48b91a39de8af",
-    "texto": "Ailsa nunca se casou. Ensinou meninas a atirar com arco até o fim da vida.",
+    "chave": "107321d345e8b2e1",
+    "texto": "Ailsa está enterrada em Falkirk, entre os arqueiros de Selkirk.",
     "cena": "c6_epilogo"
   },
   {
@@ -4165,18 +4175,8 @@
     "cena": "c6_epilogo"
   },
   {
-    "chave": "9b2d609bf804c899",
-    "texto": "Mairi viveu até os noventa anos e morreu dormindo, numa noite de Samhain, com um galho de sorveira na mão.",
-    "cena": "c6_epilogo"
-  },
-  {
-    "chave": "0c5b8da5c50a3957",
-    "texto": "Callum mancou a vida inteira e se tornou o melhor arqueiro do exército de Bruce. Teve quatro filhos, e o mais velho leva o seu nome.",
-    "cena": "c6_epilogo"
-  },
-  {
-    "chave": "107321d345e8b2e1",
-    "texto": "Ailsa está enterrada em Falkirk, entre os arqueiros de Selkirk.",
+    "chave": "52ab5e5e3841caf8",
+    "texto": "O kelpie do Clyde ainda lhe deve um favor. Ele espera.",
     "cena": "c6_epilogo"
   },
   {
@@ -4185,13 +4185,8 @@
     "cena": "c6_epilogo"
   },
   {
-    "chave": "17b22d867458ac0c",
-    "texto": "A Escócia é livre e coberta de neve. Os escoceses aprenderam a viver no inverno. Os ingleses nunca mais voltaram. Ninguém quer conquistar uma terra de gelo.",
-    "cena": "c6_epilogo"
-  },
-  {
-    "chave": "61ce97e74bf1f46d",
-    "texto": "Desde então, o inverno na Escócia vem em Samhain e vai embora em Beltane, sem falhar. Os velhos dizem que é por causa de um acordo. Ninguém lembra com quem.",
+    "chave": "0c5b8da5c50a3957",
+    "texto": "Callum mancou a vida inteira e se tornou o melhor arqueiro do exército de Bruce. Teve quatro filhos, e o mais velho leva o seu nome.",
     "cena": "c6_epilogo"
   },
   {
@@ -4200,13 +4195,23 @@
     "cena": "c6_epilogo"
   },
   {
-    "chave": "52ab5e5e3841caf8",
-    "texto": "O kelpie do Clyde ainda lhe deve um favor. Ele espera.",
+    "chave": "17b22d867458ac0c",
+    "texto": "A Escócia é livre e coberta de neve. Os escoceses aprenderam a viver no inverno. Os ingleses nunca mais voltaram. Ninguém quer conquistar uma terra de gelo.",
     "cena": "c6_epilogo"
   },
   {
     "chave": "73e4ec29c3f352e7",
     "texto": "Seu título final é Herói da Escócia.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "cfb48b91a39de8af",
+    "texto": "Ailsa nunca se casou. Ensinou meninas a atirar com arco até o fim da vida.",
+    "cena": "c6_epilogo"
+  },
+  {
+    "chave": "61ce97e74bf1f46d",
+    "texto": "Desde então, o inverno na Escócia vem em Samhain e vai embora em Beltane, sem falhar. Os velhos dizem que é por causa de um acordo. Ninguém lembra com quem.",
     "cena": "c6_epilogo"
   },
   {
@@ -4500,13 +4505,13 @@
     "cena": "c6_noite"
   },
   {
-    "chave": "e8aecd77cede6ae1",
-    "texto": "Os soldados olham para o céu sem entender. A neve cai sobre os dois exércitos, sobre o riacho, sobre a carroça onde a Pedra dorme coberta de palha.",
+    "chave": "05ceca4be8ddbfc5",
+    "texto": "“Nós já conversamos uma vez, criança. Amanhã, quando o sangue correr, eu venho buscar a minha liberdade. Pensa no que vais dizer.”",
     "cena": "c6_noite"
   },
   {
-    "chave": "1088c92722f21229",
-    "texto": "“Rompeste a tua palavra, e eu cacei-te por dezesseis anos. Amanhã, quando o sangue correr, eu mesma quebro a Pedra.”",
+    "chave": "e8aecd77cede6ae1",
+    "texto": "Os soldados olham para o céu sem entender. A neve cai sobre os dois exércitos, sobre o riacho, sobre a carroça onde a Pedra dorme coberta de palha.",
     "cena": "c6_noite"
   },
   {
@@ -4515,8 +4520,8 @@
     "cena": "c6_noite"
   },
   {
-    "chave": "05ceca4be8ddbfc5",
-    "texto": "“Nós já conversamos uma vez, criança. Amanhã, quando o sangue correr, eu venho buscar a minha liberdade. Pensa no que vais dizer.”",
+    "chave": "1088c92722f21229",
+    "texto": "“Rompeste a tua palavra, e eu cacei-te por dezesseis anos. Amanhã, quando o sangue correr, eu mesma quebro a Pedra.”",
     "cena": "c6_noite"
   },
   {
@@ -4545,13 +4550,8 @@
     "cena": "c6_pedra"
   },
   {
-    "chave": "1d73aed11d468dbf",
-    "texto": "Ao seu lado chegam Callum, Ailsa.",
-    "cena": "c6_pedra"
-  },
-  {
-    "chave": "dface10d3d1ba4ab",
-    "texto": "Ao seu lado chegam Callum, Ailsa, Irmão Aodh.",
+    "chave": "9594abf50501ed73",
+    "texto": "Ao seu lado chegam Callum.",
     "cena": "c6_pedra"
   },
   {
@@ -4565,23 +4565,28 @@
     "cena": "c6_pedra"
   },
   {
-    "chave": "9594abf50501ed73",
-    "texto": "Ao seu lado chegam Callum.",
-    "cena": "c6_pedra"
-  },
-  {
-    "chave": "497343012206fdd3",
-    "texto": "Ao seu lado chegam Callum, Tam, Ailsa.",
-    "cena": "c6_pedra"
-  },
-  {
     "chave": "1bbf14dda7c5e527",
     "texto": "Ao seu lado chegam Callum, Tam, Ailsa, Irmão Aodh.",
     "cena": "c6_pedra"
   },
   {
+    "chave": "1d73aed11d468dbf",
+    "texto": "Ao seu lado chegam Callum, Ailsa.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "dface10d3d1ba4ab",
+    "texto": "Ao seu lado chegam Callum, Ailsa, Irmão Aodh.",
+    "cena": "c6_pedra"
+  },
+  {
     "chave": "9bb085653d960c8f",
     "texto": "Ao seu lado chegam Callum, Tam.",
+    "cena": "c6_pedra"
+  },
+  {
+    "chave": "497343012206fdd3",
+    "texto": "Ao seu lado chegam Callum, Tam, Ailsa.",
     "cena": "c6_pedra"
   },
   {
@@ -4683,5 +4688,10 @@
     "chave": "ca2dd31708dac7c5",
     "texto": "O inverno eterno. Você cumpriu a sua palavra. A Velha está livre, e a neve não parou mais.",
     "cena": "c6_trailer"
+  },
+  {
+    "chave": "d04a1e75dc0f98db",
+    "texto": "Mas lá longe, no campo dos arqueiros, você vê a carga atropelar os homens de Selkirk. Eles estavam em campo aberto. Você procura Ailsa no meio deles e não encontra.",
+    "cena": "c4_schiltron_firme"
   }
 ]
