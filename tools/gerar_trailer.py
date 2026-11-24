@@ -34,9 +34,10 @@ ESTILO = ("Animate this exact painting as an 8-second cinematic movie shot for a
           "Keep its painterly oil-painting style, its colours, its characters and its composition. "
           "No text, no letters, no subtitles. ")
 
-VOZ_ESTILO = ("Você é o narrador do trailer de um filme épico de fantasia: voz grave e encorpada, tom solene e "
-              "dramático, ritmo lento, pausa antes das palavras mais fortes. Fale em português do Brasil e narre "
-              "exatamente o texto a seguir, sem acrescentar nada:\n\n")
+VOZ_ESTILO = ("Você é o narrador de um trailer de cinema de ação épica: voz grave e poderosa, cheia de energia "
+              "e tensão, ritmo firme e um pouco acelerado, como em trailers de filmes de batalha. Dê ênfase forte "
+              "às palavras de impacto, com intensidade crescente, sem pausas longas e sem arrastar as sílabas. "
+              "Fale em português do Brasil e narre exatamente o texto a seguir, sem acrescentar nada:\n\n")
 
 # (chave, pintura de origem, o que acontece no plano, segundos usados, fala, letreiro)
 PLANOS = [
