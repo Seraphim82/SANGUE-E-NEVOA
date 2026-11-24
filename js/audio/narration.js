@@ -29,11 +29,12 @@ function narrationParagraphs(title, text) {
     semMarcas = semMarcas.replace(/<[^>]+>/g, " ");
   }
   const plain = semMarcas
-    .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    // O &amp; por último: antes, um "&amp;lt;" viraria "<" em vez de "&lt;".
+    .replace(/&amp;/g, "&")
     .replace(/\*\*(.+?)\*\*/g, "$1")
     .replace(/\*(.+?)\*/g, "$1");
   const out = [];
