@@ -611,9 +611,12 @@ const AUD = (() => {
     music.gain.cancelScheduledValues(now);
     music.gain.setValueAtTime(music.gain.value, now);
     music.gain.linearRampToValueAtTime(0.2, now + 0.05);
-    music.gain.linearRampToValueAtTime(narratingNow ? 0.26 : 0.5, now + 1.8);
+    music.gain.linearRampToValueAtTime(narratingNow ? MUSIC_UNDER_VOICE : MUSIC_NORMAL, now + 1.8);
   }
   /** A trilha continua por baixo da narração, só mais baixa, e volta ao normal quando ele termina. */
+  const MUSIC_NORMAL = 0.5;
+  /** 10% do volume normal: as trilhas são mais altas que a voz e cobriam o narrador. */
+  const MUSIC_UNDER_VOICE = MUSIC_NORMAL * 0.1;
   let narratingNow = false;
   function narrating(v) {
     narratingNow = !!v;
@@ -621,7 +624,7 @@ const AUD = (() => {
     const now = ctx.currentTime;
     music.gain.cancelScheduledValues(now);
     music.gain.setValueAtTime(music.gain.value, now);
-    music.gain.linearRampToValueAtTime(narratingNow ? 0.26 : 0.5, now + 0.6);
+    music.gain.linearRampToValueAtTime(narratingNow ? MUSIC_UNDER_VOICE : MUSIC_NORMAL, now + 0.6);
   }
   let lastSting = 0;
   /** Sons guardados enquanto o cinema grava uma ação; ele os toca na hora do golpe. */
@@ -721,7 +724,7 @@ const AUD = (() => {
     savePref();
     if (!ctx) return;
     music.gain.cancelScheduledValues(ctx.currentTime);
-    music.gain.setValueAtTime(on ? 0.5 : 0, ctx.currentTime);
+    music.gain.setValueAtTime(on ? (narratingNow ? MUSIC_UNDER_VOICE : MUSIC_NORMAL) : 0, ctx.currentTime);
     if (on) {
       if (!cur && live()) startLoop(wanted);
     } else stopLoop();
